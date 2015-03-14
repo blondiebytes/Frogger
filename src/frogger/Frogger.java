@@ -13,8 +13,7 @@ import javalib.worldimages.WorldImage;
 public class Frogger extends World{
     
     // TO DO LIST:
-    // Make rows
-    // Figure out tickers --> different cycles for each row?
+    // Random pattern for rows? HMM Algorithm HMM. 
     // Draw stuffs
     //
 
@@ -27,6 +26,9 @@ public class Frogger extends World{
     
     // Rows keeps track of when new stuff should be added --> basically a 
     // series of tickers so each row has different stuff. 
+    // Changing speed of each row could be interesting -> just change 
+    // the increment in the lily / car class
+    // Row is basically like a generator of where stuff should start
     public ArrayList<Row> rows;
     
     // CONSTANTS
@@ -50,6 +52,10 @@ public class Frogger extends World{
         this.frog = new Frog();
         this.cars = new ArrayList<>();
         this.lilies = new ArrayList<>();
+        // we should really set up constraints 
+        // --> rows won't change after intiliaization
+        // --> things will just be added to the rows
+        this.rows = new ArrayList<>();
     }
     
     public Frogger(Frog frog, ArrayList<Car> cars, ArrayList<Lily> lilies) {
@@ -63,7 +69,7 @@ public class Frogger extends World{
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
   
-        // Iterate through lilies, moving them all
+        // Iterate through lilies, moving them all --> and check for collisions
         ArrayList<Lily> newLilies = this.lilies;
         for (Lily l : newLilies) {
             // Is the frog on a lily?
@@ -77,7 +83,7 @@ public class Frogger extends World{
            
         }
         
-       //Iterate through cars, moving them all
+       //Iterate through cars, moving them all ---> and check for collisions
         ArrayList<Car> newCars = this.cars;
         for (Car c : newCars) {
             c = c.moveCar();
@@ -88,41 +94,17 @@ public class Frogger extends World{
         
         
         // Adding Cars, Lilies
-            newLilies = addNewLily(newLilies);
-            newCars = addNewCar(newCars);
+        for (Row r : this.rows) {
+            Lily l = r.makeNewLily();
+            newLilies.add(l);
+            Car c = r.makeNewCar();
+            newCars.add(c);
+        }
         
-        
-        
-        
-        
-        // Frog doesn't react to ticks
+        // Frog doesn't react to ticks -> just to user input
         return new Frogger(newFrog, newCars, newLilies);
     }
-    
-    public ArrayList<Car> addNewCar(ArrayList<Car> currentCars) {
-        // Add a new car if it's time
-        carTicker++;
-        if (carTicker % carCycle == 0) {
-            // Add a new car in a random row, keep track of the rows
-            carTicker = 0;
-        }
-    }
-    
-    public ArrayList<Lily> addNewLily(ArrayList<Lily> currentLilies) {
-        //Iterate through lilies, moving them all
-        ArrayList<Lily> newLilies = this.lilies;
-        for (Lily l : newLilies) {
-            l.moveLily();
-        }
-        lilyTicker++;
-        if (lilyTicker % lilyCycle == 0) {
-            // Add a new lily
-            lilyTicker = 0;
-        }
-    }
-    
-    
-    
+   
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
         
@@ -135,12 +117,21 @@ public class Frogger extends World{
         WorldImage backgroundELT1; // need to find a background
         WorldImage backgroundELT2;
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT2);
+       
         // Iterate through cars to overlap
         for (Car c : cars) {
             finalImage = new OverlayImages(finalImage, c.drawCar());
         }
         
-        // add this.frog.drawFroggy() last
+        // Iterate through lilies to overlap
+        for (Lily l: lilies) {
+            finalImage = new OverlayImages(finalImage, l.drawLily());
+        }
+        
+        // add this.frog.drawFroggy() last so it is on top
+        finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
+        
+        return finalImage;
         
     }
     
