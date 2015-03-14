@@ -20,8 +20,14 @@ public class Frogger extends World{
 
     // MAIN MOVING FIELDS
     public Frog frog;
+    
+    // Cars and Lilies keep track of the movement and placement
     public ArrayList<Car> cars;
     public ArrayList<Lily> lilies;
+    
+    // Rows keeps track of when new stuff should be added --> basically a 
+    // series of tickers so each row has different stuff. 
+    public ArrayList<Row> rows;
     
     // CONSTANTS
     // Make a new car every cycle
@@ -82,8 +88,10 @@ public class Frogger extends World{
         
         
         // Adding Cars, Lilies
-        newLilies = addNewLily(newLilies);
-        newCars = addNewCar(newCars);
+            newLilies = addNewLily(newLilies);
+            newCars = addNewCar(newCars);
+        
+        
         
         
         
