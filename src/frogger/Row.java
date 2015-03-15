@@ -6,6 +6,7 @@
 package frogger;
 
 public class Row {
+   
     
     // Cycling of When To Add FIELDS --> or we could make it randomized.... 
     //                              --> or "seemingly randomized" with a pattern
@@ -21,17 +22,18 @@ public class Row {
     public int finishYPos;
     
     // What direction are we going in FIELD
-    public String direction; // "RIGHT" "LEFT"
+    public String direction; // "RIGHT" "LEFT" "SAFE"
     
-    public Row(int startX, int startY, int carCycle, int lilyCycle) {
+    // FOR SAFE ROWS
+    public Row(int startX, int startY, int finishX) {
         this.startXPos = startX;
         this.startYPos = startY;
-        this.finishXPos = 450;
+        this.finishXPos = finishX;
         this.finishYPos = startY;
-        this.carCycle = carCycle;
-        this.lilyCycle = lilyCycle;
+        this.direction = "SAFE";
     }
     
+    // FOR NON-SAFE ROWS
     public Row(int startX, int startY, int finishX, int carCycle, int lilyCycle) {
         this.startXPos = startX;
         this.startYPos = startY;
@@ -39,6 +41,11 @@ public class Row {
         this.finishYPos = startY;
         this.carCycle = carCycle;
         this.lilyCycle = lilyCycle;
+        if (startX >= 400) {
+            this.direction = "LEFT";
+        } else {
+            this.direction = "RIGHT";
+        }
     }
     
     // These methods allow us to keep track of when and where to add a car or lily 
