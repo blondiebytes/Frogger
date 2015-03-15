@@ -12,6 +12,15 @@ import javalib.worldimages.WorldImage;
 public class Frogger extends World {
 
     // TO DO LIST:
+    // Make each row with its own collideable object. Make it generic. 
+    // Then each row keeps track of its own stuff
+    // The game frogger is just a series of rows -> all constantly going
+    // However, if we keep track of the current row --> we can see who we need 
+    // to check for collisiosn (making it faster)
+    
+    // Two different types of rows -> one where you avoid stuff (cars) and 
+    // one where you try to jump onto the things (lilies)
+    
     // Random pattern for rows? HMM Algorithm HMM. 
     // Draw stuffs
     //
