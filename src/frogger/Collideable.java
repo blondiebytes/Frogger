@@ -11,4 +11,5 @@ public interface Collideable {
     public int getYPos();
     public String getDirection();
     public double getSize();
+    public boolean isOffScreen();
 }

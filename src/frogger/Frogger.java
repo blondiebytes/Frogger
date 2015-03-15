@@ -27,12 +27,15 @@ public class Frogger extends World {
     // Changing speed of each row could be interesting -> just change 
     // the increment in the lily / car class
     // Row is basically like a generator of where stuff should start
+    
     // NEED CONSTANTS FOR EACH ROW TO PUT STUFF IN
     // I.E. ROW 1 has yPos = 5-, moving left; ROW 2 has yPos = 100, moving right; 
     // and need an algorithm for mixing lilies and cars/obstacles in the same row;
     // ALSO need safe rows versus non-safe/obstacle/collideable rows
     // Different cycles for each row?
     public ArrayList<Row> rows;
+    // Keep track of the current row so we only look at stuff in the next row for collisions
+    public int currentRow;
 
     public Frogger() {
         this.frog = new Frog();
@@ -53,6 +56,21 @@ public class Frogger extends World {
     public ArrayList<Row> initializeRows() {
         ArrayList<Row> newRows = new ArrayList<>();
         // set up all the rows
+        
+        // SAFE ROW 1
+        Row row1 = new Row(0, 450, 450);
+        
+        // DANGER ROW 1 --> CARS
+        Row row2 = new Row(0, 400, 450, 50000, 0);
+        
+        // SAFE ROW 2
+        Row row3 = new Row(450, 350, 0);
+        
+        // DANGER ROW 2 --> LILIES
+        // SOmething to say in this row we have lilies 
+        // so if frog doesn't land on it we got problems
+        Row row4 = new Row(0, 400, 450, 0, 50000);
+        
         return newRows;
     }
 
@@ -67,7 +85,7 @@ public class Frogger extends World {
             // Is the frog on a lily?
             if (this.frog.isCollision(l)) {
                 // If so, make it so. Set direction so we know that the frog is on a lily
-                newFrog = new Frog(this.frog.xPos, this.frog.yPos, this.frog.image, l.getDirection());
+                newFrog = new Frog(this.frog.xPos, l.yPos, this.frog.image, l.getDirection());
             }
             // Move the lily and frog together
             l = l.moveLily();
