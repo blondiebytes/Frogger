@@ -12,4 +12,6 @@ public interface Collideable {
     public String getDirection();
     public double getSize();
     public boolean isOffScreen();
+    public Frog refractorCollisionWithFrog(Frog frog);
+    public Collideable move();
 }

@@ -27,10 +27,6 @@ public class Frogger extends World {
     // MAIN MOVING FIELDS
     public Frog frog;
 
-    // Cars and Lilies keep track of the movement and placement
-    public ArrayList<Car> cars;
-    public ArrayList<Lily> lilies;
-
     // Rows keeps track of when new stuff should be added --> basically a 
     // series of tickers so each row has different stuff. 
     // Changing speed of each row could be interesting -> just change 
@@ -48,38 +44,34 @@ public class Frogger extends World {
 
     public Frogger() {
         this.frog = new Frog();
-        this.cars = new ArrayList<>();
-        this.lilies = new ArrayList<>();
         // we should really set up constraints 
         // --> rows won't change after intiliaization
         // --> things will just be added to the rows
         this.rows = initializeRows();
     }
 
-    public Frogger(Frog frog, ArrayList<Car> cars, ArrayList<Lily> lilies) {
+    public Frogger(Frog frog) {
         this.frog = frog;
-        this.cars = cars;
-        this.lilies = lilies;
     }
 
     public ArrayList<Row> initializeRows() {
         ArrayList<Row> newRows = new ArrayList<>();
-        // set up all the rows
-        
-        // SAFE ROW 1
-        Row row1 = new Row(0, 450, 450);
-        
-        // DANGER ROW 1 --> CARS
-        Row row2 = new Row(0, 400, 450, 50000, 0);
-        
-        // SAFE ROW 2
-        Row row3 = new Row(450, 350, 0);
-        
-        // DANGER ROW 2 --> LILIES
-        // SOmething to say in this row we have lilies 
-        // so if frog doesn't land on it we got problems
-        Row row4 = new Row(0, 400, 450, 0, 50000);
-        
+//        // set up all the rows
+//        
+//        // SAFE ROW 1
+//        Row row1 = new Row(0, 450, 450);
+//        
+//        // DANGER ROW 1 --> CARS
+//        Row row2 = new Row(0, 400, 450, 50000);
+//        
+//        // SAFE ROW 2
+//        Row row3 = new Row(450, 350, 0);
+//        
+//        // DANGER ROW 2 --> LILIES
+//        // SOmething to say in this row we have lilies 
+//        // so if frog doesn't land on it we got problems
+//        Row row4 = new Row(0, 400, 450, 0);
+//        
         return newRows;
     }
 
@@ -88,19 +80,17 @@ public class Frogger extends World {
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
 
-        // Iterate through lilies, moving them all --> and check for collisions
-        ArrayList<Lily> newLilies = this.lilies;
-        for (Lily l : newLilies) {
-            // Is the frog on a lily?
-            if (this.frog.isCollision(l)) {
-                // If so, make it so. Set direction so we know that the frog is on a lily
-                newFrog = new Frog(this.frog.xPos, l.yPos, this.frog.image, l.getDirection());
+        // Iterate through the rows, moving them all the things in collideables
+        // --> and check for collisions
+        for (Row r : rows) {
+            // Why does it want me to change Collideable c to Object c??
+            for (Collideable c : r.collideables) {
+                if (this.frog.isCollision(c)) {
+                    newFrog = c.refractorCollisionWithFrog(newFrog);
+                }
             }
-            // Move the lily and frog together
-            l = l.moveLily();
-            newFrog = newFrog.tickMoveFroggy();
-
-        }
+               }
+        
 
         //Iterate through cars, moving them all ---> and check for collisions
         ArrayList<Car> newCars = this.cars;

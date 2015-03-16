@@ -42,17 +42,30 @@ class Lily implements Collideable{
         return direction;
     }
     
-    public Lily moveLily() {
+    public Collideable move() {
         if (this.direction.equals("RIGHTLILY")) {
-            return new Lily(xPos + increment, yPos, direction);
+            return new Lily(this.getXPos() + increment, this.getYPos(), this.getDirection());
         } else {
-            return new Lily(xPos - increment, yPos, direction);
+            return new Lily(this.getXPos() - increment, this.getYPos(), this.getDirection());
         }
     }
     
      public boolean isOffScreen() {
         return this.xPos >= XMAX;
     }
+     
+     public Frog refractorCollisionWithFrog(Frog frog) {
+         //            for (Collideable l: this.r.)
+//            for (Lily l : this.r.collideables) {
+//            // Is the frog on a lily?
+//            if (this.frog.isCollision(l)) {
+//                // If so, make it so. Set direction so we know that the frog is on a lily
+//                newFrog = new Frog(this.frog.xPos, l.yPos, this.frog.image, l.getDirection());
+//            }
+//            // Move the lily and frog together
+//            l = l.moveLily();
+//            newFrog = newFrog.tickMoveFroggy();
+     }
    
     // Could add functionality for colors? WOO
      public WorldImage drawLily() {
@@ -61,6 +74,7 @@ class Lily implements Collideable{
          } else
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftLily");
         }
+    
     
         
 }

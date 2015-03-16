@@ -51,6 +51,13 @@ public class Car implements Obstacle{
     public boolean isOffScreen() {
         return this.xPos >= XMAX;
     }
+    
+    public Frog refractorCollisionWithFrog(Frog frog) {
+//            if (this.frog.isCollision(c)) {
+//                // Make newFrog return to the last safe row y-pos, keeping same x-pos
+//            }
+//             c = c.moveCar();
+    }
    
     // Could add functionality for colors? WOO
      public WorldImage drawCar() {
