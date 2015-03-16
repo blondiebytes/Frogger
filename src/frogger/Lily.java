@@ -18,7 +18,7 @@ class Lily implements Collideable{
     static int XMIN = 0;
     static int YMIN = 0;
     
-    public static int increment = 1;
+    public int increment = 1;
     
     public Lily(int xPos, int yPos, String direction) {
         this.xPos = xPos;
@@ -42,11 +42,15 @@ class Lily implements Collideable{
         return direction;
     }
     
+    public int getIncrement() {
+        return increment;
+    }
+    
     public Collideable move() {
         if (this.direction.equals("RIGHTLILY")) {
-            return new Lily(this.getXPos() + increment, this.getYPos(), this.getDirection());
+            return new Lily(this.getXPos() + this.getIncrement(), this.getYPos(), this.getDirection());
         } else {
-            return new Lily(this.getXPos() - increment, this.getYPos(), this.getDirection());
+            return new Lily(this.getXPos() - this.getIncrement(), this.getYPos(), this.getDirection());
         }
     }
     
@@ -68,7 +72,7 @@ class Lily implements Collideable{
      }
    
     // Could add functionality for colors? WOO
-     public WorldImage drawLily() {
+     public WorldImage draw() {
          if (this.direction.equals("RIGHTLILY")) {
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightLily");
          } else

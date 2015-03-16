@@ -10,16 +10,18 @@ import javalib.worldimages.WorldImage;
  * @author kathrynhodge
  */
 public class Frogger extends World {
+    
+    // The game frogger is just a series of rows -> all constantly going
+    // The user jumps around the rows via Frog.
 
     // TO DO LIST:
-    // Make each row with its own collideable object. Make it generic. 
-    // Then each row keeps track of its own stuff
-    // The game frogger is just a series of rows -> all constantly going
+    // Identities for each object --> for testing
     // However, if we keep track of the current row --> we can see who we need 
     // to check for collisiosn (making it faster)
     
     // Two different types of rows -> one where you avoid stuff (cars) and 
-    // one where you try to jump onto the things (lilies)
+    // one where you try to jump onto the things (lilies). How different are 
+    // they really? Create an interface or just do a type check?
     
     // Random pattern for rows? HMM Algorithm HMM. 
     // Draw stuffs
@@ -50,8 +52,9 @@ public class Frogger extends World {
         this.rows = initializeRows();
     }
 
-    public Frogger(Frog frog) {
+    public Frogger(Frog frog, ArrayList<Row> rows) {
         this.frog = frog;
+        this.rows = rows;
     }
 
     public ArrayList<Row> initializeRows() {
@@ -79,45 +82,43 @@ public class Frogger extends World {
 
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
+        ArrayList<Row> newRows = this.rows;
+        // None of this is really "in place" or "mutative" because of testing
 
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
-        for (Row r : rows) {
-            // Why does it want me to change Collideable c to Object c??
+        for (Row r : newRows) {
+            // Checking for collisions --> will change this to just check for 
+            // this in the current row (or the rows around the Frog)
+            
+            // Why does it want me to change Collideable c to Object c??!?!?! 
             for (Collideable c : r.collideables) {
+                
+                // Change frog if it collides
                 if (this.frog.isCollision(c)) {
                     newFrog = c.refractorCollisionWithFrog(newFrog);
                 }
+                
+                // Remove obstacle/collider if it's offscreen
+                if (c.isOffScreen()) {
+                    r.collideables.remove(c);
+                }
+                
             }
-               }
-        
-
-        //Iterate through cars, moving them all ---> and check for collisions
-        ArrayList<Car> newCars = this.cars;
-        for (Car c : newCars) {
-            c = c.moveCar();
-            if (this.frog.isCollision(c)) {
-                // Make newFrog return to the last safe row y-pos, keeping same x-pos
-            }
-        }
-
-        // Adding Cars, Lilies
-        for (Row r : this.rows) {
-            Lily l = r.makeNewLily();
-            newLilies.add(l);
-            Car c = r.makeNewCar();
-            newCars.add(c);
-        }
-
-        // Frog doesn't react to ticks -> just to user input
-        return new Frogger(newFrog, newCars, newLilies);
+            
+            //The only thing that updates in a row is the items in it
+            // Adding a new collider and removing a colldier if it's time
+            Row newRow = r.updateRow();
+            newRows.add(newRow);
+         }
+        return new Frogger(newFrog, newRows);
     }
 
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
 
-        // Cars and lilies don't react to key presses
-        return new Frogger(newFrog, cars, lilies);
+        // Rows don't react to key presses
+        return new Frogger(newFrog, this.rows);
     }
 
     public WorldImage makeImage() {
@@ -126,16 +127,14 @@ public class Frogger extends World {
         WorldImage backgroundELT2;
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT2);
 
-        // Iterate through cars to overlap
-        for (Car c : cars) {
-            finalImage = new OverlayImages(finalImage, c.drawCar());
+        
+        for (Row r : this.rows) {
+            // Iterate through collideables to overlap
+            for (Collideable c : r.collideables) {
+                finalImage = new OverlayImages(finalImage, c.draw());
+            }
         }
-
-        // Iterate through lilies to overlap
-        for (Lily l : lilies) {
-            finalImage = new OverlayImages(finalImage, l.drawLily());
-        }
-
+      
         // add this.frog.drawFroggy() last so it is on top
         finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
 

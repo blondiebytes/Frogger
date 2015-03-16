@@ -92,11 +92,11 @@ class Frog {
     }
     
     // When froggy is on a lily and has to move with it
-    public Frog tickMoveFroggy() {
+    public Frog tickMoveFroggy(Lily l) {
         if (this.isOnLily.equals("RIGHT")) {
-            return new Frog(this.xPos + Lily.increment, this.yPos, this.image, "RIGHT");
+            return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT");
         } else if (this.isOnLily.equals("LEFT")) {
-            return new Frog(this.xPos - Lily.increment, this.yPos, this.image, "LEFT");
+            return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT");
         } else
             return this;
     }

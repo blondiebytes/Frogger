@@ -70,16 +70,18 @@ public class Row<D extends Collideable> {
     // These methods allow us to keep track of when and where to add a car or lily 
     // to a row. We return what was added so we can make sure it's correct
     // in testing
-    public Collideable makeNewCollider() {
+
+        public D makeNewCollider() {
         collideableTicker++;
         // If ticker is in the right place for the cycle
         if (collideableTicker % collideableCycle == 0) {
             // is this a thing?
             switch (this.type) {
                 case 0:
-                    return new Car(this.startXPos, this.startYPos, this.direction);
+                    // For some reason the "extends collideable" part isn't working, so we have to cast.. BLAH
+                    return (D) new Car(this.startXPos, this.startYPos, this.direction);
                 case 1:
-                    return new Lily(this.startXPos, this.startYPos, this.direction);
+                    return (D) new Lily(this.startXPos, this.startYPos, this.direction);
                 default:
                     return null;
             }
@@ -89,10 +91,23 @@ public class Row<D extends Collideable> {
             return null;       
     }
     
-    // So we can see if it is added. -> better than void or something.
-    public boolean addNewCollider(D collider) {
-        return this.collideables.add(collider);
+    // Update Rows in the Game
+    public Row updateRow() {
+        if (this.direction.equals("SAFE")) {
+            return this;
+        } else {
+            // Add a new collider
+            ArrayList<D> newColliderSet = this.collideables;
+            D newCollider = this.makeNewCollider();
+            if (newCollider != null) {
+                // Let's add it if it isn't null
+                newColliderSet.add(newCollider);
+            }
+            return new Row(this.startXPos, this.startYPos, 
+                    this.finishXPos, this.collideableCycle, newColliderSet);
+        }
     }
+    
     
     // A Collider should go away if it goes off screen.
     public boolean shouldGoColliderAway(D collider) {
