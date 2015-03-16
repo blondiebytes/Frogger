@@ -59,16 +59,15 @@ class Lily implements Collideable{
     }
      
      public Frog refractorCollisionWithFrog(Frog frog) {
-         //            for (Collideable l: this.r.)
-//            for (Lily l : this.r.collideables) {
-//            // Is the frog on a lily?
-//            if (this.frog.isCollision(l)) {
-//                // If so, make it so. Set direction so we know that the frog is on a lily
-//                newFrog = new Frog(this.frog.xPos, l.yPos, this.frog.image, l.getDirection());
-//            }
-//            // Move the lily and frog together
-//            l = l.moveLily();
-//            newFrog = newFrog.tickMoveFroggy();
+            Frog newFrog = frog;
+            // Is the frog on a lily?
+            if (frog.isCollision(this)) {
+            // If so, make it so. Set direction so we know that the frog is on a lily
+              // THen tick the frog so it moves at the same rate as the lily
+              newFrog = new Frog(frog.xPos, this.yPos, frog.image, this.getDirection()).tickMoveFroggy(this);
+            }
+            return newFrog;
+     
      }
    
     // Could add functionality for colors? WOO

@@ -99,6 +99,9 @@ public class Frogger extends World {
                     newFrog = c.refractorCollisionWithFrog(newFrog);
                 }
                 
+                // Move the collider
+                c = c.move();
+                
                 // Remove obstacle/collider if it's offscreen
                 if (c.isOffScreen()) {
                     r.collideables.remove(c);
@@ -143,7 +146,7 @@ public class Frogger extends World {
     }
 
     public static void main(String[] args) {
-        // TODO code application logic here
+        Frogger frogger = new Frogger();
     }
 
 }

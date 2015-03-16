@@ -56,6 +56,14 @@ class Frog {
         return size;
     }
     
+    public int getIncrementUp() {
+        return incrementUp;
+    }
+    
+    public int getIncrementSideToSide() {
+        return incrementSideToSide;
+    }
+    
     // When we press keys and move froggy
     public Frog reactMoveFroggy(String key) {
         // Check what key was pressed
@@ -66,14 +74,14 @@ class Frog {
                 return new Frog(xPos, yPos, "UP");
             } else // If we were already facing up, we can go up
             {
-                return new Frog(xPos, yPos + incrementUp, "UP").checkBounds();
+                return new Frog(xPos, yPos - incrementUp, "UP").checkBounds();
             }
         } // Check for all cases
         else if (key.equals("down")) {
             if (!this.image.equals("DOWN")) {
                 return new Frog(xPos, yPos, "DOWN");
             }
-            return new Frog(xPos, yPos - incrementUp, "DOWN");
+            return new Frog(xPos, yPos + incrementUp, "DOWN");
         } else if (key.equals("right")) {
             if (!this.image.equals("RIGHT")) {
                 return new Frog(xPos, yPos, "RIGHT");
