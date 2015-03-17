@@ -15,6 +15,10 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
 
     // TO DO LIST:
+     // Why does it want me to change Collideable c to Object c??!?!?! 
+            // I thought changing ArrayList<Row> to ArrayList<Row<Collideable>> would work 
+            // but it doesn't
+            //HMMMMMMMMM
     // Identities for each object --> for testing
     // However, if we keep track of the current row --> we can see who we need 
     // to check for collisiosn (making it faster)
@@ -40,7 +44,8 @@ public class Frogger extends World {
     // and need an algorithm for mixing lilies and cars/obstacles in the same row;
     // ALSO need safe rows versus non-safe/obstacle/collideable rows
     // Different cycles for each row?
-    public ArrayList<Row> rows;
+ 
+    public ArrayList<Row<Collideable>> rows;
     // Keep track of the current row so we only look at stuff in the next row for collisions
     public int currentRow;
 
@@ -52,13 +57,13 @@ public class Frogger extends World {
         this.rows = initializeRows();
     }
 
-    public Frogger(Frog frog, ArrayList<Row> rows) {
+    public Frogger(Frog frog, ArrayList<Row<Collideable>> rows) {
         this.frog = frog;
         this.rows = rows;
     }
 
-    public ArrayList<Row> initializeRows() {
-        ArrayList<Row> newRows = new ArrayList<>();
+    public ArrayList<Row<Collideable>> initializeRows() {
+        ArrayList<Row<Collideable>> newRows = new ArrayList<>();
 //        // set up all the rows
 //        
 //        // SAFE ROW 1
@@ -82,7 +87,7 @@ public class Frogger extends World {
 
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
-        ArrayList<Row> newRows = this.rows;
+        ArrayList<Row<Collideable>> newRows = this.rows;
         // None of this is really "in place" or "mutative" because of testing
 
         // Iterate through the rows, moving them all the things in collideables
@@ -92,6 +97,9 @@ public class Frogger extends World {
             // this in the current row (or the rows around the Frog)
             
             // Why does it want me to change Collideable c to Object c??!?!?! 
+            // I thought changing ArrayList<Row> to ArrayList<Row<Collideable>> would work 
+            // but it doesn't
+            //HMMMMMMMMM
             for (Collideable c : r.collideables) {
                 
                 // Change frog if it collides
