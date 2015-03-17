@@ -12,9 +12,7 @@ public class Car implements Collideable<Car> {
     private String direction;
     // Create an identity for each thing
     private int identity;
-    
-    // Need to add a constructor portion for this
-    private int increment = 1;
+    private int increment;
     
     // CONSTANTS:
     static int XMAX = 450;
@@ -24,9 +22,10 @@ public class Car implements Collideable<Car> {
     static int total = 0;
    
     
-    public Car(int xPos, int yPos, String direction) {
+    public Car(int xPos, int yPos, int increment, String direction) {
         this.xPos = xPos;
         this.yPos = yPos;
+        this.increment = increment;
         this.direction = direction;
         this.identity = total;
         total++;

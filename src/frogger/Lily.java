@@ -12,9 +12,7 @@ class Lily implements Collideable<Lily>{
     private double size; // NEED TO SET 
     private String direction;
     private int identity;
-    
-    // Need to add this part in constructor
-    public int increment = 1;
+    private int increment;
     
     // CONSTANTS:
     static int XMAX = 450;
@@ -24,9 +22,10 @@ class Lily implements Collideable<Lily>{
     static int total = 0;
     
     
-    public Lily(int xPos, int yPos, String direction) {
+    public Lily(int xPos, int yPos, int increment, String direction) {
         this.xPos = xPos;
         this.yPos = yPos;
+        this.increment = increment;
         this.direction = direction;
         this.identity = total;
         total++;

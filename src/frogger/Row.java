@@ -12,24 +12,26 @@ public class Row<D extends Collideable> {
     
     // Cycling of When To Add FIELDS --> or we could make it randomized.... 
     //                              --> or "seemingly randomized" with a pattern
-    public int collideableCycle;
-    public int collideableTicker;
+    private int collideableCycle;
+    private int collideableTicker;
     
     
     // Array of things in the row
-    public ArrayList<D> collideables;
+    private ArrayList<D> collideables;
     
     // Where should the thing in the row start/finish FIELDS
-    public int startXPos;
-    public int startYPos;
-    public int finishXPos;
-    public int finishYPos;
-    
-    // What direction are we going in FIELD
+    private int startXPos;
+    private int startYPos;
+    private int finishXPos;
+    private int finishYPos;
+     
+    // What direction are we going in FIELD and How FAST are we going?
     public String direction; // "RIGHT" "LEFT" "SAFE"
+    private int increment;
     
     // What type are we?
-    public int type; // "0" = Car "1" = Lily "2" = Safe Row
+    /// WE NEED TO SET THIS SOMEHOW TO KNOW WHAT IS IN OUR ROWS
+    private int type; // "0" = Car "1" = Lily "2" = Safe Row
     
     // FOR SAFE ROWS
     // Safe rows don't have colliders, and thus, don't collide with stuff
@@ -44,11 +46,12 @@ public class Row<D extends Collideable> {
     
     // FOR NON-SAFE ROWS
     // Have a cycle of when stuff appears, have a storage of stuffs
-    public Row(int startX, int startY, int finishX, int collideableCycle, ArrayList<D> colliders) {
+    public Row(int startX, int startY, int finishX, int increment, int collideableCycle, ArrayList<D> colliders) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
         this.finishYPos = startY;
+        this.increment = increment;
         this.collideableCycle = collideableCycle;
         if (startX >= 400) {
             this.direction = "LEFT";
@@ -58,9 +61,46 @@ public class Row<D extends Collideable> {
         this.collideables = colliders;
     }
     
+    public int getStartX() {
+        return this.startXPos;
+    }
+    
+    public int getStartY() {
+        return this.startYPos;
+    }
+    
+    public int getFinishX() {
+        return this.finishXPos;
+    }
+    
+    public int getFinishY() {
+        return this.finishYPos;
+    }
+    
+    public int getIncrement() {
+        return increment;
+    }
+    
+    public int getType() {
+        return this.type;
+    }
+    
+    public String getDirection() {
+        return this.direction;
+    }
+    
+    public int getCollideableCycle() {
+        return this.collideableCycle;
+    }
+    
+    public int getCollideableTicker() {
+        return this.collideableTicker;
+    }
+   
     public ArrayList<D> getCollideables() {
         return this.collideables;
     }
+    
     
     // THE THINKING INVOLVED IN MAKING THIS KINDA GENERIC:
     // Can we abstract this to make it for all collideables? Not exactly, because
@@ -76,16 +116,16 @@ public class Row<D extends Collideable> {
     // in testing
 
         public D makeNewCollider() {
-        collideableTicker++;
+        this.collideableTicker++;
         // If ticker is in the right place for the cycle
-        if (collideableTicker % collideableCycle == 0) {
+        if (this.collideableTicker % this.collideableCycle == 0) {
             // is this a thing?
-            switch (this.type) {
+            switch (this.getType()) {
                 case 0:
                     // For some reason the "extends collideable" part isn't working, so we have to cast.. BLAH
-                    return (D) new Car(this.startXPos, this.startYPos, this.direction);
+                    return (D) new Car(this.startXPos, this.startYPos, this.increment, this.direction);
                 case 1:
-                    return (D) new Lily(this.startXPos, this.startYPos, this.direction);
+                    return (D) new Lily(this.startXPos, this.startYPos, this.increment, this.direction);
                 default:
                     return null;
             }
@@ -97,7 +137,7 @@ public class Row<D extends Collideable> {
     
     // Update Rows in the Game
     public Row updateRow() {
-        if (this.direction.equals("SAFE")) {
+        if (this.getDirection().equals("SAFE")) {
             return this;
         } else {
             // Add a new collider
@@ -108,7 +148,7 @@ public class Row<D extends Collideable> {
                 newColliderSet.add(newCollider);
             }
             return new Row(this.startXPos, this.startYPos, 
-                    this.finishXPos, this.collideableCycle, newColliderSet);
+                    this.finishXPos, this.increment, this.collideableCycle, newColliderSet);
         }
     }
     
