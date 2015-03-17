@@ -5,15 +5,18 @@ import javalib.worldimages.FromFileImage;
 import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
-public class Car implements Collideable{
-    public int xPos;
-    public int yPos;
-    public double size; // NEED TO SET 
-    public String direction;
+public class Car implements Collideable<Car> {
+    private int xPos;
+    private int yPos;
+    private double size; // NEED TO SET 
+    private String direction;
     // Create an identity for each thing
+    private int identity;
+    
+    // Need to add a constructor portion for this
+    private int increment = 1;
     
     // CONSTANTS:
-    public static int increment = 1;
     static int XMAX = 450;
     static int YMAX = 450;
     static int XMIN = 0;
@@ -25,6 +28,15 @@ public class Car implements Collideable{
         this.xPos = xPos;
         this.yPos = yPos;
         this.direction = direction;
+        this.identity = total;
+        total++;
+    }
+    
+     public Car(int xPos, int yPos, String direction, int identity) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.direction = direction;
+        this.identity = identity;
     }
    
     public int getXPos() {
@@ -43,11 +55,19 @@ public class Car implements Collideable{
         return direction;
     }
     
-    public Collideable move() {
-        if (this.direction.equals("RIGHTCAR")) {
-            return new Car(xPos + increment, yPos, direction);
+    public int getIncrement() {
+        return increment;
+    }
+    
+    public int getIdentity() {
+        return identity;
+    }
+    
+    public Car move() {
+        if (this.getDirection().equals("RIGHTCAR")) {
+            return new Car(getXPos() + getIncrement(), getYPos(), getDirection(), getIdentity());
         } else {
-            return new Car(xPos - increment, yPos, direction);
+            return new Car(getXPos() - getIncrement(), getYPos(), getDirection(), getIdentity());
         }
     }
     
@@ -66,7 +86,7 @@ public class Car implements Collideable{
    
     // Could add functionality for colors? WOO
      public WorldImage draw() {
-         if (this.direction.equals("RIGHTCAR")) {
+         if (this.getDirection().equals("RIGHTCAR")) {
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightCar");
          } else
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftCar");

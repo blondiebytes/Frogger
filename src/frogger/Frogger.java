@@ -100,7 +100,7 @@ public class Frogger extends World {
             // I thought changing ArrayList<Row> to ArrayList<Row<Collideable>> would work 
             // but it doesn't
             //HMMMMMMMMM
-            for (Collideable c : r.collideables) {
+            for (Collideable c : r.getCollideables()) {
                 
                 // Change frog if it collides
                 if (this.frog.isCollision(c)) {
@@ -112,7 +112,7 @@ public class Frogger extends World {
                 
                 // Remove obstacle/collider if it's offscreen
                 if (c.isOffScreen()) {
-                    r.collideables.remove(c);
+                    r.getCollideables().remove(c);
                 }
                 
             }
@@ -141,7 +141,7 @@ public class Frogger extends World {
         
         for (Row r : this.rows) {
             // Iterate through collideables to overlap
-            for (Collideable c : r.collideables) {
+            for (Collideable c : r.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, c.draw());
             }
         }
@@ -155,6 +155,7 @@ public class Frogger extends World {
 
     public static void main(String[] args) {
         Frogger frogger = new Frogger();
+        frogger.bigBang(500, 500, .01);
     }
 
 }

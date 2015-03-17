@@ -58,6 +58,10 @@ public class Row<D extends Collideable> {
         this.collideables = colliders;
     }
     
+    public ArrayList<D> getCollideables() {
+        return this.collideables;
+    }
+    
     // THE THINKING INVOLVED IN MAKING THIS KINDA GENERIC:
     // Can we abstract this to make it for all collideables? Not exactly, because
     // we later add to an arraylist in Frogger.java of that thing

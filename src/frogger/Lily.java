@@ -6,26 +6,40 @@ import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
 
-class Lily implements Collideable{
-    public int xPos;
-    public int yPos;
-    public double size; // NEED TO SET 
-    public String direction;
+class Lily implements Collideable<Lily>{
+    private int xPos;
+    private int yPos;
+    private double size; // NEED TO SET 
+    private String direction;
+    private int identity;
+    
+    // Need to add this part in constructor
+    public int increment = 1;
     
     // CONSTANTS:
     static int XMAX = 450;
     static int YMAX = 450;
     static int XMIN = 0;
     static int YMIN = 0;
+    static int total = 0;
     
-    public int increment = 1;
     
     public Lily(int xPos, int yPos, String direction) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.direction = direction;
+        this.identity = total;
+        total++;
+               
     }
    
+     public Lily(int xPos, int yPos, String direction, int identity) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.direction = direction;
+        this.identity = identity;
+    }
+     
     public int getXPos() {
         return xPos;
     }
@@ -46,11 +60,15 @@ class Lily implements Collideable{
         return increment;
     }
     
-    public Collideable move() {
-        if (this.direction.equals("RIGHTLILY")) {
-            return new Lily(this.getXPos() + this.getIncrement(), this.getYPos(), this.getDirection());
+    public int getIdentity() {
+        return identity;
+    }
+    
+    public Lily move() {
+        if (this.getDirection().equals("RIGHTLILY")) {
+            return new Lily(this.getXPos() + this.getIncrement(), this.getYPos(), this.getDirection(), this.getIdentity());
         } else {
-            return new Lily(this.getXPos() - this.getIncrement(), this.getYPos(), this.getDirection());
+            return new Lily(this.getXPos() - this.getIncrement(), this.getYPos(), this.getDirection(), this.getIdentity());
         }
     }
     
@@ -72,7 +90,7 @@ class Lily implements Collideable{
    
     // Could add functionality for colors? WOO
      public WorldImage draw() {
-         if (this.direction.equals("RIGHTLILY")) {
+         if (this.getDirection().equals("RIGHTLILY")) {
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightLily");
          } else
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftLily");

@@ -8,13 +8,15 @@ package frogger;
 import javalib.worldimages.WorldImage;
 
 
-public interface Collideable {
+public interface Collideable<D> {
     public int getXPos();
     public int getYPos();
     public String getDirection();
+    public int getIncrement();
+    public int getIdentity();
     public double getSize();
     public boolean isOffScreen();
     public Frog refractorCollisionWithFrog(Frog frog);
-    public Collideable move();
+    public D move();
     public WorldImage draw();
 }
