@@ -88,7 +88,10 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-       Row<Lily> lily1 = new Row(0, 400, 450, 300, 5, 10000, new ArrayList<>(), 2);
+       ArrayList<Lily> starterLily = new ArrayList<>();
+       starterLily.add(new Lily(0, 400, 5, "RIGHT"));
+       Row<Lily> lily1 = new Row(0, 400, 450, 300, 5, 10000, starterLily, 2);
+       System.out.println(lily1.getCollideables().size());
        newLilies.add(lily1);
        return newLilies;
     }
@@ -96,12 +99,12 @@ public class Frogger extends World {
     private ArrayList<Row> initializeSafeRows() {
      // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
        ArrayList<Row> newRows = new ArrayList<>();
-       Row row1 = new Row<>(0, 500, 450, 400);
-       newRows.add(row1);
-       
-     // SAFE ROW 2
-      Row row2 = new Row(0, 300, 450, 200);
-      newRows.add(row2);
+//       Row row1 = new Row<>(0, 500, 450, 400);
+//       newRows.add(row1);
+//       
+//     // SAFE ROW 2
+//      Row row2 = new Row(0, 300, 450, 200);
+//      newRows.add(row2);
 //        
        return newRows;
     }
@@ -142,7 +145,7 @@ public class Frogger extends World {
             Row newCarRow = r.updateRow();
             newCars.add(newCarRow);
         }
-        
+       
         for (Row<Lily> x : newLilies ) {
              // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)

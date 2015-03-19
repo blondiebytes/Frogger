@@ -45,7 +45,23 @@ public class Row<D extends Collideable<D>> {
         this.type = 0;
     }
     
-    // FOR NON-SAFE ROWS
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders) {
+        this.startXPos = startX;
+        this.startYPos = startY;
+        this.finishXPos = finishX;
+        this.finishYPos = startY;
+        this.increment = increment;
+        this.collideableCycle = collideableCycle;
+        if (startX >= 400) {
+            this.direction = "LEFT";
+        } else {
+            this.direction = "RIGHT";
+        }
+        this.collideables = colliders;
+    }
+    
+    
+    // FOR INIT NON-SAFE ROWS
     // Have a cycle of when stuff appears, have a storage of stuffs
     public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int type) {
         this.startXPos = startX;
@@ -62,6 +78,8 @@ public class Row<D extends Collideable<D>> {
         this.collideables = colliders;
         this.type = type;
     }
+    
+    
     
     public int getStartX() {
         return this.startXPos;
@@ -150,7 +168,7 @@ public class Row<D extends Collideable<D>> {
                 newColliderSet.add(newCollider);
             }
             return new Row(this.startXPos, this.startYPos, 
-                    this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, newColliderSet, this.type);
+                    this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, newColliderSet);
         }
     }
     
