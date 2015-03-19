@@ -13,7 +13,7 @@ public class Row<D extends Collideable<D>> {
     // Cycling of When To Add FIELDS --> or we could make it randomized.... 
     //                              --> or "seemingly randomized" with a pattern
     private int collideableCycle;
-    static private int collideableTicker;
+    private int collideableTicker;
     
     
     // Array of things in the row
@@ -45,24 +45,6 @@ public class Row<D extends Collideable<D>> {
         this.type = 0;
     }
     
-    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders) {
-        this.startXPos = startX;
-        this.startYPos = startY;
-        this.finishXPos = finishX;
-        this.finishYPos = startY;
-        this.increment = increment;
-        this.collideableCycle = collideableCycle;
-        if (startX >= 400) {
-            this.direction = "LEFT";
-        } else {
-            this.direction = "RIGHT";
-        }
-        this.collideables = colliders;
-    }
-    
-    
-    // FOR INIT NON-SAFE ROWS
-    // Have a cycle of when stuff appears, have a storage of stuffs
     public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int type) {
         this.startXPos = startX;
         this.startYPos = startY;
@@ -76,11 +58,31 @@ public class Row<D extends Collideable<D>> {
             this.direction = "RIGHT";
         }
         this.collideables = colliders;
+        this.collideableTicker = 0;
+    }
+    
+    
+    // FOR INIT NON-SAFE ROWS
+    // Have a cycle of when stuff appears, have a storage of stuffs
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, int collideableTicker, ArrayList<D> colliders, int type) {
+        this.startXPos = startX;
+        this.startYPos = startY;
+        this.finishXPos = finishX;
+        this.finishYPos = startY;
+        this.increment = increment;
+        this.collideableCycle = collideableCycle;
+        if (startX >= 400) {
+            this.direction = "LEFT";
+        } else {
+            this.direction = "RIGHT";
+        }
+        this.collideables = colliders;
         this.type = type;
+        this.collideableTicker = collideableTicker;
     }
     
     public Row<D> emptyCollisionCopy() {
-        return new Row(this.startXPos, this.startYPos, this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, new ArrayList<D>(), this.type);
+        return new Row(this.startXPos, this.startYPos, this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, this.collideableTicker, new ArrayList<D>(), this.type);
     }
     
     public int getStartX() {
@@ -142,7 +144,6 @@ public class Row<D extends Collideable<D>> {
       collideableTicker++;
       return collideableTicker % collideableCycle == 0;
   }
-    
     
     // A Collider should go away if it goes off screen.
     public boolean shouldGoColliderAway(D collider) {

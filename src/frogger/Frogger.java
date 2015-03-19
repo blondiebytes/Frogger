@@ -73,9 +73,8 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
-        Row<Car> car1 = new Row(0, 200, 450, 0, 5, 10000, new ArrayList<>(), 1);
-
-//        
+        Row<Car> car1 = new Row(-50, 150, 500, 100, 1, 250, new ArrayList<>(), 1);
+        newCars.add(car1);
         return newCars;
     }
 
@@ -83,8 +82,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(0, 350, 450, 300, 1, 250, new ArrayList<>(), 2);
-        System.out.println(lily1.getCollideables().size());
+        Row<Lily> lily1 = new Row(-50, 350, 500, 300, 3, 300, new ArrayList<>(), 2);
         newLilies.add(lily1);
         return newLilies;
     }
@@ -92,7 +90,7 @@ public class Frogger extends World {
     private ArrayList<Row> initializeSafeRows() {
         // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
         ArrayList<Row> newRows = new ArrayList<>();
-//       Row row1 = new Row<>(0, 500, 450, 400);
+ //       Row row1 = new Row<>(0, 500, 450, 400);
 //       newRows.add(row1);
 //       
 //     // SAFE ROW 2
@@ -140,6 +138,7 @@ public class Frogger extends World {
                 Car aCar = new Car(newCarRow.getStartX(), newCarRow.getStartY(), newCarRow.getIncrement(), newCarRow.getDirection());
                 newCarRow.getCollideables().add(aCar);
             }
+            System.out.println(newCarRow.getCollideables().size());
             newCars.add(newCarRow);
         }
 
@@ -170,7 +169,6 @@ public class Frogger extends World {
                 Lily aLily = new Lily(newLilyRow.getStartX(), newLilyRow.getStartY(), newLilyRow.getIncrement(), newLilyRow.getDirection());
                 newLilyRow.getCollideables().add(aLily);
             }
-            System.out.println(newLilyRow.getCollideables().size());
             newLilies.add(newLilyRow);
         }
         return new Frogger(newFrog, newCars, newLilies);

@@ -15,9 +15,9 @@ public class Car implements Collideable<Car> {
     private int increment;
     
     // CONSTANTS:
-    static int XMAX = 450;
+    static int XMAX = 500;
     static int YMAX = 450;
-    static int XMIN = 0;
+    static int XMIN = -50;
     static int YMIN = 0;
     static int total = 0;
    
@@ -31,10 +31,11 @@ public class Car implements Collideable<Car> {
         total++;
     }
     
-     public Car(int xPos, int yPos, String direction, int identity) {
+     public Car(int xPos, int yPos, String direction, int increment, int identity) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.direction = direction;
+        this.increment = increment;
         this.identity = identity;
     }
    
@@ -64,9 +65,9 @@ public class Car implements Collideable<Car> {
     
     public Car move() {
         if (this.getDirection().equals("RIGHT")) {
-            return new Car(getXPos() + getIncrement(), getYPos(), getDirection(), getIdentity());
+            return new Car(getXPos() + getIncrement(), getYPos(), getDirection(), getIncrement(), getIdentity());
         } else {
-            return new Car(getXPos() - getIncrement(), getYPos(), getDirection(), getIdentity());
+            return new Car(getXPos() - getIncrement(), getYPos(), getDirection(), getIncrement(), getIdentity());
         }
     }
     
@@ -86,9 +87,9 @@ public class Car implements Collideable<Car> {
     // Could add functionality for colors? WOO
      public WorldImage draw() {
          if (this.getDirection().equals("RIGHT")) {
-             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightCar.png");
+             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightcar.png");
          } else
-             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftCar.png");
+             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftcar.png");
         }
 
  
