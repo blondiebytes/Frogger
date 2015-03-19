@@ -79,7 +79,9 @@ public class Row<D extends Collideable<D>> {
         this.type = type;
     }
     
-    
+    public Row<D> emptyCollisionCopy() {
+        return new Row(this.startXPos, this.startYPos, this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, new ArrayList<D>(), this.type);
+    }
     
     public int getStartX() {
         return this.startXPos;

@@ -89,7 +89,7 @@ public class Frogger extends World {
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
        ArrayList<Lily> starterLily = new ArrayList<>();
-       starterLily.add(new Lily(0, 350, 5, "RIGHT"));
+       starterLily.add(new Lily(0, 350, 20, "RIGHTLILY"));
        Row<Lily> lily1 = new Row(0, 350, 450, 300, 1, 10000000, starterLily, 2);
        System.out.println(lily1.getCollideables().size());
        newLilies.add(lily1);
@@ -113,8 +113,9 @@ public class Frogger extends World {
 
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
-        ArrayList<Row<Car>> newCars = this.cars;
-        ArrayList<Row<Lily>> newLilies = this.lilies;
+        ArrayList<Row<Car>> newCars = new ArrayList<>();
+        
+        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
         // None of this is really "in place" or "mutative" because of testing
 
         // Iterate through the rows, moving them all the things in collideables
@@ -122,9 +123,10 @@ public class Frogger extends World {
         
         // Hoping to figure out a way to do this more efficiently.... 
         // Calling Cars and Lilies at the same time versus in seperate loops
-        for (Row<Car> r : newCars) {
+        for (Row<Car> r : this.cars) {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
+            Row<Car> newCarRow = r.emptyCollisionCopy();
             for (Car c : r.getCollideables()) {
                 // Change frog if it collides
                 if (this.frog.isCollision(c)) {
@@ -132,42 +134,44 @@ public class Frogger extends World {
                 }
                 
                 // Move the collider
-                c = c.move();
+                Car newCar = c.move();
                 
                 // Remove obstacle/collider if it's offscreen
-                if (c.isOffScreen()) {
-                    r.getCollideables().remove(c);
+                if (!newCar.isOffScreen()) {
+                    newCarRow.getCollideables().add(newCar);
                 }
             }
             
             //The only thing that updates in a row is the items in it
-            // Adding a new collider and removing a colldier if it's time
-            Row newCarRow = r.updateRow();
+            // Adding a new collider if it's time
+            newCarRow = newCarRow.updateRow();
             newCars.add(newCarRow);
         }
        
-        for (Row<Lily> x : newLilies) {
+        for (Row<Lily> x : this.lilies) {
              // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
+            Row<Lily> newLilyRow = x.emptyCollisionCopy();
             for (Lily l : x.getCollideables()) {
+                System.out.println("I FOUND A LILY");
                 // Change frog if it collides
                 if (this.frog.isCollision(l)) {
                     newFrog = l.refractorCollisionWithFrog(newFrog);
                 }
                 
                 // Move the collider
-                l = l.move();
+                Lily newLily = l.move();
                 
                 // Remove obstacle/collider if it's offscreen
-                if (l.isOffScreen()) {
-                    x.getCollideables().remove(l);
+                if (!newLily.isOffScreen()) {
+                    newLilyRow.getCollideables().add(newLily);
                 }
-        }
+            }
             
             //The only thing that updates in a row is the items in it
             // Adding a new collider and removing a colldier if it's time
-            Row<Lily> newLilyRow = x.updateRow();
-            newLilies.add(newLilyRow);
+           newLilyRow = newLilyRow.updateRow();
+           newLilies.add(newLilyRow);
          }
         
         return new Frogger(newFrog, newCars, newLilies);
