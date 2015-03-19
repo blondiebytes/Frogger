@@ -145,7 +145,7 @@ public class Frogger extends World {
         }
       
         // add this.frog.drawFroggy() last so it is on top
-        finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
+        finalImage = new OverlayImages(backgroundELT1, this.frog.drawFroggy());
 
         return finalImage;
 

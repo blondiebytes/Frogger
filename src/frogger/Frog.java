@@ -81,18 +81,18 @@ class Frog {
             if (!this.image.equals("DOWN")) {
                 return new Frog(xPos, yPos, "DOWN");
             }
-            return new Frog(xPos, yPos + incrementUp, "DOWN");
+            return new Frog(xPos, yPos + incrementUp, "DOWN").checkBounds();
         } else if (key.equals("right")) {
             if (!this.image.equals("RIGHT")) {
                 return new Frog(xPos, yPos, "RIGHT");
             } else {
-                return new Frog(xPos + incrementSideToSide, yPos, "RIGHT");
+                return new Frog(xPos + incrementSideToSide, yPos, "RIGHT").checkBounds();
             }
         } else if (key.equals("left")) {
             if (!this.image.equals("LEFT")) {
                 return new Frog(xPos, yPos, "LEFT");
             } else {
-                return new Frog(xPos - incrementSideToSide, yPos, "LEFT");
+                return new Frog(xPos - incrementSideToSide, yPos, "LEFT").checkBounds();
             }
         } else {
             return this;
@@ -102,9 +102,9 @@ class Frog {
     // When froggy is on a lily and has to move with it
     public Frog tickMoveFroggy(Lily l) {
         if (this.isOnLily.equals("RIGHT")) {
-            return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT");
+            return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT").checkBounds();
         } else if (this.isOnLily.equals("LEFT")) {
-            return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT");
+            return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT").checkBounds();
         } else
             return this;
     }
@@ -141,13 +141,13 @@ class Frog {
 
     public WorldImage drawFroggy() {
         if (this.image.equals("UP")) {
-            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/upfrog");
+            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/upfrog.png");
         } else if (this.image.equals("DOWN")) {
-            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/downfrog");
+            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/downfrog.png");
         } else if (this.image.equals("RIGHT")) {
-            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightfrog");
+            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightfrog.png");
         } else {
-            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftfrog");
+            return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftfrog.png");
         }
     }
 
