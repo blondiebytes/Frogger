@@ -8,7 +8,7 @@ package frogger;
 import javalib.worldimages.WorldImage;
 
 
-public interface Collideable<D> {
+public interface Collideable<D extends Collideable> {
     public int getXPos();
     public int getYPos();
     public String getDirection();

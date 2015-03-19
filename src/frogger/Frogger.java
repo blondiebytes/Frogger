@@ -96,22 +96,19 @@ public class Frogger extends World {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
             
-            // Why does it want me to change Collideable c to Object c??!?!?! 
-            // I thought changing ArrayList<Row> to ArrayList<Row<Collideable>> would work 
-            // but it doesn't
-            //HMMMMMMMMM
-            for (Collideable c : r.getCollideables()) {
-                
+            // TO DO: Figure out a way to make this casting less sloppy.
+            for (Object c : r.getCollideables()) {
                 // Change frog if it collides
-                if (this.frog.isCollision(c)) {
-                    newFrog = c.refractorCollisionWithFrog(newFrog);
+                Collideable collidingC = (Collideable) c;
+                if (this.frog.isCollision(collidingC)) {
+                    newFrog = collidingC.refractorCollisionWithFrog(newFrog);
                 }
                 
                 // Move the collider
-                c = c.move();
+                collidingC = collidingC.move();
                 
                 // Remove obstacle/collider if it's offscreen
-                if (c.isOffScreen()) {
+                if (collidingC.isOffScreen()) {
                     r.getCollideables().remove(c);
                 }
                 
@@ -141,8 +138,10 @@ public class Frogger extends World {
         
         for (Row r : this.rows) {
             // Iterate through collideables to overlap
-            for (Collideable c : r.getCollideables()) {
-                finalImage = new OverlayImages(finalImage, c.draw());
+            // TO DO: Figure out a way to make this casting less sloppy.
+            for (Object c : r.getCollideables()) {
+                Collideable collidingC = (Collideable) c;
+                finalImage = new OverlayImages(finalImage, collidingC.draw());
             }
         }
       
