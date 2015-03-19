@@ -2,7 +2,9 @@ package frogger;
 
 import java.util.ArrayList;
 import javalib.funworld.World;
+import javalib.worldimages.FromFileImage;
 import javalib.worldimages.OverlayImages;
+import javalib.worldimages.Posn;
 import javalib.worldimages.WorldImage;
 
 /**
@@ -15,10 +17,7 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
 
     // TO DO LIST:
-     // Why does it want me to change Collideable c to Object c??!?!?! 
-            // I thought changing ArrayList<Row> to ArrayList<Row<Collideable>> would work 
-            // but it doesn't
-            //HMMMMMMMMM
+    // Score and Lives
     // Identities for each object --> for testing
     // However, if we keep track of the current row --> we can see who we need 
     // to check for collisiosn (making it faster)
@@ -131,8 +130,8 @@ public class Frogger extends World {
 
     public WorldImage makeImage() {
         //Overlap everything
-        WorldImage backgroundELT1; // need to find a background
-        WorldImage backgroundELT2;
+        WorldImage backgroundELT1 = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
+        WorldImage backgroundELT2 = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT2);
 
         

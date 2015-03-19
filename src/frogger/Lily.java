@@ -89,10 +89,7 @@ class Lily implements Collideable<Lily>{
    
     // Could add functionality for colors? WOO
      public WorldImage draw() {
-         if (this.getDirection().equals("RIGHTLILY")) {
-             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightLily");
-         } else
-             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftLily");
+             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/lily.png");
         }
     
     

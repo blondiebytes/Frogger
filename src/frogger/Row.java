@@ -20,10 +20,10 @@ public class Row<D extends Collideable> {
     private ArrayList<D> collideables;
     
     // Where should the thing in the row start/finish FIELDS
-    private int startXPos;
-    private int startYPos;
-    private int finishXPos;
-    private int finishYPos;
+    private final int startXPos;
+    private final int startYPos;
+    private final int finishXPos;
+    private final int finishYPos;
      
     // What direction are we going in FIELD and How FAST are we going?
     public String direction; // "RIGHT" "LEFT" "SAFE"

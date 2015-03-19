@@ -86,9 +86,9 @@ public class Car implements Collideable<Car> {
     // Could add functionality for colors? WOO
      public WorldImage draw() {
          if (this.getDirection().equals("RIGHTCAR")) {
-             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightCar");
+             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightCar.png");
          } else
-             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftCar");
+             return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftCar.png");
         }
 
  
