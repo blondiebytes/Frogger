@@ -31,22 +31,23 @@ public class Row<D extends Collideable> {
     
     // What type are we?
     /// WE NEED TO SET THIS SOMEHOW TO KNOW WHAT IS IN OUR ROWS
-    private int type; // "0" = Car "1" = Lily "2" = Safe Row
+    private int type; // "1" = Car "2" = Lily "0" = Safe Row
     
     // FOR SAFE ROWS
     // Safe rows don't have colliders, and thus, don't collide with stuff
-    public Row(int startX, int startY, int finishX) {
+    public Row(int startX, int startY, int finishX, int finishY) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
-        this.finishYPos = startY;
+        this.finishYPos = finishY;
         this.direction = "SAFE";
         this.collideables = new ArrayList<>();
+        this.type = 0;
     }
     
     // FOR NON-SAFE ROWS
     // Have a cycle of when stuff appears, have a storage of stuffs
-    public Row(int startX, int startY, int finishX, int increment, int collideableCycle, ArrayList<D> colliders) {
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int type) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -59,6 +60,7 @@ public class Row<D extends Collideable> {
             this.direction = "RIGHT";
         }
         this.collideables = colliders;
+        this.type = type;
     }
     
     public int getStartX() {
@@ -148,7 +150,7 @@ public class Row<D extends Collideable> {
                 newColliderSet.add(newCollider);
             }
             return new Row(this.startXPos, this.startYPos, 
-                    this.finishXPos, this.increment, this.collideableCycle, newColliderSet);
+                    this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, newColliderSet, this.type);
         }
     }
     

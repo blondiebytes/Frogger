@@ -17,7 +17,6 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
 
     // TO DO LIST:
-    // Fix background size
     // Initialize Rows
     // Make sure that Froggy can't jump into the water. 
     // Score and Lives
@@ -68,19 +67,23 @@ public class Frogger extends World {
         ArrayList<Row<Collideable>> newRows = new ArrayList<>();
 //        // set up all the rows
 //        
-//        // SAFE ROW 1
-//        Row row1 = new Row(0, 450, 450);
-//        
-//        // DANGER ROW 1 --> CARS
-//        Row row2 = new Row(0, 400, 450, 50000);
-//        
-//        // SAFE ROW 2
+        // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
+        Row row1 = new Row<>(0, 500, 400, 400);
+        newRows.add(row1);
+        
+        // DANGER ROW 1 --> LILIES
+        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
+     //   Row<Collideable> row2 = new Row(0, 400, 450, 300, 5, 10000, new ArrayList<Lily>(), 2);
+      //   newRows.add(row2);
+        // SAFE ROW 2
 //        Row row3 = new Row(450, 350, 0);
+        
 //        
-//        // DANGER ROW 2 --> LILIES
-//        // SOmething to say in this row we have lilies 
-//        // so if frog doesn't land on it we got problems
+//        // DANGER ROW 2 --> CARS
 //        Row row4 = new Row(0, 400, 450, 0);
+            
+            // SAFE ROW 3
+       
 //        
         return newRows;
     }
