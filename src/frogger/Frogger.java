@@ -16,10 +16,9 @@ public class Frogger extends World {
     // The game frogger is just a series of rows -> all constantly going
     // The user jumps around the rows via Frog.
     // TO DO LIST:
-    // Make collision with Lily more definite
-    // Initialize Rows
-    // Make sure that Froggy can't jump into the water. 
-    // Score and Lives
+    // --> Make collisions more definite (collision area bigger)
+    // --> Make sure that Froggy can't jump into the water. 
+    // --> Score and Lives
     // Identities for each object --> for testing
     // However, if we keep track of the current row --> we can see who we need 
     // to check for collisiosn (making it faster)
@@ -73,7 +72,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
-        Row<Car> car1 = new Row(-50, 150, 500, 100, 1, 250, new ArrayList<>(), 1);
+        Row<Car> car1 = new Row(-100, 150, 500, 100, 5, 100, new ArrayList<>(), 1);
         newCars.add(car1);
         return newCars;
     }
@@ -82,7 +81,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-50, 350, 500, 300, 3, 300, new ArrayList<>(), 2);
+        Row<Lily> lily1 = new Row(-50, 350, 500, 200, 1, 200, new ArrayList<>(), 2);
         newLilies.add(lily1);
         return newLilies;
     }
