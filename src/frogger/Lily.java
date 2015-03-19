@@ -10,14 +10,14 @@ class Lily implements Collideable<Lily>{
     private int xPos;
     private int yPos;
     private double size; // NEED TO SET 
-    private String direction;
+    private String direction; // "RIGHT" // "LEFT"
     private int identity;
     protected final int increment;
     
     // CONSTANTS:
-    static int XMAX = 450;
+    static int XMAX = 550;
     static int YMAX = 450;
-    static int XMIN = 0;
+    static int XMIN = -50;
     static int YMIN = 0;
     static int total = 0;
     
@@ -65,7 +65,7 @@ class Lily implements Collideable<Lily>{
     }
     
     public Lily move() {
-        if (this.getDirection().equals("RIGHTLILY")) {
+        if (this.getDirection().equals("RIGHT")) {
             return new Lily(this.getXPos() + this.getIncrement(), this.getYPos(), this.getDirection(), this.getIncrement(), this.getIdentity());
         } else {
             return new Lily(this.getXPos() - this.getIncrement(), this.getYPos(), this.getDirection(), this.getIncrement(), this.getIdentity());

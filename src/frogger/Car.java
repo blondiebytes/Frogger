@@ -9,7 +9,7 @@ public class Car implements Collideable<Car> {
     private int xPos;
     private int yPos;
     private double size; // NEED TO SET 
-    private String direction;
+    private String direction; // "RIGHT" // "LEFT"
     // Create an identity for each thing
     private int identity;
     private int increment;
@@ -63,7 +63,7 @@ public class Car implements Collideable<Car> {
     }
     
     public Car move() {
-        if (this.getDirection().equals("RIGHTCAR")) {
+        if (this.getDirection().equals("RIGHT")) {
             return new Car(getXPos() + getIncrement(), getYPos(), getDirection(), getIdentity());
         } else {
             return new Car(getXPos() - getIncrement(), getYPos(), getDirection(), getIdentity());
@@ -85,7 +85,7 @@ public class Car implements Collideable<Car> {
    
     // Could add functionality for colors? WOO
      public WorldImage draw() {
-         if (this.getDirection().equals("RIGHTCAR")) {
+         if (this.getDirection().equals("RIGHT")) {
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightCar.png");
          } else
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftCar.png");
