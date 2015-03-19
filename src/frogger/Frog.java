@@ -17,8 +17,8 @@ class Frog {
     static int YMAX = 450;
     static int XMIN = 50;
     static int YMIN = 50;
-    static int incrementUp = 25;
-    static int incrementSideToSide = 25;
+    static int incrementUp = 100;
+    static int incrementSideToSide = 50;
     static int elipson = 5;
 
     public Frog() {

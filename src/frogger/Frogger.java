@@ -68,8 +68,8 @@ public class Frogger extends World {
 //        // set up all the rows
 //        
         // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
-        Row row1 = new Row<>(0, 500, 400, 400);
-        newRows.add(row1);
+    //    Row row1 = new Row<>(0, 500, 400, 400);
+     //   newRows.add(row1);
         
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
