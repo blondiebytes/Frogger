@@ -13,7 +13,7 @@ public class Row<D extends Collideable<D>> {
     // Cycling of When To Add FIELDS --> or we could make it randomized.... 
     //                              --> or "seemingly randomized" with a pattern
     private int collideableCycle;
-    private int collideableTicker;
+    static private int collideableTicker;
     
     
     // Array of things in the row
@@ -31,7 +31,7 @@ public class Row<D extends Collideable<D>> {
     
     // What type are we?
     /// WE NEED TO SET THIS SOMEHOW TO KNOW WHAT IS IN OUR ROWS
-    private int type; // "1" = Car "2" = Lily "0" = Safe Row
+    private int type; // "1" = Car // "2" = Lily // "0" = Safe Row
     
     // FOR SAFE ROWS
     // Safe rows don't have colliders, and thus, don't collide with stuff
@@ -137,16 +137,17 @@ public class Row<D extends Collideable<D>> {
     // to a row. We return what was added so we can make sure it's correct
     // in testing
 
-        public D makeNewCollider() {
-        this.collideableTicker++;
+  public D makeNewCollider() {
+       collideableTicker++;
         // If ticker is in the right place for the cycle
-        if (this.collideableTicker % this.collideableCycle == 0) {
+        if (collideableTicker % collideableCycle == 0) {
+            System.out.println("Adding new thing");
             // is this a thing?
             switch (this.getType()) {
-                case 0:
+                case 1:
                     // For some reason the "extends collideable" part isn't working, so we have to cast.. BLAH
                     return (D) new Car(this.startXPos, this.startYPos, this.increment, this.direction);
-                case 1:
+                case 2:
                     return (D) new Lily(this.startXPos, this.startYPos, this.increment, this.direction);
                 default:
                     return null;
@@ -168,6 +169,7 @@ public class Row<D extends Collideable<D>> {
             if (newCollider != null) {
                 // Let's add it if it isn't null
                 newColliderSet.add(newCollider);
+                System.out.println(newCollider.getSize());
             }
             return new Row(this.startXPos, this.startYPos, 
                     this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, newColliderSet);

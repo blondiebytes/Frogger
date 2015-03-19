@@ -89,8 +89,8 @@ public class Frogger extends World {
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
        ArrayList<Lily> starterLily = new ArrayList<>();
-       starterLily.add(new Lily(0, 350, 20, "RIGHTLILY"));
-       Row<Lily> lily1 = new Row(0, 350, 450, 300, 1, 10000000, starterLily, 2);
+       starterLily.add(new Lily(0, 350, 1, "RIGHTLILY"));
+       Row<Lily> lily1 = new Row(0, 350, 450, 300, 1, 100, starterLily, 2);
        System.out.println(lily1.getCollideables().size());
        newLilies.add(lily1);
        return newLilies;
@@ -153,7 +153,6 @@ public class Frogger extends World {
             // this in the current row (or the rows around the Frog)
             Row<Lily> newLilyRow = x.emptyCollisionCopy();
             for (Lily l : x.getCollideables()) {
-                System.out.println("I FOUND A LILY");
                 // Change frog if it collides
                 if (this.frog.isCollision(l)) {
                     newFrog = l.refractorCollisionWithFrog(newFrog);
@@ -171,9 +170,9 @@ public class Frogger extends World {
             //The only thing that updates in a row is the items in it
             // Adding a new collider and removing a colldier if it's time
            newLilyRow = newLilyRow.updateRow();
+           System.out.println(newLilyRow.getCollideables().size());
            newLilies.add(newLilyRow);
          }
-        
         return new Frogger(newFrog, newCars, newLilies);
     }
 
