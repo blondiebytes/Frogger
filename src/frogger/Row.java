@@ -7,7 +7,7 @@ package frogger;
 
 import java.util.ArrayList;
 
-public class Row<D extends Collideable> {
+public class Row<D extends Collideable<D>> {
    
     
     // Cycling of When To Add FIELDS --> or we could make it randomized.... 

@@ -46,92 +46,135 @@ public class Frogger extends World {
     // ALSO need safe rows versus non-safe/obstacle/collideable rows
     // Different cycles for each row?
  
-    public ArrayList<Row<Collideable>> rows;
+    // Generics aren't working for some reason so resorting to this...
+    // An array list of all the lily rows and an arraylist of all the car rows
+    private ArrayList<Row<Lily>> lilies;
+    private ArrayList<Row<Car>> cars;
+    private ArrayList<Row> safe;
+    // VS ArrayList<Row<Collideable>>
+    
     // Keep track of the current row so we only look at stuff in the next row for collisions
-    public int currentRow;
+    private int currentRow;
 
     public Frogger() {
         this.frog = new Frog();
         // we should really set up constraints 
         // --> rows won't change after intiliaization
         // --> things will just be added to the rows
-        this.rows = initializeRows();
+        this.cars = initializeCarRows();
+        this.lilies = initializeLilyRows();
+        this.safe = initializeSafeRows();
+      //  this.rows = initializeRows();
     }
 
-    public Frogger(Frog frog, ArrayList<Row<Collideable>> rows) {
+    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies) {
         this.frog = frog;
-        this.rows = rows;
+        this.cars = cars;
+        this.lilies = lilies;
+       // this.rows = rows;
     }
 
-    public ArrayList<Row<Collideable>> initializeRows() {
-        ArrayList<Row<Collideable>> newRows = new ArrayList<>();
-//        // set up all the rows
+    private ArrayList<Row<Car>> initializeCarRows() {
+        ArrayList<Row<Car>> newCars = new ArrayList<>();
+        // DANGER ROW 2 --> CARS
+        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
+        Row<Car> car1 = new Row(0, 200, 450, 0, 5, 10000, new ArrayList<>(), 1);
+
 //        
-        // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
-    //    Row row1 = new Row<>(0, 500, 400, 400);
-     //   newRows.add(row1);
-        
+        return newCars;
+    }
+    
+    private ArrayList<Row<Lily>> initializeLilyRows() {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
-     //   Row<Collideable> row2 = new Row(0, 400, 450, 300, 5, 10000, new ArrayList<Lily>(), 2);
-      //   newRows.add(row2);
-        // SAFE ROW 2
-//        Row row3 = new Row(450, 350, 0);
-        
-//        
-//        // DANGER ROW 2 --> CARS
-//        Row row4 = new Row(0, 400, 450, 0);
-            
-            // SAFE ROW 3
+       ArrayList<Row<Lily>> newLilies = new ArrayList<>();
+       Row<Lily> lily1 = new Row(0, 400, 450, 300, 5, 10000, new ArrayList<>(), 2);
+       newLilies.add(lily1);
+       return newLilies;
+    }
+    
+    private ArrayList<Row> initializeSafeRows() {
+     // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
+       ArrayList<Row> newRows = new ArrayList<>();
+       Row row1 = new Row<>(0, 500, 450, 400);
+       newRows.add(row1);
        
+     // SAFE ROW 2
+      Row row2 = new Row(0, 300, 450, 200);
+      newRows.add(row2);
 //        
-        return newRows;
+       return newRows;
     }
 
     public World onTick() {
 
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
-        ArrayList<Row<Collideable>> newRows = this.rows;
+        ArrayList<Row<Car>> newCars = this.cars;
+        ArrayList<Row<Lily>> newLilies = this.lilies;
         // None of this is really "in place" or "mutative" because of testing
 
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
-        for (Row r : newRows) {
+        
+        // Hoping to figure out a way to do this more efficiently.... 
+        // Calling Cars and Lilies at the same time versus in seperate loops
+        for (Row<Car> r : newCars) {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
-            
-            // TO DO: Figure out a way to make this casting less sloppy.
-            for (Object c : r.getCollideables()) {
+            for (Car c : r.getCollideables()) {
                 // Change frog if it collides
-                Collideable collidingC = (Collideable) c;
-                if (this.frog.isCollision(collidingC)) {
-                    newFrog = collidingC.refractorCollisionWithFrog(newFrog);
+                if (this.frog.isCollision(c)) {
+                    newFrog = c.refractorCollisionWithFrog(newFrog);
                 }
                 
                 // Move the collider
-                collidingC = collidingC.move();
+                c = c.move();
                 
                 // Remove obstacle/collider if it's offscreen
-                if (collidingC.isOffScreen()) {
+                if (c.isOffScreen()) {
                     r.getCollideables().remove(c);
                 }
-                
             }
             
             //The only thing that updates in a row is the items in it
             // Adding a new collider and removing a colldier if it's time
-            Row newRow = r.updateRow();
-            newRows.add(newRow);
+            Row newCarRow = r.updateRow();
+            newCars.add(newCarRow);
+        }
+        
+        for (Row<Lily> x : newLilies ) {
+             // Checking for collisions --> will change this to just check for 
+            // this in the current row (or the rows around the Frog)
+            for (Lily l : x.getCollideables()) {
+                // Change frog if it collides
+                if (this.frog.isCollision(l)) {
+                    newFrog = l.refractorCollisionWithFrog(newFrog);
+                }
+                
+                // Move the collider
+                l = l.move();
+                
+                // Remove obstacle/collider if it's offscreen
+                if (l.isOffScreen()) {
+                    x.getCollideables().remove(l);
+                }
+        }
+            
+            //The only thing that updates in a row is the items in it
+            // Adding a new collider and removing a colldier if it's time
+            Row<Lily> newLilyRow = x.updateRow();
+            newLilies.add(newLilyRow);
          }
-        return new Frogger(newFrog, newRows);
+        
+        return new Frogger(newFrog, newCars, newLilies);
     }
 
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
 
         // Rows don't react to key presses
-        return new Frogger(newFrog, this.rows);
+        return new Frogger(newFrog, this.cars, this.lilies);
     }
 
     public WorldImage makeImage() {
@@ -141,17 +184,22 @@ public class Frogger extends World {
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT2);
 
         
-        for (Row r : this.rows) {
+        for (Row<Car> r : this.cars) {
             // Iterate through collideables to overlap
             // TO DO: Figure out a way to make this casting less sloppy.
-            for (Object c : r.getCollideables()) {
-                Collideable collidingC = (Collideable) c;
-                finalImage = new OverlayImages(finalImage, collidingC.draw());
+            for (Car c : r.getCollideables()) {
+                finalImage = new OverlayImages(finalImage, c.draw());
             }
         }
-      
+        
+        for (Row<Lily> x : this.lilies) {
+            for (Lily l : x.getCollideables()) {
+                finalImage = new OverlayImages(finalImage, l.draw());
+            }
+        }
+        
         // add this.frog.drawFroggy() last so it is on top
-        finalImage = new OverlayImages(backgroundELT1, this.frog.drawFroggy());
+        finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
 
         return finalImage;
 
