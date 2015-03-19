@@ -17,6 +17,9 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
 
     // TO DO LIST:
+    // Fix background size
+    // Initialize Rows
+    // Make sure that Froggy can't jump into the water. 
     // Score and Lives
     // Identities for each object --> for testing
     // However, if we keep track of the current row --> we can see who we need 

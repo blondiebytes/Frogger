@@ -15,8 +15,8 @@ class Frog {
 
     static int XMAX = 450;
     static int YMAX = 450;
-    static int XMIN = 0;
-    static int YMIN = 0;
+    static int XMIN = 50;
+    static int YMIN = 50;
     static int incrementUp = 25;
     static int incrementSideToSide = 25;
     static int elipson = 5;
@@ -71,7 +71,7 @@ class Frog {
             // If we weren't facing up
             if (!this.image.equals("UP")) {
                 // Make the frog face up
-                return new Frog(xPos, yPos, "UP");
+                return new Frog(xPos, yPos, "UP").checkBounds();
             } else // If we were already facing up, we can go up
             {
                 return new Frog(xPos, yPos - incrementUp, "UP").checkBounds();
@@ -79,18 +79,18 @@ class Frog {
         } // Check for all cases
         else if (key.equals("down")) {
             if (!this.image.equals("DOWN")) {
-                return new Frog(xPos, yPos, "DOWN");
+                return new Frog(xPos, yPos, "DOWN").checkBounds();
             }
             return new Frog(xPos, yPos + incrementUp, "DOWN").checkBounds();
         } else if (key.equals("right")) {
             if (!this.image.equals("RIGHT")) {
-                return new Frog(xPos, yPos, "RIGHT");
+                return new Frog(xPos, yPos, "RIGHT").checkBounds();
             } else {
                 return new Frog(xPos + incrementSideToSide, yPos, "RIGHT").checkBounds();
             }
         } else if (key.equals("left")) {
             if (!this.image.equals("LEFT")) {
-                return new Frog(xPos, yPos, "LEFT");
+                return new Frog(xPos, yPos, "LEFT").checkBounds();
             } else {
                 return new Frog(xPos - incrementSideToSide, yPos, "LEFT").checkBounds();
             }
