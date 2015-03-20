@@ -173,6 +173,47 @@ public class Row<D extends Collideable<D>> {
         
     }
     
+  
+    public Frog checkObstacleCollisionsWithFrog(Frog frog, ArrayList<Row> safeRows) {
+        Row<D> newObstacleRow = this.emptyCollisionCopy();
+        Frog newFrog = frog;
+        for (D d : this.getCollideables()) {
+            // Change frog if it collides
+            if (newFrog.isCollision(d)) {
+               // We only want to look at the safe rows if there's a collision
+               // Our safeRow placeholder is the row the frog will go back to
+                Row safeRow = new Row();
+                    for (Row s : safeRows) {
+                        if (s.getSafeRowNumber() == this.getSafeRowNumber()) {
+                            // If the identities are right, then we found what
+                            // safe row we are going to 
+                            safeRow = s;
+                        }
+                    }
+                    if (!safeRow.isEmpty()) {
+                        newFrog = d.refractorCollisionWithFrog(newFrog, safeRow);
+                    } else // Runtime exceptions are scary tho.
+                    {
+                        throw new RuntimeException("No safe row avaliable");
+                    }
+
+            }
+        }
+        return newFrog;
+    }
+    
+    public Row<D> moveCollideables() {
+        Row<D> newObstacleRow = this.emptyCollisionCopy();
+        for (D d : this.getCollideables()) {
+                // Move the collider
+                D newCar = d.move();
+                // Remove obstacle/collider if it's offscreen
+                if (!newCar.isOffScreen()) {
+                    newObstacleRow.getCollideables().add(newCar);
+                }
+        }
+        return newObstacleRow;
+    }
     
     
     

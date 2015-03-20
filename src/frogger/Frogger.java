@@ -116,43 +116,16 @@ public class Frogger extends World {
         // --> and check for collisions
         // Hoping to figure out a way to do this more efficiently.... 
         // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
+        
         for (Row<Car> r : this.cars) {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
-            Row<Car> newCarRow = r.emptyCollisionCopy();
-            for (Car c : r.getCollideables()) {
-                // Change frog if it collides
-                if (this.frog.isCollision(c)) {
-                    // We only want to look at the safe rows if there's a collision
-                    // Our safeRow placeholder is the row the frog will go back to
-                    Row safeRow = new Row();
-                    for (Row s : this.safe) {
-                        if (s.getSafeRowNumber() == r.getSafeRowNumber()) {
-                            // If the identities are right, then we found what
-                            // safe row we are going to 
-                            safeRow = s;
-                        }
-                    }
-                    if (!safeRow.isEmpty()) {
-                        newFrog = c.refractorCollisionWithFrog(newFrog, safeRow);
-                    } else // Runtime exceptions are scary tho.
-                    {
-                        throw new RuntimeException("No safe row avaliable");
-                    }
-
-                }
-
-                // Move the collider
-                Car newCar = c.move();
-
-                // Remove obstacle/collider if it's offscreen
-                if (!newCar.isOffScreen()) {
-                    newCarRow.getCollideables().add(newCar);
-                }
-            }
-
+            newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+            Row<Car> newCarRow = r.moveCollideables();
+            
             //The only thing that updates in a row is the items in it
             // Adding a new collider if it's time
+            // Must do this here because cannot add a new D in generics
             if (newCarRow.isTimeForNewCollider()) {
                 Car aCar = new Car(newCarRow.getStartX(), newCarRow.getStartY(),
                         newCarRow.getIncrement(), newCarRow.getDirection());
@@ -165,6 +138,7 @@ public class Frogger extends World {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
             Row<Lily> newLilyRow = x.emptyCollisionCopy();
+            // To FIX:
             for (Lily l : x.getCollideables()) {
                 // Change frog if it doesn't collide, but it's in the row
                 Row safeRow = new Row();
