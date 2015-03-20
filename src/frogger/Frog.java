@@ -11,7 +11,8 @@ class Frog {
     String isOnLily; // "RIGHT" "LEFT" "NO"
     int xPos;
     int yPos;
-    double size; // NEED TO SET
+    int currentRow;
+    double size = Math.sqrt(xPos^2 + yPos^2);
 
     static int XMAX = 450;
     static int YMAX = 450;
@@ -30,18 +31,20 @@ class Frog {
     }
     
     // For when we are worrying if we are on a lily
-    public Frog(int xPos, int yPos, String image, String isOnLily) {
+    public Frog(int xPos, int yPos, String image, String isOnLily, int currentRow) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.image = image;
         this.isOnLily = isOnLily;
+        this.currentRow = currentRow;
     }
     
     // For other times when we aren't checking if we are on a lily
-    public Frog(int xPos, int yPos, String image) {
+    public Frog(int xPos, int yPos, String image, int currentRow) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.image = image;
+        this.currentRow = currentRow;
     }
 
     public int getXPos() {
@@ -68,6 +71,18 @@ class Frog {
         return incrementSideToSide;
     }
     
+    public int getCurrentRow(){
+        return currentRow;
+    }
+    
+    public int decrementCurrentRow() {
+        return currentRow - 1;
+    }
+    
+    public int incrementCurrentRow() {
+        return currentRow + 1;
+    }
+    
     // When we press keys and move froggy
     public Frog reactMoveFroggy(String key) {
         // Check what key was pressed
@@ -75,28 +90,28 @@ class Frog {
             // If we weren't facing up
             if (!this.image.equals("UP")) {
                 // Make the frog face up
-                return new Frog(xPos, yPos, "UP").checkBounds();
+                return new Frog(xPos, yPos, "UP", currentRow).checkBounds();
             } else // If we were already facing up, we can go up
             {
-                return new Frog(xPos, yPos - incrementUp, "UP").checkBounds();
+                return new Frog(xPos, yPos - incrementUp, "UP", incrementCurrentRow()).checkBounds();
             }
         } // Check for all cases
         else if (key.equals("down")) {
             if (!this.image.equals("DOWN")) {
-                return new Frog(xPos, yPos, "DOWN").checkBounds();
+                return new Frog(xPos, yPos, "DOWN", currentRow).checkBounds();
             }
-            return new Frog(xPos, yPos + incrementUp, "DOWN").checkBounds();
+            return new Frog(xPos, yPos + incrementUp, "DOWN", decrementCurrentRow()).checkBounds();
         } else if (key.equals("right")) {
             if (!this.image.equals("RIGHT")) {
-                return new Frog(xPos, yPos, "RIGHT").checkBounds();
+                return new Frog(xPos, yPos, "RIGHT", currentRow).checkBounds();
             } else {
-                return new Frog(xPos + incrementSideToSide, yPos, "RIGHT").checkBounds();
+                return new Frog(xPos + incrementSideToSide, yPos, "RIGHT", currentRow).checkBounds();
             }
         } else if (key.equals("left")) {
             if (!this.image.equals("LEFT")) {
-                return new Frog(xPos, yPos, "LEFT").checkBounds();
+                return new Frog(xPos, yPos, "LEFT", currentRow).checkBounds();
             } else {
-                return new Frog(xPos - incrementSideToSide, yPos, "LEFT").checkBounds();
+                return new Frog(xPos - incrementSideToSide, yPos, "LEFT", currentRow).checkBounds();
             }
         } else {
             return this;
@@ -106,22 +121,22 @@ class Frog {
     // When froggy is on a lily and has to move with it
     public Frog tickMoveFroggy(Lily l) {
         if (this.isOnLily.equals("RIGHT")) {
-            return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT").checkBounds();
+            return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT", this.currentRow).checkBounds();
         } else if (this.isOnLily.equals("LEFT")) {
-            return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT").checkBounds();
+            return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT", this.currentRow).checkBounds();
         } else
             return this;
     }
 
     public Frog checkBounds() {
         if (xPos >= XMAX) {
-            return new Frog(XMAX, this.yPos, this.image);
+            return new Frog(XMAX, this.yPos, this.image, this.currentRow);
         } else if (xPos <= XMIN) {
-            return new Frog(XMIN, this.yPos, this.image);
+            return new Frog(XMIN, this.yPos, this.image, this.currentRow);
         } else if (yPos >= YMAX) {
-            return new Frog(this.xPos, YMAX, this.image);
+            return new Frog(this.xPos, YMAX, this.image, this.currentRow);
         } else if (yPos <= YMIN) {
-            return new Frog(this.xPos, YMIN, this.image);
+            return new Frog(this.xPos, YMIN, this.image, this.currentRow);
         } else {
             return this;
         }

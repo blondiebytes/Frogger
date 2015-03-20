@@ -8,7 +8,7 @@ import javalib.worldimages.WorldImage;
 public class Car implements Collideable<Car> {
     private int xPos;
     private int yPos;
-    private double size; // NEED TO SET 
+    private double size = Math.sqrt(xPos^2 + yPos^2); // NEED TO SET 
     private String direction; // "RIGHT" // "LEFT"
     // Create an identity for each thing
     private int identity;
@@ -79,7 +79,7 @@ public class Car implements Collideable<Car> {
         Frog newFrog = frog;
         if (frog.isCollision(this)) {
             // Make newFrog return to the last safe row y-pos, keeping same x-pos
-            newFrog = new Frog(newFrog.getXPos(), safeRow.getStartY(), newFrog.image, this.direction);
+            newFrog = new Frog(newFrog.getXPos(), safeRow.getStartY(), newFrog.image, this.direction, frog.decrementCurrentRow());
            }
         return newFrog;
     }

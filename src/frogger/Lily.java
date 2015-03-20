@@ -9,7 +9,7 @@ import javalib.worldimages.WorldImage;
 class Lily implements Collideable<Lily>{
     private int xPos;
     private int yPos;
-    private double size; // NEED TO SET 
+    private double size = Math.sqrt(xPos^2 + yPos^2);
     private String direction; // "RIGHT" // "LEFT"
     private int identity;
     protected final int increment;
@@ -82,9 +82,9 @@ class Lily implements Collideable<Lily>{
             if (frog.isCollision(this)) {
             // If so, make it so. Set direction so we know that the frog is on a lily
               // THen tick the frog so it moves at the same rate as the lily
-              newFrog = new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), this.getDirection()).tickMoveFroggy(this);
+              newFrog = new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), this.getDirection(), frog.getCurrentRow()).tickMoveFroggy(this);
             } else {
-                newFrog = new Frog(frog.getXPos(), safeRow.getStartY(), frog.getImage());
+                newFrog = new Frog(frog.getXPos(), safeRow.getStartY(), frog.getImage(), frog.decrementCurrentRow());
             }
             return newFrog;
      

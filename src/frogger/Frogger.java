@@ -88,11 +88,11 @@ public class Frogger extends World {
 
     private ArrayList<Row> initalizeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
-        // StartY, FinishX, FinishY, numberOfSafeRow
-        Row safe1 = new Row(-50, 450, 500, 350, 1);
+        // StartX, StartY, FinishX, FinishY, numberOfSafeRow
+        Row safe1 = new Row(0, 500, 500, 400, 1);
         initialRows.add(safe1);
-        // StartY, FinishX, FinishY, numberOfSafeRow
-        Row safe2 = new Row(-50, 250, 500, 150, 2);
+        // StartX, StartY, FinishX, FinishY, numberOfSafeRow
+        Row safe2 = new Row(0, 250, 500, 150, 2);
         initialRows.add(safe2);
         return initialRows;
     }
@@ -166,25 +166,28 @@ public class Frogger extends World {
             // this in the current row (or the rows around the Frog)
             Row<Lily> newLilyRow = x.emptyCollisionCopy();
             for (Lily l : x.getCollideables()) {
-                // Change frog if it collides
+                // Change frog if it doesn't collide, but it's in the row
+                Row safeRow = new Row();
                 if (this.frog.isCollision(l)) {
-                    // We only want to look at the safe rows if there's a collision
-                    // Our safeRow placeholder is the row the frog will go back to
-                    Row safeRow = new Row();
-                    for (Row s : this.safe) {
-                        if (s.getSafeRowNumber() == x.getSafeRowNumber()) {
-                            // If the safeRows are right, then we found what
-                            // safe row we are going to 
-                            safeRow = x;
-                        }
-                    }
-                    if (!safeRow.isEmpty()) {
-                        newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
-                    } else // Runtime exceptions are scary tho.
-                    {
-                        throw new RuntimeException("No safe row avaliable");
-                    }
+                    newFrog = l.refractorCollisionWithFrog(newFrog, x);
                 }
+                    
+                    
+//                    for (Row s : this.safe) {
+//                        if (s.getSafeRowNumber() == x.getSafeRowNumber()) {
+//                            // If the safeRows are right, then we found what
+//                            // safe row we are going to 
+//                            safeRow = x;
+//                        }
+//                    }
+//                }
+//                
+//                if (!safeRow.isEmpty()) {
+//                        newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
+//                    } else // Runtime exceptions are scary tho.
+//                    {
+//                        throw new RuntimeException("No safe row avaliable");
+//                    }
 
                 // Move the collider
                 Lily newLily = l.move();
