@@ -118,12 +118,11 @@ public class Frogger extends World {
         // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
         
         for (Row<Car> r : this.cars) {
-            // Checking for collisions --> will change this to just check for 
-            // this in the current row (or the rows around the Frog)
+            // Checking for collisions -->
             newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+            //The only thing that updates in a row is the items in it
             Row<Car> newCarRow = r.moveCollideables();
             
-            //The only thing that updates in a row is the items in it
             // Adding a new collider if it's time
             // Must do this here because cannot add a new D in generics
             if (newCarRow.isTimeForNewCollider()) {
@@ -135,45 +134,12 @@ public class Frogger extends World {
         }
 
         for (Row<Lily> x : this.lilies) {
-            // Checking for collisions --> will change this to just check for 
-            // this in the current row (or the rows around the Frog)
-            Row<Lily> newLilyRow = x.emptyCollisionCopy();
-            // To FIX:
-            for (Lily l : x.getCollideables()) {
-                // Change frog if it doesn't collide, but it's in the row
-                Row safeRow = new Row();
-                if (this.frog.isCollision(l)) {
-                    newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
-                }
-                    
-                    
-//                    for (Row s : this.safe) {
-//                        if (s.getSafeRowNumber() == x.getSafeRowNumber()) {
-//                            // If the safeRows are right, then we found what
-//                            // safe row we are going to 
-//                            safeRow = x;
-//                        }
-//                    }
-//                }
-//                
-//                if (!safeRow.isEmpty()) {
-//                        newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
-//                    } else // Runtime exceptions are scary tho.
-//                    {
-//                        throw new RuntimeException("No safe row avaliable");
-//                    }
-
-                // Move the collider
-                Lily newLily = l.move();
-
-                // Remove obstacle/collider if it's offscreen
-                if (!newLily.isOffScreen()) {
-                    newLilyRow.getCollideables().add(newLily);
-                }
-            }
-
+            newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
             //The only thing that updates in a row is the items in it
+            Row<Lily> newLilyRow = x.moveCollideables();
+            
             // Adding a new collider if it's time
+            // Must do this here because we can't initialize a D generic
             if (newLilyRow.isTimeForNewCollider()) {
                 // Really would like to put this code somewhere else in a different class, 
                 // but.... here it is for now :)

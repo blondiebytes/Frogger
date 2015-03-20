@@ -173,12 +173,27 @@ public class Row<D extends Collideable<D>> {
         
     }
     
+     public Row<D> moveCollideables() {
+        Row<D> newObstacleRow = this.emptyCollisionCopy();
+        for (D d : this.getCollideables()) {
+                // Move the collider
+                D newCar = d.move();
+                // Remove obstacle/collider if it's offscreen
+                if (!newCar.isOffScreen()) {
+                    newObstacleRow.getCollideables().add(newCar);
+                }
+        }
+        return newObstacleRow;
+    }
   
     public Frog checkObstacleCollisionsWithFrog(Frog frog, ArrayList<Row> safeRows) {
+      //  will change this to check for collisions in current row (or the rows around the Frog)
         Row<D> newObstacleRow = this.emptyCollisionCopy();
         Frog newFrog = frog;
         for (D d : this.getCollideables()) {
             // Change frog if it collides
+            // if (newFrog.currentRow == this.identityRow) 
+            // --> must initialize identity rows first
             if (newFrog.isCollision(d)) {
                // We only want to look at the safe rows if there's a collision
                // Our safeRow placeholder is the row the frog will go back to
@@ -202,18 +217,37 @@ public class Row<D extends Collideable<D>> {
         return newFrog;
     }
     
-    public Row<D> moveCollideables() {
+    public Frog checkAssisterCollisionsWithFrog(Frog frog, ArrayList<Row> safeRows) {
+        Frog newFrog = frog;
         Row<D> newObstacleRow = this.emptyCollisionCopy();
-        for (D d : this.getCollideables()) {
-                // Move the collider
-                D newCar = d.move();
-                // Remove obstacle/collider if it's offscreen
-                if (!newCar.isOffScreen()) {
-                    newObstacleRow.getCollideables().add(newCar);
+            for (D d : newObstacleRow.getCollideables()) {
+                // Change frog if it doesn't collide, but it's in the row
+                Row safeRow = new Row();
+                if (newFrog.isCollision(d)) {
+                    newFrog = d.refractorCollisionWithFrog(newFrog, safeRow);
                 }
-        }
-        return newObstacleRow;
+                    
+                    
+//                    for (Row s : this.safe) {
+//                        if (s.getSafeRowNumber() == x.getSafeRowNumber()) {
+//                            // If the safeRows are right, then we found what
+//                            // safe row we are going to 
+//                            safeRow = x;
+//                        }
+//                    }
+//                }
+//                
+//                if (!safeRow.isEmpty()) {
+//                        newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
+//                    } else // Runtime exceptions are scary tho.
+//                    {
+//                        throw new RuntimeException("No safe row avaliable");
+//                    }
+            }
+        return newFrog;
     }
+    
+  
     
     
     
