@@ -26,25 +26,39 @@ public class Row<D extends Collideable<D>> {
     private final int finishYPos;
      
     // What direction are we going in FIELD and How FAST are we going?
-    public String direction; // "RIGHT" "LEFT" "SAFE"
+    public String direction; // "RIGHT" "LEFT" "SAFE" "EMPTY"
     private int increment;
     
-    // What number are we?
-    private int identity; 
+    // What safeRow do we return to?.... Wait! Instead of an identity 
+    // we could just store the row... then we get access to everything, but
+    // that could take up alot of space... rather than just a hash type of thing
+    // to the right row --> except it isn't really a hash.. it's like we 
+    // are storing the hash. 
+     private final int safeRow; 
     
     // FOR SAFE ROWS
     // Safe rows don't have colliders, and thus, don't collide with stuff
-    public Row(int startX, int startY, int finishX, int finishY, int identity) {
+    public Row() {
+        startXPos = 0;
+        startYPos = 0;
+        finishXPos = 0;
+        finishYPos = 0;
+        increment = 0;
+        safeRow = -1;
+        this.direction = "EMPTY";
+    }
+    
+    public Row(int startX, int startY, int finishX, int finishY, int safeRow) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
         this.finishYPos = finishY;
         this.direction = "SAFE";
         this.collideables = new ArrayList<>();
-        this.identity = identity;
+        this.safeRow = safeRow;
     }
     
-    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int identity) {
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int safeRow) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -58,13 +72,13 @@ public class Row<D extends Collideable<D>> {
         }
         this.collideables = colliders;
         this.collideableTicker = 0;
-        this.identity = identity;
+        this.safeRow = safeRow;
     }
     
     
     // FOR INIT NON-SAFE ROWS
     // Have a cycle of when stuff appears, have a storage of stuffs
-    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, int collideableTicker, ArrayList<D> colliders, int identity) {
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, int collideableTicker, ArrayList<D> colliders, int safeRow) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -77,14 +91,14 @@ public class Row<D extends Collideable<D>> {
             this.direction = "RIGHT";
         }
         this.collideables = colliders;
-        this.identity = identity;
+        this.safeRow = safeRow;
         this.collideableTicker = collideableTicker;
     }
     
     public Row<D> emptyCollisionCopy() {
         return new Row(this.startXPos, this.startYPos, this.finishXPos, 
                 this.finishYPos, this.increment, this.collideableCycle, 
-                this.collideableTicker, new ArrayList<D>(), this.identity);
+                this.collideableTicker, new ArrayList<D>(), this.safeRow);
     }
     
     public int getStartX() {
@@ -107,8 +121,8 @@ public class Row<D extends Collideable<D>> {
         return increment;
     }
     
-    public int getIdentity() {
-        return this.identity;
+    public int getSafeRowNumber() {
+        return this.safeRow;
     }
     
     public String getDirection() {
@@ -125,6 +139,10 @@ public class Row<D extends Collideable<D>> {
    
     public ArrayList<D> getCollideables() {
         return this.collideables;
+    }
+    
+    public boolean isEmpty() {
+        return this.getDirection().equals("EMPTY");
     }
     
     

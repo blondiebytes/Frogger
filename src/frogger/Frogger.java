@@ -15,7 +15,6 @@ public class Frogger extends World {
 
     // The game frogger is just a series of rows -> all constantly going
     // The user jumps around the rows via Frog.
-    
     // TO DO LIST:
     // --> Make collisions more definite (collision area bigger)
     // --> Make sure that Froggy can't jump into the water. 
@@ -72,31 +71,32 @@ public class Frogger extends World {
     private ArrayList<Row<Car>> initializeCarRows() {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
-        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
-        Row<Car> car1 = new Row(-100, 150, 500, 100, 5, 100, new ArrayList<>(), 4);
+        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn
+        Row<Car> car1 = new Row(-100, 150, 500, 100, 5, 100, new ArrayList<>(), 2);
         newCars.add(car1);
         return newCars;
     }
 
     private ArrayList<Row<Lily>> initializeLilyRows() {
         // DANGER ROW 1 --> LILIES
-        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
+        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-50, 350, 500, 200, 1, 200, new ArrayList<>(), 2);
+        Row<Lily> lily1 = new Row(-50, 350, 500, 200, 1, 200, new ArrayList<>(), 1);
         newLilies.add(lily1);
         return newLilies;
     }
-    
+
     private ArrayList<Row> initalizeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
+        // StartY, FinishX, FinishY, numberOfSafeRow
         Row safe1 = new Row(-50, 450, 500, 350, 1);
         initialRows.add(safe1);
-        Row safe2 = new Row(-50, 250, 500, 150, 3);
+        // StartY, FinishX, FinishY, numberOfSafeRow
+        Row safe2 = new Row(-50, 250, 500, 150, 2);
         initialRows.add(safe2);
         return initialRows;
     }
 
-    
     public World onTick() {
 
         // If froggy is on a lily --> froggy moves too, so we create a var for that
@@ -112,12 +112,10 @@ public class Frogger extends World {
         // 1 if the frog didn't make it to the lily. Kinda like a hash. Hmmm. 
         // But i don't want to make it an array....because then no unlimited
         // stuffs. 
-        
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
         // Hoping to figure out a way to do this more efficiently.... 
         // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
-       
         for (Row<Car> r : this.cars) {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
@@ -127,21 +125,21 @@ public class Frogger extends World {
                 if (this.frog.isCollision(c)) {
                     // We only want to look at the safe rows if there's a collision
                     // Our safeRow placeholder is the row the frog will go back to
-                    // I hate null tho.. :?
-                    Row safeRow = null;
+                    Row safeRow = new Row();
                     for (Row s : this.safe) {
-                        if (s.getIdentity() == c.getIdentity()) {
+                        if (s.getSafeRowNumber() == r.getSafeRowNumber()) {
                             // If the identities are right, then we found what
                             // safe row we are going to 
-                            safeRow = s;
+                            safeRow = r;
                         }
                     }
-                    if (safeRow != null) {
+                    if (!safeRow.isEmpty()) {
                         newFrog = c.refractorCollisionWithFrog(newFrog, safeRow);
-                    } else 
-                        // Runtime exceptions are scary tho.
+                    } else // Runtime exceptions are scary tho.
+                    {
                         throw new RuntimeException("No safe row avaliable");
-                    
+                    }
+
                 }
 
                 // Move the collider
@@ -156,7 +154,7 @@ public class Frogger extends World {
             //The only thing that updates in a row is the items in it
             // Adding a new collider if it's time
             if (newCarRow.isTimeForNewCollider()) {
-                Car aCar = new Car(newCarRow.getStartX(), newCarRow.getStartY(), 
+                Car aCar = new Car(newCarRow.getStartX(), newCarRow.getStartY(),
                         newCarRow.getIncrement(), newCarRow.getDirection());
                 newCarRow.getCollideables().add(aCar);
             }
@@ -170,7 +168,22 @@ public class Frogger extends World {
             for (Lily l : x.getCollideables()) {
                 // Change frog if it collides
                 if (this.frog.isCollision(l)) {
-                    newFrog = l.refractorCollisionWithFrog(newFrog, x);
+                    // We only want to look at the safe rows if there's a collision
+                    // Our safeRow placeholder is the row the frog will go back to
+                    Row safeRow = new Row();
+                    for (Row s : this.safe) {
+                        if (s.getSafeRowNumber() == x.getSafeRowNumber()) {
+                            // If the safeRows are right, then we found what
+                            // safe row we are going to 
+                            safeRow = x;
+                        }
+                    }
+                    if (!safeRow.isEmpty()) {
+                        newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
+                    } else // Runtime exceptions are scary tho.
+                    {
+                        throw new RuntimeException("No safe row avaliable");
+                    }
                 }
 
                 // Move the collider
@@ -185,16 +198,16 @@ public class Frogger extends World {
             //The only thing that updates in a row is the items in it
             // Adding a new collider if it's time
             if (newLilyRow.isTimeForNewCollider()) {
-               // Really would like to put this code somewhere else in a different class, 
+                // Really would like to put this code somewhere else in a different class, 
                 // but.... here it is for now :)
                 // It reveals a lot of implementation...
-                Lily aLily = new Lily(newLilyRow.getStartX(), newLilyRow.getStartY(), 
+                Lily aLily = new Lily(newLilyRow.getStartX(), newLilyRow.getStartY(),
                         newLilyRow.getIncrement(), newLilyRow.getDirection());
                 newLilyRow.getCollideables().add(aLily);
             }
             newLilies.add(newLilyRow);
         }
-        
+
         // Safe rows will never change --> we could if we want coins on them later, 
         // but that's for later
         return new Frogger(newFrog, newCars, newLilies, this.safe);
