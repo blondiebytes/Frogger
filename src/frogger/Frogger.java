@@ -73,7 +73,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, type
-        Row<Car> car1 = new Row(-100, 150, 500, 100, 5, 100, new ArrayList<>(), 1);
+        Row<Car> car1 = new Row(-100, 150, 500, 100, 5, 100, new ArrayList<>(), 4);
         newCars.add(car1);
         return newCars;
     }
@@ -89,9 +89,10 @@ public class Frogger extends World {
     
     private ArrayList<Row> initalizeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
-        Row safe1 = new Row(-50, 450, 500, 350);
+        Row safe1 = new Row(-50, 450, 500, 350, 1);
         initialRows.add(safe1);
-        Row safe2 = new Row(-50, 250, 500, 150);
+        Row safe2 = new Row(-50, 250, 500, 150, 3);
+        initialRows.add(safe2);
         return initialRows;
     }
 
@@ -105,10 +106,18 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
 
+        // Now trying to figure out a way to integrate the safe rows... HMM..
+        // It would be nice if they could correspond. Like an lily row could
+        // have an identity 1 and then it would go to the safe row with identity
+        // 1 if the frog didn't make it to the lily. Kinda like a hash. Hmmm. 
+        // But i don't want to make it an array....because then no unlimited
+        // stuffs. 
+        
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
         // Hoping to figure out a way to do this more efficiently.... 
         // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
+       
         for (Row<Car> r : this.cars) {
             // Checking for collisions --> will change this to just check for 
             // this in the current row (or the rows around the Frog)
@@ -116,7 +125,23 @@ public class Frogger extends World {
             for (Car c : r.getCollideables()) {
                 // Change frog if it collides
                 if (this.frog.isCollision(c)) {
-                    newFrog = c.refractorCollisionWithFrog(newFrog, r);
+                    // We only want to look at the safe rows if there's a collision
+                    // Our safeRow placeholder is the row the frog will go back to
+                    // I hate null tho.. :?
+                    Row safeRow = null;
+                    for (Row s : this.safe) {
+                        if (s.getIdentity() == c.getIdentity()) {
+                            // If the identities are right, then we found what
+                            // safe row we are going to 
+                            safeRow = s;
+                        }
+                    }
+                    if (safeRow != null) {
+                        newFrog = c.refractorCollisionWithFrog(newFrog, safeRow);
+                    } else 
+                        // Runtime exceptions are scary tho.
+                        throw new RuntimeException("No safe row avaliable");
+                    
                 }
 
                 // Move the collider

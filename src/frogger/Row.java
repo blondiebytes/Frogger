@@ -82,7 +82,9 @@ public class Row<D extends Collideable<D>> {
     }
     
     public Row<D> emptyCollisionCopy() {
-        return new Row(this.startXPos, this.startYPos, this.finishXPos, this.finishYPos, this.increment, this.collideableCycle, this.collideableTicker, new ArrayList<D>(), this.type);
+        return new Row(this.startXPos, this.startYPos, this.finishXPos, 
+                this.finishYPos, this.increment, this.collideableCycle, 
+                this.collideableTicker, new ArrayList<D>(), this.identity);
     }
     
     public int getStartX() {
@@ -105,8 +107,8 @@ public class Row<D extends Collideable<D>> {
         return increment;
     }
     
-    public int getType() {
-        return this.type;
+    public int getIdentity() {
+        return this.identity;
     }
     
     public String getDirection() {
