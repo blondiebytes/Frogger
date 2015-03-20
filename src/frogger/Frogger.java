@@ -130,7 +130,7 @@ public class Frogger extends World {
                         if (s.getSafeRowNumber() == r.getSafeRowNumber()) {
                             // If the identities are right, then we found what
                             // safe row we are going to 
-                            safeRow = r;
+                            safeRow = s;
                         }
                     }
                     if (!safeRow.isEmpty()) {
