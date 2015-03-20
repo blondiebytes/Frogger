@@ -76,19 +76,19 @@ class Lily implements Collideable<Lily>{
         return this.xPos >= XMAX;
     }
      
-     public Frog refractorCollisionWithFrog(Frog frog, Row safeRow) {
-            Frog newFrog;
-            // Is the frog on a lily?
-            if (frog.isCollision(this)) {
-            // If so, make it so. Set direction so we know that the frog is on a lily
+     public Frog refractorAssisterCollisionWithFrog(Frog frog) {
+            //  Set direction so we know that the frog is on a lily
               // THen tick the frog so it moves at the same rate as the lily
-              newFrog = new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), this.getDirection(), frog.getCurrentRow()).tickMoveFroggy(this);
-            } else {
-                newFrog = new Frog(frog.getXPos(), safeRow.getStartY(), frog.getImage(), frog.decrementCurrentRow());
-            }
-            return newFrog;
-     
+          System.out.println("Assist" + frog.getCurrentRow());
+              return new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), 
+                      this.getDirection(), frog.getCurrentRow()).tickMoveFroggy(this);
      }
+     
+     public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow) {
+         // This means that the frog hit the water
+         System.out.println("Obstacle" + frog.decrementCurrentRow());
+         return new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, this.direction, frog.decrementCurrentRow());
+    }
    
     // Could add functionality for colors? WOO
      public WorldImage draw() {

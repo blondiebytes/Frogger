@@ -14,8 +14,8 @@ class Frog {
     int currentRow;
     double size = Math.sqrt(xPos^2 + yPos^2);
 
-    static int XMAX = 450;
-    static int YMAX = 450;
+    static int XMAX = 500;
+    static int YMAX = 500;
     static int XMIN = 50;
     static int YMIN = 50;
     static int incrementUp = 100;
@@ -28,6 +28,7 @@ class Frog {
         this.image = "UP";
         this.color = "green";
         this.isOnLily = "NO";
+        this.currentRow = 0;
     }
     
     // For when we are worrying if we are on a lily

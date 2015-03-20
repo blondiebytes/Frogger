@@ -75,9 +75,12 @@ public class Car implements Collideable<Car> {
         return this.xPos >= XMAX;
     }
     
-    public Frog refractorCollisionWithFrog(Frog frog, Row safeRow) {
+    public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow) {
         return  new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, this.direction, frog.decrementCurrentRow());
-        
+    }
+    
+    public Frog refractorAssisterCollisionWithFrog(Frog frog) {
+        throw new RuntimeException("A Car isn't a assister");
     }
    
     // Could add functionality for colors? WOO

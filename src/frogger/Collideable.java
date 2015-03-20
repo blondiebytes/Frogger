@@ -16,7 +16,8 @@ public interface Collideable<D extends Collideable> {
     public int getIdentity();
     public double getSize();
     public boolean isOffScreen();
-    public Frog refractorCollisionWithFrog(Frog frog, Row safeRow);
+    public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow);
+    public Frog refractorAssisterCollisionWithFrog(Frog frog);
     public D move();
     public WorldImage draw();
 }

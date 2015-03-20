@@ -71,8 +71,8 @@ public class Frogger extends World {
     private ArrayList<Row<Car>> initializeCarRows() {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
-        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn
-        Row<Car> car1 = new Row(-100, 150, 500, 100, 5, 100, new ArrayList<>(), 2);
+        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
+        Row<Car> car1 = new Row(-100, 200, 500, 100, 5, 100, new ArrayList<>(), 2, 3);
         newCars.add(car1);
         return newCars;
     }
@@ -81,7 +81,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-50, 350, 500, 200, 1, 200, new ArrayList<>(), 1);
+        Row<Lily> lily1 = new Row(-50, 400, 500, 300, 1, 200, new ArrayList<>(), 1, 1);
         newLilies.add(lily1);
         return newLilies;
     }
@@ -89,10 +89,10 @@ public class Frogger extends World {
     private ArrayList<Row> initalizeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
         // StartX, StartY, FinishX, FinishY, numberOfSafeRow
-        Row safe1 = new Row(0, 500, 500, 400, 1);
+        Row safe1 = new Row(0, 500, 500, 400, 1, 0);
         initialRows.add(safe1);
         // StartX, StartY, FinishX, FinishY, numberOfSafeRow
-        Row safe2 = new Row(0, 250, 500, 150, 2);
+        Row safe2 = new Row(0, 300, 500, 200, 2, 2);
         initialRows.add(safe2);
         return initialRows;
     }
@@ -115,7 +115,7 @@ public class Frogger extends World {
         // --> and check for collisions
         // Hoping to figure out a way to do this more efficiently.... 
         // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
-        
+   //     System.out.println(this.frog.currentRow);
         for (Row<Car> r : this.cars) {
             // Checking for collisions -->
             newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
@@ -149,6 +149,7 @@ public class Frogger extends World {
             }
             newLilies.add(newLilyRow);
         }
+        System.out.println("I looked through the lilies");
 
         // Safe rows will never change --> we could if we want coins on them later, 
         // but that's for later
