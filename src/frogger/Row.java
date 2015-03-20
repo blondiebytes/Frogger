@@ -217,12 +217,15 @@ public class Row<D extends Collideable<D>> {
         return newFrog;
     }
     
+    // NEED TO FIX
     public Frog checkAssisterCollisionsWithFrog(Frog frog, ArrayList<Row> safeRows) {
         Frog newFrog = frog;
         Row<D> newObstacleRow = this.emptyCollisionCopy();
             for (D d : newObstacleRow.getCollideables()) {
                 // Change frog if it doesn't collide, but it's in the row
                 Row safeRow = new Row();
+                // if frog is in that row --> check for collision 
+                // (if collide, put on lily); otherwise return to safe row.
                 if (newFrog.isCollision(d)) {
                     newFrog = d.refractorCollisionWithFrog(newFrog, safeRow);
                 }

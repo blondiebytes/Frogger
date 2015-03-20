@@ -102,7 +102,6 @@ public class Frogger extends World {
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
         // None of this is really "in place" or "mutative" because of testing
-        // Also because we can't modify the "list" in a for (item : "list") loop
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
 

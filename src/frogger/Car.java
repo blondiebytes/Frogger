@@ -76,12 +76,8 @@ public class Car implements Collideable<Car> {
     }
     
     public Frog refractorCollisionWithFrog(Frog frog, Row safeRow) {
-        Frog newFrog = frog;
-        if (frog.isCollision(this)) {
-            // Make newFrog return to the last safe row y-pos, keeping same x-pos
-            newFrog = new Frog(newFrog.getXPos(), safeRow.getStartY(), newFrog.image, this.direction, frog.decrementCurrentRow());
-           }
-        return newFrog;
+        return  new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, this.direction, frog.decrementCurrentRow());
+        
     }
    
     // Could add functionality for colors? WOO
