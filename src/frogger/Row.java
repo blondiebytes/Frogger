@@ -223,7 +223,7 @@ public class Row<D extends Collideable<D>> {
         return newFrog;
     }
 
-    // NEED TO FIX
+ 
     public Frog checkAssisterCollisionsWithFrog(Frog frog, ArrayList<Row> safeRows) {
         Frog newFrog = frog;
         for (D d : this.getCollideables()) {

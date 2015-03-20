@@ -102,6 +102,10 @@ class Frog {
         }
     }
     
+    public Lily getLily() {
+        return lily;
+    }
+    
     // When we press keys and move froggy
     public Frog reactMoveFroggy(String key) {
         // Check what key was pressed

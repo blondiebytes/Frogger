@@ -94,7 +94,9 @@ public class Frogger extends World {
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
         for (Row<Car> r : this.cars) {
-            newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+            if ((newFrog.isOnLily.equals("NO"))) {
+                newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+            }
             //The only thing that updates in a row is the items in it
             Row<Car> newCarRow = r.moveCollideables();
             
@@ -109,7 +111,11 @@ public class Frogger extends World {
         }
 
         for (Row<Lily> x : this.lilies) {
+            if (newFrog.isOnLily.equals("NO")) {
             newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+            } else {
+                newFrog = newFrog.tickMoveFroggy(newFrog.getLily());
+            }
             //The only thing that updates in a row is the items in it
             Row<Lily> newLilyRow = x.moveCollideables();
             
@@ -134,6 +140,7 @@ public class Frogger extends World {
 
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
+        if (newFrog.isOnLily.equals("NO")) {
         for (Row<Car> r : this.cars) {
             // Checking for collisions -->
             newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
@@ -143,6 +150,7 @@ public class Frogger extends World {
             }
         System.out.println("newFrog current row"+ newFrog.getCurrentRow());
         // Rows don't react to key presses
+        }
         return new Frogger(newFrog, this.cars, this.lilies, this.safe);
     }
 
