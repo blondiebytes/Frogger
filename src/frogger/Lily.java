@@ -66,9 +66,11 @@ class Lily implements Collideable<Lily>{
     
     public Lily move() {
         if (this.getDirection().equals("RIGHT")) {
-            return new Lily(this.getXPos() + this.getIncrement(), this.getYPos(), this.getDirection(), this.getIncrement(), this.getIdentity());
+            return new Lily(this.getXPos() + this.getIncrement(), this.getYPos(), 
+                    this.getDirection(), this.getIncrement(), this.getIdentity());
         } else {
-            return new Lily(this.getXPos() - this.getIncrement(), this.getYPos(), this.getDirection(), this.getIncrement(), this.getIdentity());
+            return new Lily(this.getXPos() - this.getIncrement(), this.getYPos(), 
+                    this.getDirection(), this.getIncrement(), this.getIdentity());
         }
     }
     

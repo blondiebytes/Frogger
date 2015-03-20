@@ -152,7 +152,7 @@ public class Row<D extends Collideable<D>> {
     }
 
     public boolean isEmpty() {
-        return this.getDirection().equals("EMPTY");
+        return this.getSafeRowNumber() < 0;
     }
 
     // THE THINKING INVOLVED IN MAKING THIS KINDA GENERIC:
@@ -199,7 +199,7 @@ public class Row<D extends Collideable<D>> {
             if (newFrog.getCurrentRow() == this.getOrderNumber()) {
                 // --> must initialize identity rows first
                 if (newFrog.isCollision(d)) {
-               // We only want to look at the safe rows if there's a collision
+                    // We only want to look at the safe rows if there's a collision
                     // Our safeRow placeholder is the row the frog will go back to
                     Row safeRow = new Row();
                     // Find the safe row
@@ -230,7 +230,8 @@ public class Row<D extends Collideable<D>> {
             // Change frog if it doesn't collide, but it's in the row
             // if frog is in that row --> check for collision 
             // (if collide, put on lily); otherwise return to safe row.
-            if (frog.getCurrentRow() == this.getOrderNumber()) {
+           if (frog.getCurrentRow() == this.getOrderNumber()) {
+          //  if (frog.getYPos() >= this.getStartY() && frog.getYPos() <= this.getFinishY()){
                 Row froggySafeRow = new Row();
                 // If there is a collision, then put the frog on the lily
                 if (newFrog.isCollision(d)) {
@@ -243,17 +244,19 @@ public class Row<D extends Collideable<D>> {
                             // If the safeRows are right, then we found what
                             // safe row we are going to 
                             froggySafeRow = s;
+                            System.out.println(froggySafeRow.getSafeRowNumber());
                         }
                     }
+                    // And put the frog on the safe row
+                    if (!froggySafeRow.isEmpty()) {
+                        System.out.println("Obstacle Called" + newFrog.getCurrentRow());
+                        newFrog = d.refractorObstacleCollisionWithFrog(newFrog, froggySafeRow);
+                    } else // Runtime exceptions are scary tho.
+                    {
+                        throw new RuntimeException("No safe row avaliable" + this.safeRow);
+                    }
                 }
-                // And put the frog on the safe row
-                if (!froggySafeRow.isEmpty()) {
-                    System.out.println("Obstacle Called" + newFrog.getCurrentRow());
-                    newFrog = d.refractorObstacleCollisionWithFrog(newFrog, froggySafeRow);
-                } else // Runtime exceptions are scary tho.
-                {
-                    throw new RuntimeException("No safe row avaliable" + this.safeRow);
-                }
+
             }
 
         }
