@@ -9,7 +9,7 @@ import javalib.worldimages.WorldImage;
 class Lily implements Collideable<Lily>{
     private int xPos;
     private int yPos;
-    private double size = 100; //Math.sqrt(xPos^2 + yPos^2);
+    private double size = 200; //Math.sqrt(xPos^2 + yPos^2);
     private String direction; // "RIGHT" // "LEFT"
     private int identity;
     protected final int increment;
@@ -81,15 +81,15 @@ class Lily implements Collideable<Lily>{
      public Frog refractorAssisterCollisionWithFrog(Frog frog) {
             //  Set direction so we know that the frog is on a lily
               // THen tick the frog so it moves at the same rate as the lily
-          System.out.println("Assist" + frog.getCurrentRow());
+          System.out.println("Lily Hit" + frog.getCurrentRow());
               return new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), 
-                      this.getDirection(), frog.getCurrentRow()).tickMoveFroggy(this);
+                      this.getDirection(), this, frog.getCurrentRow()).tickMoveFroggy(this);
      }
      
      public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow) {
          // This means that the frog hit the water
-         System.out.println("Obstacle" + frog.decrementCurrentRow());
-         return new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, this.direction, frog.decrementCurrentRow());
+         System.out.println("Obstacle Hit" + frog.decrementCurrentRow());
+         return new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, frog.decrementCurrentRow());
     }
    
     // Could add functionality for colors? WOO

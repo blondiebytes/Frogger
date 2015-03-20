@@ -16,46 +16,31 @@ public class Frogger extends World {
     // The game frogger is just a series of rows -> all constantly going
     // The user jumps around the rows via Frog.
     // TO DO LIST:
+    // --> Fixing current row operations
     // --> Make collisions more definite (collision area bigger)
     // --> Make sure that Froggy can't jump into the water. 
     // --> Score and Lives
     // Identities for each object --> for testing
-    // However, if we keep track of the current row --> we can see who we need 
-    // to check for collisiosn (making it faster)
     // Two different types of rows -> one where you avoid stuff (cars) and 
     // one where you try to jump onto the things (lilies). How different are 
     // they really? Create an interface or just do a type check?
-    // Random pattern for rows? HMM Algorithm HMM. 
-    // Draw stuffs
-    //
+    
     // MAIN MOVING FIELDS
     public Frog frog;
 
-    // Rows keeps track of when new stuff should be added --> basically a 
-    // series of tickers so each row has different stuff. 
-    // Changing speed of each row could be interesting -> just change 
-    // the increment in the lily / car class
+    // Rows keeps track of when new stuff should be added --> 
     // Row is basically like a generator of where stuff should start
-    // NEED CONSTANTS FOR EACH ROW TO PUT STUFF IN
-    // I.E. ROW 1 has yPos = 5-, moving left; ROW 2 has yPos = 100, moving right; 
-    // and need an algorithm for mixing lilies and cars/obstacles in the same row;
-    // ALSO need safe rows versus non-safe/obstacle/collideable rows
-    // Different cycles for each row?
-    // Generics aren't working for some reason so resorting to this...
-    // An array list of all the lily rows and an arraylist of all the car rows
+    // An arraylist of all the lily rows and an arraylist of all the car rows
     private ArrayList<Row<Lily>> lilies;
     private ArrayList<Row<Car>> cars;
     private ArrayList<Row> safe;
     // VS ArrayList<Row<Collideable>>
 
-    // Keep track of the current row so we only look at stuff in the next row for collisions
-    private int currentRow;
-
     public Frogger() {
         this.frog = new Frog();
         // we should really set up constraints 
         // --> rows won't change after intiliaization
-        // --> things will just be added to the rows
+        // --> things will just be added to or removed from the rows
         this.cars = initializeCarRows();
         this.lilies = initializeLilyRows();
         this.safe = initalizeSafeRows();
@@ -105,17 +90,9 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
 
-        // Now trying to figure out a way to integrate the safe rows... HMM..
-        // It would be nice if they could correspond. Like an lily row could
-        // have an identity 1 and then it would go to the safe row with identity
-        // 1 if the frog didn't make it to the lily. Kinda like a hash. Hmmm. 
-        // But i don't want to make it an array....because then no unlimited
-        // stuffs. 
+        
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
-        // Hoping to figure out a way to do this more efficiently.... 
-        // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
-   //     System.out.println(this.frog.currentRow);
         for (Row<Car> r : this.cars) {
             newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
             //The only thing that updates in a row is the items in it
@@ -164,6 +141,7 @@ public class Frogger extends World {
         for (Row<Lily> x : this.lilies) {
             newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
             }
+        System.out.println("newFrog current row"+ newFrog.getCurrentRow());
         // Rows don't react to key presses
         return new Frogger(newFrog, this.cars, this.lilies, this.safe);
     }

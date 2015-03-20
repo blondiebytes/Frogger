@@ -76,7 +76,7 @@ public class Car implements Collideable<Car> {
     }
     
     public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow) {
-        return  new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, this.direction, frog.decrementCurrentRow());
+        return  new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, frog.decrementCurrentRow());
     }
     
     public Frog refractorAssisterCollisionWithFrog(Frog frog) {

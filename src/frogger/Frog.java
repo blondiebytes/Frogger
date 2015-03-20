@@ -13,6 +13,7 @@ class Frog {
     int yPos;
     int currentRow;
     double size = Math.sqrt(xPos^2 + yPos^2);
+    Lily lily; //--> stores a lily that it could leap onto 
 
     static int XMAX = 500;
     static int YMAX = 500;
@@ -27,17 +28,20 @@ class Frog {
         this.yPos = YMAX;
         this.image = "UP";
         this.color = "green";
+        // figure out way to avoid this 
         this.isOnLily = "NO";
+        this.lily = null;
         this.currentRow = 0;
     }
     
     // For when we are worrying if we are on a lily
-    public Frog(int xPos, int yPos, String image, String isOnLily, int currentRow) {
+    public Frog(int xPos, int yPos, String image, String isOnLily, Lily lily, int currentRow) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.image = image;
-        this.isOnLily = isOnLily;
+        this.lily = lily;
         this.currentRow = currentRow;
+        this.isOnLily = isOnLily;
     }
     
     // For other times when we aren't checking if we are on a lily
@@ -46,6 +50,8 @@ class Frog {
         this.yPos = yPos;
         this.image = image;
         this.currentRow = currentRow;
+        this.lily = null;
+        this.isOnLily = "NO";
     }
 
     public int getXPos() {
@@ -133,12 +139,14 @@ class Frog {
     
     // When froggy is on a lily and has to move with it
     public Frog tickMoveFroggy(Lily l) {
-        if (this.isOnLily.equals("RIGHT")) {
-            return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT", this.currentRow).checkBounds();
-        } else if (this.isOnLily.equals("LEFT")) {
-            return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT", this.currentRow).checkBounds();
-        } else
-            return this;
+        switch(this.isOnLily) {
+                case "RIGHT": 
+                    return new Frog(this.xPos + l.getIncrement(), this.yPos, this.image, "RIGHT", l, this.currentRow).checkBounds();
+                case "LEFT": 
+                    return new Frog(this.xPos - l.getIncrement(), this.yPos, this.image, "LEFT", l, this.currentRow).checkBounds();
+                default:
+                    return this;
+            }
     }
 
     public Frog checkBounds() {
