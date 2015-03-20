@@ -17,7 +17,6 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
     // ------------ ------------ ------------ ------------ ------------
     // TO DO LIST:
-    // --> Fixing current row operations for Lily (They work for Car)
     // --> Make sure that Froggy can't jump into the water in the beginning (add sentinal value?)
     // --> Score and Lives
     // Identities for each object --> for testing
@@ -113,7 +112,7 @@ public class Frogger extends World {
 
         for (Row<Lily> x : this.lilies) {
             if (newFrog.isOnLily.equals("NO")) {
-            newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+                newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
             } else {
                 newFrog = newFrog.tickMoveFroggy(newFrog.getLily());
             }
@@ -150,7 +149,7 @@ public class Frogger extends World {
             newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
             }
         }
-        System.out.println("newFrog current row"+ newFrog.getCurrentRow());
+        //System.out.println("newFrog current row"+ newFrog.getCurrentRow());
         // Rows don't react to key presses
         
         return new Frogger(newFrog, this.cars, this.lilies, this.safe);

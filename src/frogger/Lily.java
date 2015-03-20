@@ -9,7 +9,7 @@ import javalib.worldimages.WorldImage;
 class Lily implements Collideable<Lily>{
     private int xPos;
     private int yPos;
-    private double size = 150; //Math.sqrt(xPos^2 + yPos^2);
+    private double size = 25; //Math.sqrt(xPos^2 + yPos^2);
     private String direction; // "RIGHT" // "LEFT"
     private int identity;
     protected final int increment;
@@ -81,15 +81,13 @@ class Lily implements Collideable<Lily>{
      public Frog refractorAssisterCollisionWithFrog(Frog frog) {
             //  Set direction so we know that the frog is on a lily
               // THen tick the frog so it moves at the same rate as the lily
-          System.out.println("Lily Hit" + frog.getCurrentRow());
+       //   System.out.println("Lily Hit" + frog.getCurrentRow() + " LilyID " + this.identity);
               return new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), 
                       this.getDirection(), this, frog.getCurrentRow()).tickMoveFroggy(this);
      }
      
      public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow) {
-         // This means that the frog hit the water
-         System.out.println("Obstacle Hit" + frog.decrementCurrentRow());
-         return new Frog(frog.getXPos(), safeRow.getStartY(), frog.image, frog.decrementCurrentRow());
+         throw new RuntimeException("Lilies are assisters, not obstacles");
     }
    
     // Could add functionality for colors? WOO

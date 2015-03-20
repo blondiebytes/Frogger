@@ -11,7 +11,7 @@ public class Car implements Collideable<Car> {
     private double size = 75;
     private String direction; // "RIGHT" // "LEFT"
     // Create an identity for each thing
-    private int identity;
+    final private int identity;
     private int increment;
     
     // CONSTANTS:

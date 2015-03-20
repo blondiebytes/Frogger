@@ -223,41 +223,51 @@ public class Row<D extends Collideable<D>> {
         return newFrog;
     }
 
- 
     public Frog checkAssisterCollisionsWithFrog(Frog frog, ArrayList<Row> safeRows) {
         Frog newFrog = frog;
-        for (D d : this.getCollideables()) {
-           if (frog.getCurrentRow() == this.getOrderNumber()) {
+        if (frog.getCurrentRow() == this.getOrderNumber()) {
+            boolean hitLily = false;
+            for (D d : this.getCollideables()) {
           //  if (frog.getYPos() >= this.getStartY() && frog.getYPos() <= this.getFinishY()){
-                Row froggySafeRow = new Row();
+
                 // if frog is in that row --> check for collision
                 if (newFrog.isCollision(d)) {
                     // If there is a collision, then put the frog on the lily
-                 //   System.out.println("Assister Called" + newFrog.getCurrentRow());
+                    //   System.out.println("Assister Called" + newFrog.getCurrentRow());
                     newFrog = d.refractorAssisterCollisionWithFrog(newFrog);
-                } else {
-                    // Otherwise, we hit the water --> need to find saferow
-                    for (Row s : safeRows) {
-                        if (s.getSafeRowNumber() == this.getSafeRowNumber()) {
-                            // If the safeRows are right, then we found what
-                            // safe row we are going to 
-                            froggySafeRow = s;
-                        }
-                    }
-                    // And put the frog on the safe row
-                    if (!froggySafeRow.isEmpty()) {
-                   //     System.out.println("Obstacle Called" + newFrog.getCurrentRow());
-                        newFrog = d.refractorObstacleCollisionWithFrog(newFrog, froggySafeRow);
-                    } else // Runtime exceptions are scary tho.
-                    {
-                        throw new RuntimeException("No safe row avaliable" + this.safeRow);
+                    hitLily = true;
+                    break;
+                }
+            }
+            if (!hitLily) {
+                // Otherwise, we hit the water --> need to find saferow
+                Row froggySafeRow = new Row();
+                for (Row s : safeRows) {
+                    if (s.getSafeRowNumber() == this.getSafeRowNumber()) {
+                        // If the safeRows are right, then we found what
+                        // safe row we are going to 
+                        froggySafeRow = s;
                     }
                 }
-
+                // And put the frog on the safe row
+                if (!froggySafeRow.isEmpty()) {
+                    //     System.out.println("Obstacle Called" + newFrog.getCurrentRow());
+                    newFrog = froggySafeRow.refractorObstacleBackgroundCollisionWithFrog(newFrog);
+                } else // Runtime exceptions are scary tho.
+                {
+                    throw new RuntimeException("No safe row avaliable" + this.safeRow);
+                }
             }
 
         }
+
         return newFrog;
+    }
+
+    public Frog refractorObstacleBackgroundCollisionWithFrog(Frog frog) {
+        // This means that the frog hit the water/lava/slash whatever
+      //  System.out.println("Obstacle Hit" + frog.decrementCurrentRow() + " Background Hit");
+        return new Frog(frog.getXPos(), this.getStartY(), frog.image, frog.decrementCurrentRow());
     }
 
 }
