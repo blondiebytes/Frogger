@@ -113,26 +113,26 @@ class Frog {
             // If we weren't facing up
             if (!this.image.equals("UP")) {
                 // Make the frog face up
-                return new Frog(xPos, yPos, "UP", currentRow).checkBounds();
+                return new Frog(xPos, yPos, "UP", this.isOnLily, this.lily, currentRow).checkBounds();
             } else // If we were already facing up, we can go up
             {
-                return new Frog(xPos, yPos - incrementUp, "UP", incrementCurrentRow()).checkBounds();
+                return new Frog(xPos, yPos - incrementUp, "UP",incrementCurrentRow()).checkBounds();
             }
         } // Check for all cases
         else if (key.equals("down")) {
             if (!this.image.equals("DOWN")) {
-                return new Frog(xPos, yPos, "DOWN", currentRow).checkBounds();
+                return new Frog(xPos, yPos, "DOWN", this.isOnLily, this.lily, currentRow).checkBounds();
             }
             return new Frog(xPos, yPos + incrementUp, "DOWN", decrementCurrentRow()).checkBounds();
         } else if (key.equals("right")) {
             if (!this.image.equals("RIGHT")) {
-                return new Frog(xPos, yPos, "RIGHT", currentRow).checkBounds();
+                return new Frog(xPos, yPos, "RIGHT", this.isOnLily, this.lily, currentRow).checkBounds();
             } else {
-                return new Frog(xPos + incrementSideToSide, yPos, "RIGHT", currentRow).checkBounds();
+                return new Frog(xPos + incrementSideToSide, yPos, "RIGHT",currentRow).checkBounds();
             }
         } else if (key.equals("left")) {
             if (!this.image.equals("LEFT")) {
-                return new Frog(xPos, yPos, "LEFT", currentRow).checkBounds();
+                return new Frog(xPos, yPos, "LEFT", this.isOnLily, this.lily, currentRow).checkBounds();
             } else {
                 return new Frog(xPos - incrementSideToSide, yPos, "LEFT", currentRow).checkBounds();
             }

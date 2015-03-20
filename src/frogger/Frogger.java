@@ -15,12 +15,13 @@ public class Frogger extends World {
 
     // The game frogger is just a series of rows -> all constantly going
     // The user jumps around the rows via Frog.
+    // ------------ ------------ ------------ ------------ ------------
     // TO DO LIST:
-    // --> Fixing current row operations
-    // --> Make collisions more definite (collision area bigger)
-    // --> Make sure that Froggy can't jump into the water. 
+    // --> Fixing current row operations for Lily (They work for Car)
+    // --> Make sure that Froggy can't jump into the water in the beginning (add sentinal value?)
     // --> Score and Lives
     // Identities for each object --> for testing
+    // ------------ ------------ ------------ ------------ ------------
     // Two different types of rows -> one where you avoid stuff (cars) and 
     // one where you try to jump onto the things (lilies). How different are 
     // they really? Create an interface or just do a type check?
@@ -148,9 +149,10 @@ public class Frogger extends World {
         for (Row<Lily> x : this.lilies) {
             newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
             }
+        }
         System.out.println("newFrog current row"+ newFrog.getCurrentRow());
         // Rows don't react to key presses
-        }
+        
         return new Frogger(newFrog, this.cars, this.lilies, this.safe);
     }
 

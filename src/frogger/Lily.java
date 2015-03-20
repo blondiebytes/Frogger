@@ -9,7 +9,7 @@ import javalib.worldimages.WorldImage;
 class Lily implements Collideable<Lily>{
     private int xPos;
     private int yPos;
-    private double size = 200; //Math.sqrt(xPos^2 + yPos^2);
+    private double size = 150; //Math.sqrt(xPos^2 + yPos^2);
     private String direction; // "RIGHT" // "LEFT"
     private int identity;
     protected final int increment;

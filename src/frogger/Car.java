@@ -8,7 +8,7 @@ import javalib.worldimages.WorldImage;
 public class Car implements Collideable<Car> {
     private int xPos;
     private int yPos;
-    private double size = Math.sqrt(xPos^2 + yPos^2); // NEED TO SET 
+    private double size = 75;
     private String direction; // "RIGHT" // "LEFT"
     // Create an identity for each thing
     private int identity;
