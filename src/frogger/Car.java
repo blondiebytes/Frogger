@@ -79,6 +79,8 @@ public class Car implements Collideable<Car> {
         Frog newFrog = frog;
         if (frog.isCollision(this)) {
             // Make newFrog return to the last safe row y-pos, keeping same x-pos
+            System.out.println("collision");
+            System.out.println(safeRow.getStartY());
             newFrog = new Frog(newFrog.getXPos(), safeRow.getStartY(), newFrog.image, this.direction, frog.decrementCurrentRow());
            }
         return newFrog;

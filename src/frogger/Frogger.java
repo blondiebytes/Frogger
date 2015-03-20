@@ -169,7 +169,7 @@ public class Frogger extends World {
                 // Change frog if it doesn't collide, but it's in the row
                 Row safeRow = new Row();
                 if (this.frog.isCollision(l)) {
-                    newFrog = l.refractorCollisionWithFrog(newFrog, x);
+                    newFrog = l.refractorCollisionWithFrog(newFrog, safeRow);
                 }
                     
                     

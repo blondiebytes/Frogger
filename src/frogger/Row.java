@@ -62,7 +62,7 @@ public class Row<D extends Collideable<D>> {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
-        this.finishYPos = startY;
+        this.finishYPos = finishY;
         this.increment = increment;
         this.collideableCycle = collideableCycle;
         if (startX >= 400) {
@@ -82,7 +82,7 @@ public class Row<D extends Collideable<D>> {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
-        this.finishYPos = startY;
+        this.finishYPos = finishY;
         this.increment = increment;
         this.collideableCycle = collideableCycle;
         if (startX >= 400) {
