@@ -76,13 +76,15 @@ class Lily implements Collideable<Lily>{
         return this.xPos >= XMAX;
     }
      
-     public Frog refractorCollisionWithFrog(Frog frog) {
-            Frog newFrog = frog;
+     public Frog refractorCollisionWithFrog(Frog frog, Row safeRow) {
+            Frog newFrog;
             // Is the frog on a lily?
             if (frog.isCollision(this)) {
             // If so, make it so. Set direction so we know that the frog is on a lily
               // THen tick the frog so it moves at the same rate as the lily
-              newFrog = new Frog(frog.xPos, this.yPos, frog.image, this.getDirection()).tickMoveFroggy(this);
+              newFrog = new Frog(frog.getXPos(), this.getYPos(), frog.getImage(), this.getDirection()).tickMoveFroggy(this);
+            } else {
+                newFrog = new Frog(frog.getXPos(), safeRow.getStartY(), frog.getImage());
             }
             return newFrog;
      

@@ -29,23 +29,22 @@ public class Row<D extends Collideable<D>> {
     public String direction; // "RIGHT" "LEFT" "SAFE"
     private int increment;
     
-    // What type are we?
-    /// WE NEED TO SET THIS SOMEHOW TO KNOW WHAT IS IN OUR ROWS
-    private int type; // "1" = Car // "2" = Lily // "0" = Safe Row
+    // What number are we?
+    private int identity; 
     
     // FOR SAFE ROWS
     // Safe rows don't have colliders, and thus, don't collide with stuff
-    public Row(int startX, int startY, int finishX, int finishY) {
+    public Row(int startX, int startY, int finishX, int finishY, int identity) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
         this.finishYPos = finishY;
         this.direction = "SAFE";
         this.collideables = new ArrayList<>();
-        this.type = 0;
+        this.identity = identity;
     }
     
-    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int type) {
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, ArrayList<D> colliders, int identity) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -59,12 +58,13 @@ public class Row<D extends Collideable<D>> {
         }
         this.collideables = colliders;
         this.collideableTicker = 0;
+        this.identity = identity;
     }
     
     
     // FOR INIT NON-SAFE ROWS
     // Have a cycle of when stuff appears, have a storage of stuffs
-    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, int collideableTicker, ArrayList<D> colliders, int type) {
+    public Row(int startX, int startY, int finishX, int finishY, int increment, int collideableCycle, int collideableTicker, ArrayList<D> colliders, int identity) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -77,7 +77,7 @@ public class Row<D extends Collideable<D>> {
             this.direction = "RIGHT";
         }
         this.collideables = colliders;
-        this.type = type;
+        this.identity = identity;
         this.collideableTicker = collideableTicker;
     }
     

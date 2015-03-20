@@ -56,6 +56,10 @@ class Frog {
         return size;
     }
     
+    public String getImage() {
+        return image;
+    }
+    
     public int getIncrementUp() {
         return incrementUp;
     }

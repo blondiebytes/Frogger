@@ -15,6 +15,7 @@ public class Frogger extends World {
 
     // The game frogger is just a series of rows -> all constantly going
     // The user jumps around the rows via Frog.
+    
     // TO DO LIST:
     // --> Make collisions more definite (collision area bigger)
     // --> Make sure that Froggy can't jump into the water. 
@@ -58,14 +59,14 @@ public class Frogger extends World {
         // --> things will just be added to the rows
         this.cars = initializeCarRows();
         this.lilies = initializeLilyRows();
-        this.safe = initializeSafeRows();
-        //  this.rows = initializeRows();
+        this.safe = initalizeSafeRows();
     }
 
-    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies) {
+    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe) {
         this.frog = frog;
         this.cars = cars;
         this.lilies = lilies;
+        this.safe = safe;
     }
 
     private ArrayList<Row<Car>> initializeCarRows() {
@@ -85,20 +86,16 @@ public class Frogger extends World {
         newLilies.add(lily1);
         return newLilies;
     }
-
-    private ArrayList<Row> initializeSafeRows() {
-        // SAFE ROW 1 // StartX, StartY, FinishX, FinishY
-        ArrayList<Row> newRows = new ArrayList<>();
- //       Row row1 = new Row<>(0, 500, 450, 400);
-//       newRows.add(row1);
-//       
-//     // SAFE ROW 2
-//      Row row2 = new Row(0, 300, 450, 200);
-//      newRows.add(row2);
-//        
-        return newRows;
+    
+    private ArrayList<Row> initalizeSafeRows() {
+        ArrayList<Row> initialRows = new ArrayList<>();
+        Row safe1 = new Row(-50, 450, 500, 350);
+        initialRows.add(safe1);
+        Row safe2 = new Row(-50, 250, 500, 150);
+        return initialRows;
     }
 
+    
     public World onTick() {
 
         // If froggy is on a lily --> froggy moves too, so we create a var for that
@@ -119,7 +116,7 @@ public class Frogger extends World {
             for (Car c : r.getCollideables()) {
                 // Change frog if it collides
                 if (this.frog.isCollision(c)) {
-                    newFrog = c.refractorCollisionWithFrog(newFrog);
+                    newFrog = c.refractorCollisionWithFrog(newFrog, r);
                 }
 
                 // Move the collider
@@ -134,10 +131,10 @@ public class Frogger extends World {
             //The only thing that updates in a row is the items in it
             // Adding a new collider if it's time
             if (newCarRow.isTimeForNewCollider()) {
-                Car aCar = new Car(newCarRow.getStartX(), newCarRow.getStartY(), newCarRow.getIncrement(), newCarRow.getDirection());
+                Car aCar = new Car(newCarRow.getStartX(), newCarRow.getStartY(), 
+                        newCarRow.getIncrement(), newCarRow.getDirection());
                 newCarRow.getCollideables().add(aCar);
             }
-            System.out.println(newCarRow.getCollideables().size());
             newCars.add(newCarRow);
         }
 
@@ -148,7 +145,7 @@ public class Frogger extends World {
             for (Lily l : x.getCollideables()) {
                 // Change frog if it collides
                 if (this.frog.isCollision(l)) {
-                    newFrog = l.refractorCollisionWithFrog(newFrog);
+                    newFrog = l.refractorCollisionWithFrog(newFrog, x);
                 }
 
                 // Move the collider
@@ -163,21 +160,26 @@ public class Frogger extends World {
             //The only thing that updates in a row is the items in it
             // Adding a new collider if it's time
             if (newLilyRow.isTimeForNewCollider()) {
-               // Really would like to put this code somewhere else in a different class, but.... here it is for now :)
+               // Really would like to put this code somewhere else in a different class, 
+                // but.... here it is for now :)
                 // It reveals a lot of implementation...
-                Lily aLily = new Lily(newLilyRow.getStartX(), newLilyRow.getStartY(), newLilyRow.getIncrement(), newLilyRow.getDirection());
+                Lily aLily = new Lily(newLilyRow.getStartX(), newLilyRow.getStartY(), 
+                        newLilyRow.getIncrement(), newLilyRow.getDirection());
                 newLilyRow.getCollideables().add(aLily);
             }
             newLilies.add(newLilyRow);
         }
-        return new Frogger(newFrog, newCars, newLilies);
+        
+        // Safe rows will never change --> we could if we want coins on them later, 
+        // but that's for later
+        return new Frogger(newFrog, newCars, newLilies, this.safe);
     }
 
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
 
         // Rows don't react to key presses
-        return new Frogger(newFrog, this.cars, this.lilies);
+        return new Frogger(newFrog, this.cars, this.lilies, this.safe);
     }
 
     public WorldImage makeImage() {

@@ -75,11 +75,11 @@ public class Car implements Collideable<Car> {
         return this.xPos >= XMAX;
     }
     
-    public Frog refractorCollisionWithFrog(Frog frog) {
+    public Frog refractorCollisionWithFrog(Frog frog, Row safeRow) {
         Frog newFrog = frog;
         if (frog.isCollision(this)) {
             // Make newFrog return to the last safe row y-pos, keeping same x-pos
-            newFrog = new Frog(newFrog.getXPos(), newFrog.getYPos() + newFrog.getIncrementUp(), newFrog.image, this.direction);
+            newFrog = new Frog(newFrog.getXPos(), safeRow.getStartY(), newFrog.image, this.direction);
            }
         return newFrog;
     }
