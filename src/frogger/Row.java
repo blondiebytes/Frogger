@@ -234,6 +234,7 @@ public class Row<D extends Collideable<D>> {
                 Row froggySafeRow = new Row();
                 // If there is a collision, then put the frog on the lily
                 if (newFrog.isCollision(d)) {
+                    System.out.println("Assister Called" + newFrog.getCurrentRow());
                     newFrog = d.refractorAssisterCollisionWithFrog(newFrog);
                 } else {
                     // Find saferow
@@ -247,10 +248,11 @@ public class Row<D extends Collideable<D>> {
                 }
                 // And put the frog on the safe row
                 if (!froggySafeRow.isEmpty()) {
+                    System.out.println("Obstacle Called" + newFrog.getCurrentRow());
                     newFrog = d.refractorObstacleCollisionWithFrog(newFrog, froggySafeRow);
                 } else // Runtime exceptions are scary tho.
                 {
-                    throw new RuntimeException("No safe row avaliable");
+                    throw new RuntimeException("No safe row avaliable" + this.safeRow);
                 }
             }
 

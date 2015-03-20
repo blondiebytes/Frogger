@@ -72,16 +72,28 @@ class Frog {
         return incrementSideToSide;
     }
     
-    public int getCurrentRow(){
-        return currentRow;
-    }
+    
     
     public int decrementCurrentRow() {
-        return currentRow - 1;
+        if (currentRow - 1 < 0) {
+            return 0;
+        } else 
+            return currentRow - 1;
     }
     
     public int incrementCurrentRow() {
-        return currentRow + 1;
+        if (currentRow + 1 < 0) {
+            return 0;
+        } else 
+            return currentRow + 1;
+    }
+    
+    public int getCurrentRow() {
+        if (currentRow < 0) {
+            return 0;
+        } else {
+            return currentRow;
+        }
     }
     
     // When we press keys and move froggy

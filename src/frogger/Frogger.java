@@ -117,7 +117,6 @@ public class Frogger extends World {
         // Calling Cars and Lilies at the same time (same for loop) versus in seperate loops
    //     System.out.println(this.frog.currentRow);
         for (Row<Car> r : this.cars) {
-            // Checking for collisions -->
             newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
             //The only thing that updates in a row is the items in it
             Row<Car> newCarRow = r.moveCollideables();
@@ -149,7 +148,7 @@ public class Frogger extends World {
             }
             newLilies.add(newLilyRow);
         }
-        System.out.println("I looked through the lilies");
+     //   System.out.println("I looked through the lilies");
 
         // Safe rows will never change --> we could if we want coins on them later, 
         // but that's for later
@@ -158,7 +157,13 @@ public class Frogger extends World {
 
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
-
+        for (Row<Car> r : this.cars) {
+            // Checking for collisions -->
+            newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+        }
+        for (Row<Lily> x : this.lilies) {
+            newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+            }
         // Rows don't react to key presses
         return new Frogger(newFrog, this.cars, this.lilies, this.safe);
     }
@@ -192,7 +197,7 @@ public class Frogger extends World {
 
     public static void main(String[] args) {
         Frogger frogger = new Frogger();
-        frogger.bigBang(500, 500, .01);
+        frogger.bigBang(500, 600, .01);
     }
 
 }
