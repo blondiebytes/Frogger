@@ -132,7 +132,7 @@ public class Frogger extends World {
             if ((newFrog.isOnLily.equals("NO"))) {
                 Frog newestFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
                 if (!newestFrog.equal(newFrog)) {
-                    
+                    System.out.println("ok");
          //           newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
