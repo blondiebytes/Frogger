@@ -228,8 +228,6 @@ public class Row<D extends Collideable<D>> {
         if (frog.getCurrentRow() == this.getOrderNumber()) {
             boolean hitLily = false;
             for (D d : this.getCollideables()) {
-          //  if (frog.getYPos() >= this.getStartY() && frog.getYPos() <= this.getFinishY()){
-
                 // if frog is in that row --> check for collision
                 if (newFrog.isCollision(d)) {
                     // If there is a collision, then put the frog on the lily

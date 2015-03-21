@@ -125,7 +125,8 @@ public class Frogger extends World {
         }
         
         if(nextRound()){
-            // Subtly get harder or whole new game? HMMMM
+            // Subtly get harder or whole new game? HMMMMHMMMHMM
+            // --> the score as a counter for difficulty algorithm???
             Score newScore = this.score.addScore();
             return new Frogger(newScore, this.lives);
         }
@@ -135,8 +136,6 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
         Lives newLives = this.lives;
-        Score newScore = this.score;
-
         
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
@@ -144,8 +143,8 @@ public class Frogger extends World {
             // if a frog is on a lily, then we don't need to check this.
             if ((newFrog.isOnLily.equals("NO"))) {
                 Frog newestFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+                // Checking if we are kicked back
                 if (!newestFrog.equal(newFrog)) {
-                    System.out.println("ok");
                     newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
@@ -166,8 +165,9 @@ public class Frogger extends World {
         for (Row<Lily> x : this.lilies) {
             if (newFrog.isOnLily.equals("NO")) {
                 Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
-                 if (!newestFrog.equal(newFrog)) {
-                   newLives = newLives.subtractLife();
+                 if (newestFrog.getCurrentRow()  != newFrog.getCurrentRow()) {
+                     System.out.println("check froggy");
+                     newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             } else {
@@ -192,25 +192,32 @@ public class Frogger extends World {
 
         // Safe rows will never change --> we could if we want coins on them later, 
         // but that's for later
-        return new Frogger(newFrog, newCars, newLilies, this.safe, newScore, newLives);
+        // Score only changes between rounds
+        return new Frogger(newFrog, newCars, newLilies, this.safe, this.score, newLives);
     }
 
     public World onKeyEvent(String key) {
         Frog newFrog = this.frog.reactMoveFroggy(key);
+        Lives newLives = this.lives;
         if (newFrog.isOnLily.equals("NO")) {
         for (Row<Car> r : this.cars) {
             // Checking for collisions -->
             newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
         }
         for (Row<Lily> x : this.lilies) {
-            newFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+            Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+             if (newestFrog.getCurrentRow()  != newFrog.getCurrentRow()) {
+                     System.out.println("check froggy2");
+                     newLives = newLives.subtractLife();
+                }
+                newFrog = newestFrog;
             }
         }
         //System.out.println("newFrog current row"+ newFrog.getCurrentRow());
         // Rows don't react to key presses
         // Check score and lives onTick 
         
-        return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score,this.lives);
+        return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score, newLives);
     }
 
     public WorldImage makeImage() {
