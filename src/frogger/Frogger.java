@@ -96,7 +96,9 @@ public class Frogger extends World {
     }
 
     public World onTick() {
-
+        if (gameOver()) {
+            return new EndGame("art/FroggerBackground.png");
+        }
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
         // None of this is really "in place" or "mutative" because of testing
@@ -192,22 +194,6 @@ public class Frogger extends World {
         finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
 
         return finalImage;
-    }
-    
-    // This method produces an instance of a class WorldEnd that consists of a boolean value
-// indicating whether the world is ending (false if the world goes on) and the WorldImage
-// that represents the last image to be displayed - for example announcing the winner of the game,
-// or the final score.
-    public WorldEnd worldEnds() {
-        if (gameOver()) {
-            WorldImage background = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
-            WorldImage gameOverText = new OverlayImages(new TextImage(new Posn(235, 225), "Game Over!", 40, new White()),
-                    new TextImage(new Posn(235, 275), "Score: " + 50, 40, new White()));
-            return new WorldEnd(true, new OverlayImages(background, gameOverText));
-
-        } else {
-            return new WorldEnd(false, this.makeImage());
-        }
     }
 
     public static void main(String[] args) {
