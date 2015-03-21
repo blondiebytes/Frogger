@@ -41,7 +41,7 @@ public class Frogger extends World {
     
     // Score and Lives
     private Score score;
-    private Lives lives;
+  //  private Lives lives;
 
     public Frogger() {
         this.frog = new Frog();
@@ -52,7 +52,7 @@ public class Frogger extends World {
         this.lilies = initializeLilyRows();
         this.safe = initalizeSafeRows();
         this.score = new Score();
-        this.lives = new Lives();
+  //      this.lives = new Lives();
     }
     
     // When we start a new round
@@ -62,16 +62,16 @@ public class Frogger extends World {
         this.lilies = initializeLilyRows();
         this.safe = initalizeSafeRows();
         this.score = score;
-        this.lives = lives;
+    //    this.lives = lives;
     }
 
-    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score, Lives lives) {
+    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score /*, Lives lives*/) {
         this.frog = frog;
         this.cars = cars;
         this.lilies = lilies;
         this.safe = safe;
         this.score = score;
-        this.lives = lives;
+    //    this.lives = lives;
     }
 
     private ArrayList<Row<Car>> initializeCarRows() {
@@ -109,7 +109,7 @@ public class Frogger extends World {
     
     public boolean gameOver() {
         // If the frog is at the top, the game is over
-        return this.lives.life <= 0;
+        return false; //this.lives.life <= 0;
     }
 
     public World onTick() {
@@ -121,7 +121,7 @@ public class Frogger extends World {
         // None of this is really "in place" or "mutative" because of testing
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Lives newLives = this.lives;
+      //  Lives newLives = this.lives;
         Score newScore = this.score;
 
         
@@ -131,8 +131,9 @@ public class Frogger extends World {
             // if a frog is on a lily, then we don't need to check this.
             if ((newFrog.isOnLily.equals("NO"))) {
                 Frog newestFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
-                if (newestFrog.equal(newFrog)) {
-                    newLives = newLives.subtractLife();
+                if (!newestFrog.equal(newFrog)) {
+                    
+         //           newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             }
@@ -152,8 +153,8 @@ public class Frogger extends World {
         for (Row<Lily> x : this.lilies) {
             if (newFrog.isOnLily.equals("NO")) {
                 Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
-                 if (newestFrog.equal(newFrog)) {
-                    newLives = newLives.subtractLife();
+                 if (!newestFrog.equal(newFrog)) {
+        //            newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             } else {
@@ -178,7 +179,7 @@ public class Frogger extends World {
 
         // Safe rows will never change --> we could if we want coins on them later, 
         // but that's for later
-        return new Frogger(newFrog, newCars, newLilies, this.safe, newScore, newLives);
+        return new Frogger(newFrog, newCars, newLilies, this.safe, newScore/*, newLives*/);
     }
 
     public World onKeyEvent(String key) {
@@ -196,7 +197,7 @@ public class Frogger extends World {
         // Rows don't react to key presses
         // Check score and lives onTick 
         
-        return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score, this.lives);
+        return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score/*,this.lives*/);
     }
 
     public WorldImage makeImage() {
