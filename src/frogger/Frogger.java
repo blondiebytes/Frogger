@@ -1,10 +1,13 @@
 package frogger;
 
 import java.util.ArrayList;
+import javalib.colors.White;
 import javalib.funworld.World;
 import javalib.worldimages.FromFileImage;
 import javalib.worldimages.OverlayImages;
 import javalib.worldimages.Posn;
+import javalib.worldimages.TextImage;
+import javalib.worldimages.WorldEnd;
 import javalib.worldimages.WorldImage;
 
 /**
@@ -17,8 +20,8 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
     // ------------ ------------ ------------ ------------ ------------
     // TO DO LIST:
-    // --> Make sure that Froggy can't jump into the water in the beginning (add sentinal value?)
     // --> Score and Lives
+    // --> Fix dimensions, but otherwise WE GOODDDD
     // Identities for each object --> for testing
     // ------------ ------------ ------------ ------------ ------------
     // Two different types of rows -> one where you avoid stuff (cars) and 
@@ -35,6 +38,7 @@ public class Frogger extends World {
     private ArrayList<Row<Car>> cars;
     private ArrayList<Row> safe;
     // VS ArrayList<Row<Collideable>>
+    // return new Image that says gameOver, with button to reset
 
     public Frogger() {
         this.frog = new Frog();
@@ -57,29 +61,38 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        Row<Car> car1 = new Row(-100, 200, 500, 100, 5, 100, new ArrayList<>(), 2, 3);
+        Row<Car> car1 = new Row(-100, 150, 500, 50, 5, 100, new ArrayList<>(), 1, 3);
         newCars.add(car1);
         return newCars;
     }
 
     private ArrayList<Row<Lily>> initializeLilyRows() {
         // DANGER ROW 1 --> LILIES
-        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn
+        // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-50, 400, 500, 300, 1, 200, new ArrayList<>(), 1, 1);
+        Row<Lily> lily1 = new Row(-50, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1);
         newLilies.add(lily1);
         return newLilies;
     }
 
     private ArrayList<Row> initalizeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
-        // StartX, StartY, FinishX, FinishY, numberOfSafeRow
-        Row safe1 = new Row(0, 500, 500, 400, 1, 0);
+        // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
+        Row safe0 = new Row(0, 450, 500, 350, 0, 0);
+        initialRows.add(safe0);
+        // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
+        Row safe1 = new Row(0, 250, 500, 150, 1, 2);
         initialRows.add(safe1);
-        // StartX, StartY, FinishX, FinishY, numberOfSafeRow
-        Row safe2 = new Row(0, 300, 500, 200, 2, 2);
+        // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
+        Row safe2 = new Row(0, 50, 500, -50, 2, 4);
         initialRows.add(safe2);
+       
         return initialRows;
+    }
+    
+    public boolean gameOver() {
+        // If the frog is at the top, the game is over
+        return this.frog.getYPos() == Frog.YMIN;
     }
 
     public World onTick() {
@@ -179,12 +192,27 @@ public class Frogger extends World {
         finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
 
         return finalImage;
+    }
+    
+    // This method produces an instance of a class WorldEnd that consists of a boolean value
+// indicating whether the world is ending (false if the world goes on) and the WorldImage
+// that represents the last image to be displayed - for example announcing the winner of the game,
+// or the final score.
+    public WorldEnd worldEnds() {
+        if (gameOver()) {
+            WorldImage background = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
+            WorldImage gameOverText = new OverlayImages(new TextImage(new Posn(235, 225), "Game Over!", 40, new White()),
+                    new TextImage(new Posn(235, 275), "Score: " + 50, 40, new White()));
+            return new WorldEnd(true, new OverlayImages(background, gameOverText));
 
+        } else {
+            return new WorldEnd(false, this.makeImage());
+        }
     }
 
     public static void main(String[] args) {
         Frogger frogger = new Frogger();
-        frogger.bigBang(500, 600, .01);
+        frogger.bigBang(500, 500, .01);
     }
 
 }

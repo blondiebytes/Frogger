@@ -16,8 +16,12 @@ public interface Collideable<D extends Collideable> {
     public int getIdentity();
     public double getSize();
     public boolean isOffScreen();
+    // Could create an interface for the difference here... 
+    // but added RuntimeExceptions instead in methods
+    // -------  ------- ------- ------- -------
     public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow);
     public Frog refractorAssisterCollisionWithFrog(Frog frog);
+    // ------- ------- ------- ------- -------
     public D move();
     public WorldImage draw();
 }

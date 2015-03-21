@@ -16,8 +16,8 @@ class Frog {
     Lily lily; //--> stores a lily that it could leap onto 
 
     static int XMAX = 500;
-    static int YMAX = 500;
-    static int XMIN = 50;
+    static int YMAX = 450;
+    static int XMIN = 0;
     static int YMIN = 50;
     static int incrementUp = 100;
     static int incrementSideToSide = 50;
