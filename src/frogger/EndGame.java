@@ -17,10 +17,11 @@ import javalib.worldimages.WorldImage;
 public class EndGame extends World {
     
     private WorldImage background;
-    private int score;
+    private Score score;
     
-    public EndGame(String str) {
+    public EndGame(String str, Score score) {
         this.background = new FromFileImage(new Posn(0, 0), str);
+        this.score = score;
     }
     
     public World onTick() {
@@ -39,7 +40,7 @@ public class EndGame extends World {
     
     public WorldImage makeImage() {
          WorldImage gameOverText = new OverlayImages(new TextImage(new Posn(235, 225), "Game Over!", 40, new White()),
-                    new TextImage(new Posn(235, 275), "Score: " + 50, 40, new White()));
+                    new TextImage(new Posn(235, 275), "Score: " + this.score.getScore(), 40, new White()));
          WorldImage playAgainText = new OverlayImages(gameOverText, new TextImage(new Posn(235, 325), "Press the space bar to play again!", 20, new White()) );
          WorldImage finalImage = new OverlayImages(background, playAgainText);
          return finalImage;

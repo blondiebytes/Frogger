@@ -70,6 +70,10 @@ class Frog {
         return image;
     }
     
+    public String getIsOnLily() {
+        return isOnLily;
+    }
+    
     public int getIncrementUp() {
         return incrementUp;
     }
@@ -78,6 +82,14 @@ class Frog {
         return incrementSideToSide;
     }
     
+    public boolean equal(Frog frog) {
+        return this.getXPos() == frog.getXPos() &&
+                this.getYPos() == frog.getYPos() &&
+                this.getImage().equals(frog.getImage()) &&
+                // only check isOnLily to avoid null pointers
+                this.getIsOnLily().equals(frog.getIsOnLily()) &&
+                this.getCurrentRow() == frog.getCurrentRow();
+    }
     
     
     public int decrementCurrentRow() {

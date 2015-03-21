@@ -1,5 +1,5 @@
 
-package adventure;
+package frogger;
 
 public class Score {
     int score;
@@ -10,6 +10,10 @@ public class Score {
     
     public Score(int score) {
         this.score = score;
+    }
+    
+    public int getScore() {
+        return score;
     }
     
     public Score addScore() {

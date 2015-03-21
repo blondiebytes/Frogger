@@ -1,5 +1,5 @@
 
-package adventure;
+package frogger;
 
 import javalib.worldimages.FromFileImage;
 import javalib.worldimages.OverlayImages;
@@ -20,6 +20,10 @@ public class Lives {
     
     public Lives(int life) {
         this.life = life;
+    }
+    
+    public int getLives() {
+        return life;
     }
     
     public Lives subtractLife() {
