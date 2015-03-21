@@ -38,7 +38,10 @@ public class Frogger extends World {
     private ArrayList<Row<Car>> cars;
     private ArrayList<Row> safe;
     // VS ArrayList<Row<Collideable>>
-    // return new Image that says gameOver, with button to reset
+    
+    // Score and Lives
+    private Score score;
+    private Lives lives;
 
     public Frogger() {
         this.frog = new Frog();
@@ -48,13 +51,27 @@ public class Frogger extends World {
         this.cars = initializeCarRows();
         this.lilies = initializeLilyRows();
         this.safe = initalizeSafeRows();
+        this.score = new Score();
+        this.lives = new Lives();
+    }
+    
+    // When we start a new round
+    public Frogger(Score score, Lives lives) {
+        this.frog = new Frog();
+        this.cars = initializeCarRows();
+        this.lilies = initializeLilyRows();
+        this.safe = initalizeSafeRows();
+        this.score = score;
+        this.lives = lives;
     }
 
-    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe) {
+    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score, Lives lives) {
         this.frog = frog;
         this.cars = cars;
         this.lilies = lilies;
         this.safe = safe;
+        this.score = score;
+        this.lives = lives;
     }
 
     private ArrayList<Row<Car>> initializeCarRows() {
@@ -92,7 +109,7 @@ public class Frogger extends World {
     
     public boolean gameOver() {
         // If the frog is at the top, the game is over
-        return this.frog.getYPos() == Frog.YMIN;
+        return this.lives =< 0;
     }
 
     public World onTick() {
