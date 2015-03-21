@@ -41,7 +41,7 @@ public class Frogger extends World {
     
     // Score and Lives
     private Score score;
-  //  private Lives lives;
+    private Lives lives;
 
     public Frogger() {
         this.frog = new Frog();
@@ -52,7 +52,7 @@ public class Frogger extends World {
         this.lilies = initializeLilyRows();
         this.safe = initalizeSafeRows();
         this.score = new Score();
-  //      this.lives = new Lives();
+        this.lives = new Lives();
     }
     
     // When we start a new round
@@ -62,16 +62,16 @@ public class Frogger extends World {
         this.lilies = initializeLilyRows();
         this.safe = initalizeSafeRows();
         this.score = score;
-    //    this.lives = lives;
+        this.lives = lives;
     }
 
-    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score /*, Lives lives*/) {
+    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score, Lives lives) {
         this.frog = frog;
         this.cars = cars;
         this.lilies = lilies;
         this.safe = safe;
         this.score = score;
-    //    this.lives = lives;
+        this.lives = lives;
     }
 
     private ArrayList<Row<Car>> initializeCarRows() {
@@ -109,19 +109,32 @@ public class Frogger extends World {
     
     public boolean gameOver() {
         // If the frog is at the top, the game is over
-        return false; //this.lives.life <= 0;
+      //  System.out.println(lives.getLives());
+      return this.lives.life <= 0;
+    }
+    
+    public boolean nextRound() {
+        // When we are at the top, start the next round
+        return this.frog.getYPos() == Frog.YMIN;
     }
 
     public World onTick() {
+    //    System.out.println(lives.getLives());
         if (gameOver()) {
             return new EndGame("art/FroggerBackground.png", this.score);
+        }
+        
+        if(nextRound()){
+            // Subtly get harder or whole new game? HMMMM
+            Score newScore = this.score.addScore();
+            return new Frogger(newScore, this.lives);
         }
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
         // None of this is really "in place" or "mutative" because of testing
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-      //  Lives newLives = this.lives;
+        Lives newLives = this.lives;
         Score newScore = this.score;
 
         
@@ -133,7 +146,7 @@ public class Frogger extends World {
                 Frog newestFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
                 if (!newestFrog.equal(newFrog)) {
                     System.out.println("ok");
-         //           newLives = newLives.subtractLife();
+                    newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             }
@@ -154,7 +167,7 @@ public class Frogger extends World {
             if (newFrog.isOnLily.equals("NO")) {
                 Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
                  if (!newestFrog.equal(newFrog)) {
-        //            newLives = newLives.subtractLife();
+                   newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             } else {
@@ -179,7 +192,7 @@ public class Frogger extends World {
 
         // Safe rows will never change --> we could if we want coins on them later, 
         // but that's for later
-        return new Frogger(newFrog, newCars, newLilies, this.safe, newScore/*, newLives*/);
+        return new Frogger(newFrog, newCars, newLilies, this.safe, newScore, newLives);
     }
 
     public World onKeyEvent(String key) {
@@ -197,7 +210,7 @@ public class Frogger extends World {
         // Rows don't react to key presses
         // Check score and lives onTick 
         
-        return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score/*,this.lives*/);
+        return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score,this.lives);
     }
 
     public WorldImage makeImage() {
