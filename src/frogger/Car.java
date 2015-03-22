@@ -71,6 +71,10 @@ public class Car implements Collideable<Car> {
         }
     }
     
+    public Car moreDifficultNextRound(int newIncrement) {
+        return new Car(this.xPos, this.yPos, this.direction, newIncrement, this.identity);
+    }
+    
     public boolean isOffScreen() {
         return this.xPos >= XMAX;
     }

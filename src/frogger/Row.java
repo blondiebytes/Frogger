@@ -108,11 +108,20 @@ public class Row<D extends Collideable<D>> {
     }
     
     private Row<D> makeObstaclesHarder(Score score) {
-        int newCycle = this.collideableCycle / score.score;
+        // Figure out new values
         int newIncrement = score.score * this.increment;
+        int newCycle = this.collideableCycle / score.score;
+        
+        // Update collideables
+        ArrayList<D> newObstacles = new ArrayList<>();
+        for (D d : this.collideables) {
+            d = d.moreDifficultNextRound(newIncrement);
+        }
+        
+        // Return the fully updated rows
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, newIncrement, newCycle,
-                this.collideableTicker, this.collideables, this.safeRow, this.orderNumber);
+                this.collideableTicker, newObstacles, this.safeRow, this.orderNumber);
     }
     
     private Row<D> makeAssistersHarder(Score score) {

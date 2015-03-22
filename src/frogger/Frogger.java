@@ -111,7 +111,7 @@ public class Frogger extends World {
     
     private ArrayList<Row<Car>> nextRoundCarRows(ArrayList<Row<Car>> prevCars, Score score) {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
-        // Want a method that changes the cycle based on the score
+        // Want a method that changes the cycle based on the score\
         for (Row<Car> r : prevCars) {
             Row newRow = r.nextObstacleRound(score);
             newCars.add(newRow);

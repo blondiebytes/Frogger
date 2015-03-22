@@ -22,6 +22,7 @@ public interface Collideable<D extends Collideable> {
     public Frog refractorObstacleCollisionWithFrog(Frog frog, Row safeRow);
     public Frog refractorAssisterCollisionWithFrog(Frog frog);
     // ------- ------- ------- ------- -------
+    public D moreDifficultNextRound(int newIncrement);
     public D move();
     public WorldImage draw();
 }

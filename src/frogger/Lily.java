@@ -78,6 +78,10 @@ class Lily implements Collideable<Lily>{
         return this.xPos >= XMAX;
     }
      
+     public Lily moreDifficultNextRound(int newIncrement) {
+        return new Lily(this.xPos, this.yPos, this.direction, newIncrement, this.identity);
+    }
+     
      public Frog refractorAssisterCollisionWithFrog(Frog frog) {
             //  Set direction so we know that the frog is on a lily
               // THen tick the frog so it moves at the same rate as the lily
