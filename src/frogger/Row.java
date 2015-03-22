@@ -127,9 +127,16 @@ public class Row<D extends Collideable<D>> {
     private Row<D> makeAssistersHarder(Score score) {
         int newCycle = this.collideableCycle * score.score;
         int newIncrement = score.score * this.increment;
+        
+        // Update collideables
+        ArrayList<D> newObstacles = new ArrayList<>();
+        for (D d : this.collideables) {
+            d = d.moreDifficultNextRound(newIncrement);
+        }
+        
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, newIncrement, newCycle,
-                this.collideableTicker, this.collideables, this.safeRow, this.orderNumber);
+                this.collideableTicker, newObstacles, this.safeRow, this.orderNumber);
     }
 
     public int getStartX() {

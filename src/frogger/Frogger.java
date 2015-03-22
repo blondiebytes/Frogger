@@ -78,7 +78,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        Row<Car> car1 = new Row(-100, 150, 500, 50, 5, 100, new ArrayList<>(), 1, 3);
+        Row<Car> car1 = new Row(-100, 150, 500, 50, 2, 1000, new ArrayList<>(), 1, 3);
         newCars.add(car1);
         return newCars;
     }
