@@ -20,9 +20,8 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
     // ------------ ------------ ------------ ------------ ------------
     // TO DO LIST:
-    // --> Score and Lives
-    // --> Fix dimensions, but otherwise WE GOODDDD
-    // Identities for each object --> for testing
+    // --> Score and Life Images
+    // --> Make each level harder according to score algorithm
     // ------------ ------------ ------------ ------------ ------------
     // Two different types of rows -> one where you avoid stuff (cars) and 
     // one where you try to jump onto the things (lilies). How different are 
@@ -223,24 +222,32 @@ public class Frogger extends World {
     public WorldImage makeImage() {
         //Overlap everything
         WorldImage backgroundELT1 = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
-        WorldImage backgroundELT2 = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
-        WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT2);
+        
+        // Draw background and froggy
+        WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
 
+       // Drawing cars
         for (Row<Car> r : this.cars) {
             // Iterate through collideables to overlap
-            // TO DO: Figure out a way to make this casting less sloppy.
             for (Car c : r.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, c.draw());
             }
         }
-
+       // Drawing lilies
         for (Row<Lily> x : this.lilies) {
             for (Lily l : x.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, l.draw());
             }
         }
+        
+         // Drawing Score
+        TextImage score2 = new TextImage(new Posn(55, 35), "Score: " + this.score.score, 18, new White());
+        finalImage = new OverlayImages(finalImage, score2);
 
-        // add this.frog.drawFroggy() last so it is on top
+        // Drawing Lives
+        finalImage = this.lives.draw(finalImage);
+        
+        // Adding froggy last so it's on top
         finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
 
         return finalImage;
