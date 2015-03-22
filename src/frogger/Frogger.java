@@ -49,17 +49,18 @@ public class Frogger extends World {
         // --> things will just be added to or removed from the rows
         this.cars = initializeCarRows();
         this.lilies = initializeLilyRows();
-        this.safe = initalizeSafeRows();
+        this.safe = initializeSafeRows();
         this.score = new Score();
         this.lives = new Lives();
     }
     
     // When we start a new round
-    public Frogger(Score score, Lives lives) {
+    public Frogger(Score score, Lives lives, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies) {
         this.frog = new Frog();
-        this.cars = initializeCarRows();
-        this.lilies = initializeLilyRows();
-        this.safe = initalizeSafeRows();
+        this.cars = nextRoundCarRows(cars, score);
+        this.lilies = nextRoundLilyRows(lilies, score);
+        // safe rows don't change between rounds
+        this.safe = initializeSafeRows();
         this.score = score;
         this.lives = lives;
     }
@@ -91,7 +92,7 @@ public class Frogger extends World {
         return newLilies;
     }
 
-    private ArrayList<Row> initalizeSafeRows() {
+    private ArrayList<Row> initializeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
         // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
         Row safe0 = new Row(0, 450, 500, 350, 0, 0);
@@ -105,6 +106,21 @@ public class Frogger extends World {
        
         return initialRows;
     }
+    
+    // Need an initialization for nextRound stuff with difficulty based on score
+    
+    private ArrayList<Row<Car>> nextRoundCarRows(ArrayList<Row<Car>> prevCars, Score score) {
+        ArrayList<Row<Car>> newCars = prevCars;
+        // Want a method that changes the cycle based on the score
+        return newCars;
+    }
+    
+    private ArrayList<Row<Lily>> nextRoundLilyRows(ArrayList<Row<Lily>> prevLilies, Score score) {
+        ArrayList<Row<Lily>> newLilies = prevLilies;
+        // Want a method that changes the cycle based on the score
+        return newLilies;
+    }
+    
     
     public boolean gameOver() {
         // If the frog is at the top, the game is over
