@@ -109,13 +109,16 @@ public class Row<D extends Collideable<D>> {
     
     private Row<D> makeObstaclesHarder(Score score) {
         // Figure out new values
-        int newIncrement = score.score * this.increment;
-        int newCycle = this.collideableCycle / score.score;
+        int sizedScore = score.score / 10;
+        
+        // Go faster and appear more
+        int newIncrement = sizedScore * this.increment;
+        int newCycle = this.collideableCycle / sizedScore;
         
         // Update collideables
         ArrayList<D> newObstacles = new ArrayList<>();
         for (D d : this.collideables) {
-            d = d.moreDifficultNextRound(newIncrement);
+            newObstacles.add(d.moreDifficultNextRound(newIncrement));
         }
         
         // Return the fully updated rows
@@ -125,18 +128,21 @@ public class Row<D extends Collideable<D>> {
     }
     
     private Row<D> makeAssistersHarder(Score score) {
+        int sizedScore = score.score / 100;
+        
+        // Go faster and appear less
         int newCycle = this.collideableCycle * score.score;
-        int newIncrement = score.score * this.increment;
+        int newIncrement = sizedScore * this.increment;
         
         // Update collideables
-        ArrayList<D> newObstacles = new ArrayList<>();
+        ArrayList<D> newAssisters = new ArrayList<>();
         for (D d : this.collideables) {
-            d = d.moreDifficultNextRound(newIncrement);
+            newAssisters.add(d.moreDifficultNextRound(newIncrement));
         }
         
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, newIncrement, newCycle,
-                this.collideableTicker, newObstacles, this.safeRow, this.orderNumber);
+                this.collideableTicker, newAssisters, this.safeRow, this.orderNumber);
     }
 
     public int getStartX() {

@@ -20,7 +20,6 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
     // ------------ ------------ ------------ ------------ ------------
     // TO DO LIST:
-    // --> Score and Life Images
     // --> Make each level harder according to score algorithm
     // ------------ ------------ ------------ ------------ ------------
     // Two different types of rows -> one where you avoid stuff (cars) and 
@@ -78,7 +77,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        Row<Car> car1 = new Row(-100, 150, 500, 50, 2, 1000, new ArrayList<>(), 1, 3);
+        Row<Car> car1 = new Row(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3);
         newCars.add(car1);
         return newCars;
     }
@@ -87,7 +86,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-50, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1);
+        Row<Lily> lily1 = new Row(-30, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1);
         newLilies.add(lily1);
         return newLilies;
     }
