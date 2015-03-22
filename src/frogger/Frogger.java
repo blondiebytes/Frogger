@@ -110,14 +110,22 @@ public class Frogger extends World {
     // Need an initialization for nextRound stuff with difficulty based on score
     
     private ArrayList<Row<Car>> nextRoundCarRows(ArrayList<Row<Car>> prevCars, Score score) {
-        ArrayList<Row<Car>> newCars = prevCars;
+        ArrayList<Row<Car>> newCars = new ArrayList<>();
         // Want a method that changes the cycle based on the score
+        for (Row<Car> r : prevCars) {
+            Row newRow = r.nextObstacleRound(score);
+            newCars.add(newRow);
+        }
         return newCars;
     }
     
     private ArrayList<Row<Lily>> nextRoundLilyRows(ArrayList<Row<Lily>> prevLilies, Score score) {
-        ArrayList<Row<Lily>> newLilies = prevLilies;
+        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
         // Want a method that changes the cycle based on the score
+        for (Row<Lily> r : prevLilies) {
+            Row newRow = r.nextObstacleRound(score);
+            newLilies.add(newRow);
+        }
         return newLilies;
     }
     
@@ -125,7 +133,7 @@ public class Frogger extends World {
     public boolean gameOver() {
         // If the frog is at the top, the game is over
       //  System.out.println(lives.getLives());
-      return this.lives.life <= 0;
+      return this.lives.gameOver();
     }
     
     public boolean nextRound() {
@@ -143,7 +151,7 @@ public class Frogger extends World {
             // Subtly get harder or whole new game? HMMMMHMMMHMM
             // --> the score as a counter for difficulty algorithm???
             Score newScore = this.score.addScore();
-            return new Frogger(newScore, this.lives);
+            return new Frogger(newScore, this.lives, this.cars, this.lilies);
         }
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;

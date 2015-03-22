@@ -101,10 +101,26 @@ public class Row<D extends Collideable<D>> {
         this.orderNumber = orderNumber;
     }
 
-    public Row<D> emptyCollisionCopy() {
+    private Row<D> emptyCollisionCopy() {
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, this.increment, this.collideableCycle,
                 this.collideableTicker, new ArrayList<D>(), this.safeRow, this.orderNumber);
+    }
+    
+    private Row<D> makeObstaclesHarder(Score score) {
+        int newCycle = this.collideableCycle / score.score;
+        int newIncrement = score.score * this.increment;
+        return new Row(this.startXPos, this.startYPos, this.finishXPos,
+                this.finishYPos, newIncrement, newCycle,
+                this.collideableTicker, this.collideables, this.safeRow, this.orderNumber);
+    }
+    
+    private Row<D> makeAssistersHarder(Score score) {
+        int newCycle = this.collideableCycle * score.score;
+        int newIncrement = score.score * this.increment;
+        return new Row(this.startXPos, this.startYPos, this.finishXPos,
+                this.finishYPos, newIncrement, newCycle,
+                this.collideableTicker, this.collideables, this.safeRow, this.orderNumber);
     }
 
     public int getStartX() {
@@ -146,6 +162,7 @@ public class Row<D extends Collideable<D>> {
     public int getCollideableTicker() {
         return this.collideableTicker;
     }
+   
 
     public ArrayList<D> getCollideables() {
         return this.collideables;
@@ -176,6 +193,14 @@ public class Row<D extends Collideable<D>> {
         // Basically, does it go past the finish line?
         return collider.getXPos() >= this.finishXPos && collider.getYPos() >= this.finishYPos;
 
+    }
+    
+    public Row<D> nextObstacleRound(Score score) {
+        return this.makeObstaclesHarder(score);
+    }
+    
+    public Row<D> nextAssisterRound(Score score) {
+        return this.makeAssistersHarder(score);
     }
 
     public Row<D> moveCollideables() {
