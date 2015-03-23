@@ -171,7 +171,7 @@ public class ObstacleRow<D extends Collideable<D>> extends Row {
                 this.getOrderNumber(), this.color);
     }
 
-    protected Frog checkIfCollisionWithFrog(Frog frog, ArrayList<Row> safeRows) {
+    public Frog checkIfCollisionWithFrog(Frog frog, ArrayList<Row> safeRows) {
         //  will change this to check for collisions in current row (or the rows around the Frog)
         Frog newFrog = frog;
         for (D d : this.getCollideables()) {
