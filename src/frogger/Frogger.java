@@ -81,7 +81,7 @@ public class Frogger extends World {
         ArrayList<ObstacleRow<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        ObstacleRow<Car> car1 = new ObstacleRow(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3, BLACK);
+        ObstacleRow<Car> car1 = new ObstacleRow(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 2, 3, BLACK);
         newCars.add(car1);
         return newCars;
     }
@@ -124,11 +124,12 @@ public class Frogger extends World {
     private ArrayList<AssisterRow<Lily>> nextRoundLilyRows(ArrayList<AssisterRow<Lily>> prevLilies, Score score) {
         ArrayList<AssisterRow<Lily>> newLilies = new ArrayList<>();
         // Want a method that changes the cycle based on the score
-        for (AssisterRow<Lily> r : prevLilies) {
-            AssisterRow newRow = r.nextObstacleRound(score);
+        for (AssisterRow<Lily> x : prevLilies) {
+            AssisterRow<Lily> newRow = x.nextObstacleRound(score);
             newLilies.add(newRow);
             System.out.println("add row");
         }
+        
         return newLilies;
     }
 
