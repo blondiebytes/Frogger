@@ -83,7 +83,7 @@ public class Row<D extends Collideable<D>> {
     }
 
     public WorldImage draw() {
-        RectangleImage background = new RectangleImage(new Posn(0, this.startYPos), 1000, 100, this.color);
+        RectangleImage background = new RectangleImage(new Posn(0, this.startYPos), 1000, 100, this.getColor());
         return background;
     }
     

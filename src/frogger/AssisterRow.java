@@ -27,6 +27,27 @@ public class AssisterRow<D extends Collideable<D>> extends ObstacleRow<D>{
             collideableCycle, collideableTicker, colliders, safeRow, orderNumber, color);
     }
     
+    private AssisterRow<D> emptyCollisionCopy() {
+        return new AssisterRow(this.getStartX(), this.getStartY(), this.getFinishX(),
+                this.getFinishY(), this.getIncrement(), this.getCollideableCycle(),
+                this.getCollideableTicker(), new ArrayList<>(), this.getSafeRow(),
+                this.getOrderNumber(), this.getColor());
+    }
+    
+    public AssisterRow<D> moveCollideables() {
+         AssisterRow<D> newAssisterRow = this.emptyCollisionCopy();
+         System.out.println("Move more");
+        for (D d : this.getCollideables()) {
+            // Move the collider
+            D newCar = d.move();
+            // Remove obstacle/collider if it's offscreen
+            if (!newCar.isOffScreen()) {
+                newAssisterRow.getCollideables().add(newCar);
+            }
+        }
+        return newAssisterRow;
+    }
+    
     
     public AssisterRow<D> nextObstacleRound(Score score) {
         return this.makeObstaclesHarder(score);
@@ -34,7 +55,7 @@ public class AssisterRow<D extends Collideable<D>> extends ObstacleRow<D>{
     
     private AssisterRow<D> makeObstaclesHarder(Score score) {
         int sizedScore = score.score / 100;
-        
+        System.out.println("Harder");
         // Go faster and appear less
         int newCycle = this.getCollideableCycle() * score.score;
         int newIncrement = sizedScore * this.getIncrement();
@@ -58,6 +79,7 @@ public class AssisterRow<D extends Collideable<D>> extends ObstacleRow<D>{
     }
      
     
+    @Override
      public Frog checkIfCollisionWithFrog(Frog frog, ArrayList<Row> safeRows) {
         Frog newFrog = frog;
         if (frog.getCurrentRow() == this.getOrderNumber()) {

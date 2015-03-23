@@ -34,8 +34,8 @@ public class Frogger extends World {
     // Rows keeps track of when new stuff should be added --> 
     // Row is basically like a generator of where stuff should start
     // An arraylist of all the lily rows and an arraylist of all the car rows
-    private ArrayList<Row<Lily>> lilies;
-    private ArrayList<Row<Car>> cars;
+    private ArrayList<AssisterRow<Lily>> lilies;
+    private ArrayList<ObstacleRow<Car>> cars;
     private ArrayList<Row> safe;
     // VS ArrayList<Row<Collideable>>
 
@@ -57,7 +57,7 @@ public class Frogger extends World {
     }
 
     // When we start a new round
-    public Frogger(Score score, Lives lives, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies) {
+    public Frogger(Score score, Lives lives, ArrayList<ObstacleRow<Car>> cars, ArrayList<AssisterRow<Lily>> lilies) {
         this.frog = new Frog();
         this.cars = nextRoundCarRows(cars, score);
         this.lilies = nextRoundLilyRows(lilies, score);
@@ -68,7 +68,7 @@ public class Frogger extends World {
     }
 
     // When we are continuing a game
-    public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score, Lives lives) {
+    public Frogger(Frog frog, ArrayList<ObstacleRow<Car>> cars, ArrayList<AssisterRow<Lily>> lilies, ArrayList<Row> safe, Score score, Lives lives) {
         this.frog = frog;
         this.cars = cars;
         this.lilies = lilies;
@@ -77,55 +77,55 @@ public class Frogger extends World {
         this.lives = lives;
     }
 
-    private ArrayList<Row<Car>> initializeCarRows() {
-        ArrayList<Row<Car>> newCars = new ArrayList<>();
+    private ArrayList<ObstacleRow<Car>> initializeCarRows() {
+        ArrayList<ObstacleRow<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        Row<Car> car1 = new Row(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3, BLACK);
+        ObstacleRow<Car> car1 = new ObstacleRow(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3, BLACK);
         newCars.add(car1);
         return newCars;
     }
 
-    private ArrayList<Row<Lily>> initializeLilyRows() {
+    private ArrayList<AssisterRow<Lily>> initializeLilyRows() {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-30, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1, BLUE);
+        ArrayList<AssisterRow<Lily>> newLilies = new ArrayList<>();
+        AssisterRow<Lily> lily1 = new AssisterRow(-30, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1, BLUE);
         newLilies.add(lily1);
         return newLilies;
     }
 
     private ArrayList<Row> initializeSafeRows() {
         ArrayList<Row> initialRows = new ArrayList<>();
-        // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
-        Row safe0 = new Row(0, 450, 500, 350, 0, 0);
+        // StartX, StartY, FinishX, FinishY, numberforOrderInRows
+        Row safe0 = new Row(0, 450, 500, 350, 0);
         initialRows.add(safe0);
         // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
-        Row safe1 = new Row(0, 250, 500, 150, 1, 2);
+        Row safe1 = new Row(0, 250, 500, 150, 2);
         initialRows.add(safe1);
         // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
-        Row safe2 = new Row(0, 50, 500, -50, 2, 4);
+        Row safe2 = new Row(0, 50, 500, -50, 4);
         initialRows.add(safe2);
 
         return initialRows;
     }
 
     // Need an initialization for nextRound stuff with difficulty based on score
-    private ArrayList<Row<Car>> nextRoundCarRows(ArrayList<Row<Car>> prevCars, Score score) {
-        ArrayList<Row<Car>> newCars = new ArrayList<>();
+    private ArrayList<ObstacleRow<Car>> nextRoundCarRows(ArrayList<ObstacleRow<Car>> prevCars, Score score) {
+        ArrayList<ObstacleRow<Car>> newCars = new ArrayList<>();
         // Want a method that changes the cycle based on the score\
-        for (Row<Car> r : prevCars) {
-            Row newRow = r.nextObstacleRound(score);
+        for (ObstacleRow<Car> r : prevCars) {
+            ObstacleRow newRow = r.nextObstacleRound(score);
             newCars.add(newRow);
         }
         return newCars;
     }
 
-    private ArrayList<Row<Lily>> nextRoundLilyRows(ArrayList<Row<Lily>> prevLilies, Score score) {
-        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
+    private ArrayList<AssisterRow<Lily>> nextRoundLilyRows(ArrayList<AssisterRow<Lily>> prevLilies, Score score) {
+        ArrayList<AssisterRow<Lily>> newLilies = new ArrayList<>();
         // Want a method that changes the cycle based on the score
-        for (Row<Lily> r : prevLilies) {
-            Row newRow = r.nextObstacleRound(score);
+        for (AssisterRow<Lily> r : prevLilies) {
+            AssisterRow newRow = r.nextObstacleRound(score);
             newLilies.add(newRow);
         }
         return newLilies;
@@ -157,16 +157,16 @@ public class Frogger extends World {
         // If froggy is on a lily --> froggy moves too, so we create a var for that
         Frog newFrog = this.frog;
         // None of this is really "in place" or "mutative" because of testing
-        ArrayList<Row<Car>> newCars = new ArrayList<>();
-        ArrayList<Row<Lily>> newLilies = new ArrayList<>();
+        ArrayList<ObstacleRow<Car>> newCars = new ArrayList<>();
+        ArrayList<AssisterRow<Lily>> newLilies = new ArrayList<>();
         Lives newLives = this.lives;
 
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
-        for (Row<Car> r : this.cars) {
+        for (ObstacleRow<Car> r : this.cars) {
             // if a frog is on a lily, then we don't need to check this.
             if ((newFrog.isOnLily.equals("NO"))) {
-                Frog newestFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+                Frog newestFrog = r.checkIfCollisionWithFrog(newFrog, this.safe);
                 // Checking if we are kicked back
                 if (!newestFrog.equal(newFrog)) {
                     newLives = newLives.subtractLife();
@@ -174,7 +174,7 @@ public class Frogger extends World {
                 newFrog = newestFrog;
             }
             //The only thing that updates in a row is the items in it
-            Row<Car> newCarRow = r.moveCollideables();
+            ObstacleRow<Car> newCarRow = r.moveCollideables();
 
             // Adding a new collider if it's time
             // Must do this here because cannot add a new D in generics
@@ -186,9 +186,9 @@ public class Frogger extends World {
             newCars.add(newCarRow);
         }
 
-        for (Row<Lily> x : this.lilies) {
+        for (AssisterRow<Lily> x : this.lilies) {
             if (newFrog.isOnLily.equals("NO")) {
-                Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+                Frog newestFrog = x.checkIfCollisionWithFrog(newFrog, this.safe);
                 if (newestFrog.getCurrentRow() != newFrog.getCurrentRow()) {
                     System.out.println("check froggy");
                     newLives = newLives.subtractLife();
@@ -198,7 +198,7 @@ public class Frogger extends World {
                 newFrog = newFrog.tickMoveFroggy(newFrog.getLily());
             }
             //The only thing that updates in a row is the items in it
-            Row<Lily> newLilyRow = x.moveCollideables();
+            AssisterRow<Lily> newLilyRow = (AssisterRow) x.moveCollideables();
 
             // Adding a new collider if it's time
             // Must do this here because we can't initialize a D generic
@@ -224,12 +224,12 @@ public class Frogger extends World {
         Frog newFrog = this.frog.reactMoveFroggy(key);
         Lives newLives = this.lives;
         if (newFrog.isOnLily.equals("NO")) {
-            for (Row<Car> r : this.cars) {
+            for (ObstacleRow<Car> r : this.cars) {
                 // Checking for collisions -->
-                newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+                newFrog = r.checkIfCollisionWithFrog(newFrog, this.safe);
             }
-            for (Row<Lily> x : this.lilies) {
-                Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+            for (AssisterRow<Lily> x : this.lilies) {
+                Frog newestFrog = x.checkIfCollisionWithFrog(newFrog, this.safe);
                 if (newestFrog.getCurrentRow() != newFrog.getCurrentRow()) {
                     System.out.println("check froggy2");
                     newLives = newLives.subtractLife();
@@ -254,7 +254,7 @@ public class Frogger extends World {
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
         
         // Drawing cars
-        for (Row<Car> r : this.cars) {
+        for (ObstacleRow<Car> r : this.cars) {
             // Iterate through collideables to overlap
             finalImage = new OverlayImages(finalImage, r.draw());
             for (Car c : r.getCollideables()) {
@@ -262,7 +262,7 @@ public class Frogger extends World {
             }
         }
         // Drawing lilies
-        for (Row<Lily> x : this.lilies) {
+        for (AssisterRow<Lily> x : this.lilies) {
             finalImage = new OverlayImages(finalImage, x.draw());
             for (Lily l : x.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, l.draw());
