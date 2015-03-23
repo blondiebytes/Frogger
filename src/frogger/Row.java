@@ -8,6 +8,9 @@ package frogger;
 import java.awt.Color;
 import static java.awt.Color.GRAY;
 import static java.awt.Color.GREEN;
+import static java.awt.Color.LIGHT_GRAY;
+import static java.awt.Color.MAGENTA;
+import static java.awt.Color.YELLOW;
 import java.util.ArrayList;
 import javalib.worldimages.Posn;
 import javalib.worldimages.RectangleImage;
@@ -67,7 +70,7 @@ public class Row<D extends Collideable<D>> {
         this.collideables = new ArrayList<>();
         this.safeRow = safeRow;
         this.orderNumber = orderNumber;
-        this.color = GREEN;
+        this.color = LIGHT_GRAY;
     }
 
     // Figure out a way to limit constructors

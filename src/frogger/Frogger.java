@@ -1,5 +1,6 @@
 package frogger;
 
+import static java.awt.Color.BLACK;
 import static java.awt.Color.BLUE;
 import static java.awt.Color.GRAY;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        Row<Car> car1 = new Row(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3, GRAY);
+        Row<Car> car1 = new Row(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3, BLACK);
         newCars.add(car1);
         return newCars;
     }
@@ -248,6 +249,8 @@ public class Frogger extends World {
         WorldImage backgroundELT1 = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
 //
 //        // Draw background and froggy
+        // This doesn't do anything because all the other draws overwrite it
+        // but i needed a way to instantiate.... Will come up with a better way later
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
         
         // Drawing cars
