@@ -36,12 +36,13 @@ public class AssisterRow<D extends Collideable<D>> extends ObstacleRow<D>{
     
     public AssisterRow<D> moveCollideables() {
          AssisterRow<D> newAssisterRow = this.emptyCollisionCopy();
+
         for (D d : this.getCollideables()) {
             // Move the collider
             D newCar = d.move();
             // Remove obstacle/collider if it's offscreen
             if (!newCar.isOffScreen()) {
-                System.out.println("move");
+
                 newAssisterRow.getCollideables().add(newCar);
             }
         }

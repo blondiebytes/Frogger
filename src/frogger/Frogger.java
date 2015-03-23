@@ -200,7 +200,6 @@ public class Frogger extends World {
             }
             //The only thing that updates in a row is the items in it
             AssisterRow<Lily> newLilyRow = x.moveCollideables();
-
             // Adding a new collider if it's time
             // Must do this here because we can't initialize a D generic
             if (newLilyRow.isTimeForNewCollider()) {
