@@ -1,5 +1,7 @@
 package frogger;
 
+import static java.awt.Color.BLUE;
+import static java.awt.Color.GRAY;
 import java.util.ArrayList;
 import javalib.colors.White;
 import javalib.funworld.World;
@@ -25,7 +27,6 @@ public class Frogger extends World {
     // Two different types of rows -> one where you avoid stuff (cars) and 
     // one where you try to jump onto the things (lilies). How different are 
     // they really? Create an interface or just do a type check?
-    
     // MAIN MOVING FIELDS
     public Frog frog;
 
@@ -36,11 +37,12 @@ public class Frogger extends World {
     private ArrayList<Row<Car>> cars;
     private ArrayList<Row> safe;
     // VS ArrayList<Row<Collideable>>
-    
+
     // Score and Lives
     private Score score;
     private Lives lives;
 
+    // When we start a completely new game
     public Frogger() {
         this.frog = new Frog();
         // we should really set up constraints 
@@ -52,7 +54,7 @@ public class Frogger extends World {
         this.score = new Score();
         this.lives = new Lives();
     }
-    
+
     // When we start a new round
     public Frogger(Score score, Lives lives, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies) {
         this.frog = new Frog();
@@ -64,6 +66,7 @@ public class Frogger extends World {
         this.lives = lives;
     }
 
+    // When we are continuing a game
     public Frogger(Frog frog, ArrayList<Row<Car>> cars, ArrayList<Row<Lily>> lilies, ArrayList<Row> safe, Score score, Lives lives) {
         this.frog = frog;
         this.cars = cars;
@@ -77,7 +80,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        Row<Car> car1 = new Row(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3);
+        Row<Car> car1 = new Row(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 1, 3, GRAY);
         newCars.add(car1);
         return newCars;
     }
@@ -86,7 +89,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
-        Row<Lily> lily1 = new Row(-30, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1);
+        Row<Lily> lily1 = new Row(-30, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1, BLUE);
         newLilies.add(lily1);
         return newLilies;
     }
@@ -102,12 +105,11 @@ public class Frogger extends World {
         // StartX, StartY, FinishX, FinishY, numberOfSafeRow, numberforOrderInRows
         Row safe2 = new Row(0, 50, 500, -50, 2, 4);
         initialRows.add(safe2);
-       
+
         return initialRows;
     }
-    
+
     // Need an initialization for nextRound stuff with difficulty based on score
-    
     private ArrayList<Row<Car>> nextRoundCarRows(ArrayList<Row<Car>> prevCars, Score score) {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         // Want a method that changes the cycle based on the score\
@@ -117,7 +119,7 @@ public class Frogger extends World {
         }
         return newCars;
     }
-    
+
     private ArrayList<Row<Lily>> nextRoundLilyRows(ArrayList<Row<Lily>> prevLilies, Score score) {
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
         // Want a method that changes the cycle based on the score
@@ -127,26 +129,25 @@ public class Frogger extends World {
         }
         return newLilies;
     }
-    
-    
+
     public boolean gameOver() {
         // If the frog is at the top, the game is over
-      //  System.out.println(lives.getLives());
-      return this.lives.gameOver();
+        //  System.out.println(lives.getLives());
+        return this.lives.gameOver();
     }
-    
+
     public boolean nextRound() {
         // When we are at the top, start the next round
         return this.frog.getYPos() == Frog.YMIN;
     }
 
     public World onTick() {
-    //    System.out.println(lives.getLives());
+        //    System.out.println(lives.getLives());
         if (gameOver()) {
             return new EndGame("art/FroggerBackground.png", this.score);
         }
-        
-        if(nextRound()){
+
+        if (nextRound()) {
             // Subtly get harder or whole new game? HMMMMHMMMHMM
             // --> the score as a counter for difficulty algorithm???
             Score newScore = this.score.addScore();
@@ -158,7 +159,7 @@ public class Frogger extends World {
         ArrayList<Row<Car>> newCars = new ArrayList<>();
         ArrayList<Row<Lily>> newLilies = new ArrayList<>();
         Lives newLives = this.lives;
-        
+
         // Iterate through the rows, moving them all the things in collideables
         // --> and check for collisions
         for (Row<Car> r : this.cars) {
@@ -173,7 +174,7 @@ public class Frogger extends World {
             }
             //The only thing that updates in a row is the items in it
             Row<Car> newCarRow = r.moveCollideables();
-            
+
             // Adding a new collider if it's time
             // Must do this here because cannot add a new D in generics
             if (newCarRow.isTimeForNewCollider()) {
@@ -187,9 +188,9 @@ public class Frogger extends World {
         for (Row<Lily> x : this.lilies) {
             if (newFrog.isOnLily.equals("NO")) {
                 Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
-                 if (newestFrog.getCurrentRow()  != newFrog.getCurrentRow()) {
-                     System.out.println("check froggy");
-                     newLives = newLives.subtractLife();
+                if (newestFrog.getCurrentRow() != newFrog.getCurrentRow()) {
+                    System.out.println("check froggy");
+                    newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             } else {
@@ -197,7 +198,7 @@ public class Frogger extends World {
             }
             //The only thing that updates in a row is the items in it
             Row<Lily> newLilyRow = x.moveCollideables();
-            
+
             // Adding a new collider if it's time
             // Must do this here because we can't initialize a D generic
             if (newLilyRow.isTimeForNewCollider()) {
@@ -222,15 +223,15 @@ public class Frogger extends World {
         Frog newFrog = this.frog.reactMoveFroggy(key);
         Lives newLives = this.lives;
         if (newFrog.isOnLily.equals("NO")) {
-        for (Row<Car> r : this.cars) {
-            // Checking for collisions -->
-            newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
-        }
-        for (Row<Lily> x : this.lilies) {
-            Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
-             if (newestFrog.getCurrentRow()  != newFrog.getCurrentRow()) {
-                     System.out.println("check froggy2");
-                     newLives = newLives.subtractLife();
+            for (Row<Car> r : this.cars) {
+                // Checking for collisions -->
+                newFrog = r.checkObstacleCollisionsWithFrog(newFrog, this.safe);
+            }
+            for (Row<Lily> x : this.lilies) {
+                Frog newestFrog = x.checkAssisterCollisionsWithFrog(newFrog, this.safe);
+                if (newestFrog.getCurrentRow() != newFrog.getCurrentRow()) {
+                    System.out.println("check froggy2");
+                    newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
             }
@@ -238,38 +239,44 @@ public class Frogger extends World {
         //System.out.println("newFrog current row"+ newFrog.getCurrentRow());
         // Rows don't react to key presses
         // Check score and lives onTick 
-        
+
         return new Frogger(newFrog, this.cars, this.lilies, this.safe, this.score, newLives);
     }
 
     public WorldImage makeImage() {
-        //Overlap everything
+//        //Overlap everything
         WorldImage backgroundELT1 = new FromFileImage(new Posn(0, 0), "art/FroggerBackground.png");
-        
-        // Draw background and froggy
+//
+//        // Draw background and froggy
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
-
-       // Drawing cars
+        
+        // Drawing cars
         for (Row<Car> r : this.cars) {
             // Iterate through collideables to overlap
+            finalImage = new OverlayImages(finalImage, r.draw());
             for (Car c : r.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, c.draw());
             }
         }
-       // Drawing lilies
+        // Drawing lilies
         for (Row<Lily> x : this.lilies) {
+            finalImage = new OverlayImages(finalImage, x.draw());
             for (Lily l : x.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, l.draw());
             }
         }
         
-         // Drawing Score
+        for(Row safe : this.safe){
+            finalImage = new OverlayImages(finalImage, safe.draw());
+        }
+
+        // Drawing Score
         TextImage score2 = new TextImage(new Posn(55, 35), "Score: " + this.score.score, 18, new White());
         finalImage = new OverlayImages(finalImage, score2);
 
         // Drawing Lives
         finalImage = this.lives.draw(finalImage);
-        
+
         // Adding froggy last so it's on top
         finalImage = new OverlayImages(finalImage, this.frog.drawFroggy());
 

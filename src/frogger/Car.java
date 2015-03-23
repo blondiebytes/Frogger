@@ -1,8 +1,12 @@
 
 package frogger;
 
+import static java.awt.Color.BLUE;
+import static java.awt.Color.GRAY;
 import javalib.worldimages.FromFileImage;
+import javalib.worldimages.OverlayImages;
 import javalib.worldimages.Posn;
+import javalib.worldimages.RectangleImage;
 import javalib.worldimages.WorldImage;
 
 public class Car implements Collideable<Car> {
@@ -91,8 +95,9 @@ public class Car implements Collideable<Car> {
      public WorldImage draw() {
          if (this.getDirection().equals("RIGHT")) {
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/rightcar.png");
-         } else
+         } else {
              return new FromFileImage(new Posn(this.xPos, this.yPos), "art/leftcar.png");
+         }
         }
 
  

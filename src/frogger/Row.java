@@ -5,7 +5,13 @@
  */
 package frogger;
 
+import java.awt.Color;
+import static java.awt.Color.GRAY;
+import static java.awt.Color.GREEN;
 import java.util.ArrayList;
+import javalib.worldimages.Posn;
+import javalib.worldimages.RectangleImage;
+import javalib.worldimages.WorldImage;
 
 public class Row<D extends Collideable<D>> {
 
@@ -34,9 +40,11 @@ public class Row<D extends Collideable<D>> {
     // are storing the hash. 
     private final int safeRow;
     private final int orderNumber;
+    
+    // Color for background of row
+    private final Color color;
 
-    // FOR SAFE ROWS
-    // Safe rows don't have colliders, and thus, don't collide with stuff
+    // FOR EMPTY ROW
     public Row() {
         startXPos = 0;
         startYPos = 0;
@@ -46,8 +54,10 @@ public class Row<D extends Collideable<D>> {
         safeRow = -1;
         orderNumber = -1;
         this.direction = "EMPTY";
+        this.color = null;
     }
 
+    // For INIT safe row
     public Row(int startX, int startY, int finishX, int finishY, int safeRow, int orderNumber) {
         this.startXPos = startX;
         this.startYPos = startY;
@@ -57,11 +67,13 @@ public class Row<D extends Collideable<D>> {
         this.collideables = new ArrayList<>();
         this.safeRow = safeRow;
         this.orderNumber = orderNumber;
+        this.color = GREEN;
     }
 
     // Figure out a way to limit constructors
+    // FOR INIT NON-SAFE ROWS
     public Row(int startX, int startY, int finishX, int finishY, int increment,
-            int collideableCycle, ArrayList<D> colliders, int safeRow, int orderNumber) {
+            int collideableCycle, ArrayList<D> colliders, int safeRow, int orderNumber, Color color) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -77,13 +89,13 @@ public class Row<D extends Collideable<D>> {
         this.collideableTicker = 0;
         this.safeRow = safeRow;
         this.orderNumber = orderNumber;
+        this.color = color;
     }
 
-    // FOR INIT NON-SAFE ROWS
-    // Have a cycle of when stuff appears, have a storage of stuffs
+    // FOR CONTINUING NON-SAFE ROWS
     public Row(int startX, int startY, int finishX, int finishY, int increment,
             int collideableCycle, int collideableTicker, ArrayList<D> colliders,
-            int safeRow, int orderNumber) {
+            int safeRow, int orderNumber, Color color) {
         this.startXPos = startX;
         this.startYPos = startY;
         this.finishXPos = finishX;
@@ -99,12 +111,14 @@ public class Row<D extends Collideable<D>> {
         this.safeRow = safeRow;
         this.collideableTicker = collideableTicker;
         this.orderNumber = orderNumber;
+        this.color = color;
     }
 
     private Row<D> emptyCollisionCopy() {
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, this.increment, this.collideableCycle,
-                this.collideableTicker, new ArrayList<D>(), this.safeRow, this.orderNumber);
+                this.collideableTicker, new ArrayList<D>(), this.safeRow, 
+                this.orderNumber, this.color);
     }
     
     private Row<D> makeObstaclesHarder(Score score) {
@@ -124,7 +138,8 @@ public class Row<D extends Collideable<D>> {
         // Return the fully updated rows
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, newIncrement, newCycle,
-                this.collideableTicker, newObstacles, this.safeRow, this.orderNumber);
+                this.collideableTicker, newObstacles, this.safeRow, 
+                this.orderNumber, this.color);
     }
     
     private Row<D> makeAssistersHarder(Score score) {
@@ -142,7 +157,8 @@ public class Row<D extends Collideable<D>> {
         
         return new Row(this.startXPos, this.startYPos, this.finishXPos,
                 this.finishYPos, newIncrement, newCycle,
-                this.collideableTicker, newAssisters, this.safeRow, this.orderNumber);
+                this.collideableTicker, newAssisters, this.safeRow, 
+                this.orderNumber, this.color);
     }
 
     public int getStartX() {
@@ -313,6 +329,11 @@ public class Row<D extends Collideable<D>> {
         // This means that the frog hit the water/lava/slash whatever
       //  System.out.println("Obstacle Hit" + frog.decrementCurrentRow() + " Background Hit");
         return new Frog(frog.getXPos(), this.getStartY(), frog.image, frog.decrementCurrentRow());
+    }
+    
+    public WorldImage draw() {
+        RectangleImage background = new RectangleImage(new Posn(0, this.startYPos), 1000, 100, this.color);
+        return background;
     }
 
 }
