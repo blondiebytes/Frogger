@@ -81,7 +81,7 @@ public class Frogger extends World {
         ArrayList<ObstacleRow<Car>> newCars = new ArrayList<>();
         // DANGER ROW 2 --> CARS
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
-        ObstacleRow<Car> car1 = new ObstacleRow(-75, 150, 500, 50, 2, 500, new ArrayList<>(), 2, 3, BLACK);
+        ObstacleRow<Car> car1 = new ObstacleRow(-50, 150, 400, 50, 3, 200, new ArrayList<>(), 2, 3, BLACK);
         newCars.add(car1);
         return newCars;
     }
@@ -90,7 +90,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
         ArrayList<AssisterRow<Lily>> newLilies = new ArrayList<>();
-        AssisterRow<Lily> lily1 = new AssisterRow(-30, 350, 500, 250, 1, 200, new ArrayList<>(), 0, 1, BLUE);
+        AssisterRow<Lily> lily1 = new AssisterRow(-25, 350, 500, 200, 2, 100, new ArrayList<>(), 0, 1, BLUE);
         newLilies.add(lily1);
         return newLilies;
     }
@@ -127,7 +127,6 @@ public class Frogger extends World {
         for (AssisterRow<Lily> x : prevLilies) {
             AssisterRow<Lily> newRow = x.nextObstacleRound(score);
             newLilies.add(newRow);
-            System.out.println("add row");
         }
         
         return newLilies;
@@ -192,7 +191,7 @@ public class Frogger extends World {
             if (newFrog.isOnLily.equals("NO")) {
                 Frog newestFrog = x.checkIfCollisionWithFrog(newFrog, this.safe);
                 if (newestFrog.getCurrentRow() != newFrog.getCurrentRow()) {
-                    System.out.println("check froggy");
+                  //  System.out.println("check froggy");
                     newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;

@@ -74,7 +74,6 @@ public class Row<D extends Collideable<D>> {
         return this.orderNumber;
     }
     
-    
     protected Color getColor() {
         return this.color;
     }

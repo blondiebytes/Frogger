@@ -114,6 +114,7 @@ public class ObstacleRow<D extends Collideable<D>> extends Row {
     // to a row. We return what was added so we can make sure it's correct
     // in testing
     public boolean isTimeForNewCollider() {
+        System.out.println("ticker" + collideableTicker + "cycle" + collideableCycle);
         collideableTicker++;
         return collideableTicker % collideableCycle == 0;
     }
@@ -152,11 +153,11 @@ public class ObstacleRow<D extends Collideable<D>> extends Row {
 
     private ObstacleRow<D> makeObstaclesHarder(Score score) {
         // Figure out new values
-        int sizedScore = score.score / 10;
+        int sizedScore = score.score / 5;
 
         // Go faster and appear more
         int newIncrement = sizedScore * this.increment;
-        int newCycle = this.collideableCycle / sizedScore;
+        int newCycle = this.collideableCycle / 2;
 
         // Update collideables
         ArrayList<D> newObstacles = new ArrayList<>();

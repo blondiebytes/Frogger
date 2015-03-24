@@ -40,9 +40,10 @@ public class AssisterRow<D extends Collideable<D>> extends ObstacleRow<D>{
         for (D d : this.getCollideables()) {
             // Move the collider
             D newCar = d.move();
+        //    System.out.println(d.getXPos() + " to " + newCar.getXPos());
             // Remove obstacle/collider if it's offscreen
             if (!newCar.isOffScreen()) {
-
+           //     System.out.println("Moved collideables");
                 newAssisterRow.getCollideables().add(newCar);
             }
         }
@@ -55,16 +56,16 @@ public class AssisterRow<D extends Collideable<D>> extends ObstacleRow<D>{
     }
     
     private AssisterRow<D> makeObstaclesHarder(Score score) {
-        int sizedScore = score.score / 100;
-        System.out.println("Harder");
+        int sizedScore = score.score / 5;
         // Go faster and appear less
-        int newCycle = this.getCollideableCycle() * score.score;
         int newIncrement = sizedScore * this.getIncrement();
+        int newCycle =  (this.getCollideableCycle() * 2)/3;
+     //   System.out.println(this.getCollideableCycle() + "COOL");
         
         // Update collideables
         ArrayList<D> newAssisters = new ArrayList<>();
         for (D d : this.getCollideables()) {
-            System.out.println("addlakdjsf;alsdjkf;askdf");
+      //      System.out.println(this.getCollideables().size());
             newAssisters.add(d.moreDifficultNextRound(newIncrement));
         }
         
