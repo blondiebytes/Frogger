@@ -7,6 +7,10 @@ package frogger;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import javalib.worldimages.OverlayImages;
+import javalib.worldimages.Posn;
+import javalib.worldimages.RectangleImage;
+import javalib.worldimages.WorldImage;
 
 /**
  *
@@ -114,7 +118,7 @@ public class ObstacleRow<D extends Collideable<D>> extends Row {
     // to a row. We return what was added so we can make sure it's correct
     // in testing
     public boolean isTimeForNewCollider() {
-        System.out.println("ticker" + collideableTicker + "cycle" + collideableCycle);
+    //    System.out.println("ticker" + collideableTicker + "cycle" + collideableCycle);
         collideableTicker++;
         return collideableTicker % collideableCycle == 0;
     }
@@ -145,6 +149,15 @@ public class ObstacleRow<D extends Collideable<D>> extends Row {
             }
         }
         return newObstacleRow;
+    }
+    
+    public WorldImage draw(WorldImage finalImage) {
+        RectangleImage background = new RectangleImage(new Posn(0, this.getStartX()), 1000, (this.getStartY() - this.getFinishY()), this.getColor());
+        finalImage = new OverlayImages(finalImage, background);
+        for (D d: this.getCollideables()) {
+                finalImage = new OverlayImages(finalImage, d.draw());
+            }
+        return finalImage;
     }
 
     public ObstacleRow<D> nextObstacleRound(Score score) {

@@ -90,7 +90,7 @@ public class Frogger extends World {
         // DANGER ROW 1 --> LILIES
         // StartY, FinishX, FinishY, Increment, collideableCycle, ArrayList<D> colliders, numberOfSafeRowToReturn, numberforOrderInRows
         ArrayList<AssisterRow<Lily>> newLilies = new ArrayList<>();
-        AssisterRow<Lily> lily1 = new AssisterRow(-25, 350, 500, 200, 2, 100, new ArrayList<>(), 0, 1, BLUE);
+        AssisterRow<Lily> lily1 = new AssisterRow(-25, 350, 500, 250, 2, 100, new ArrayList<>(), 0, 1, BLUE);
         newLilies.add(lily1);
         return newLilies;
     }
@@ -145,10 +145,12 @@ public class Frogger extends World {
 
     public World onTick() {
         //    System.out.println(lives.getLives());
+        
+        // Change the game if it's over...
         if (gameOver()) {
             return new EndGame("art/FroggerBackground.png", this.score);
         }
-
+        // Or if it's the next round
         if (nextRound()) {
             // Subtly get harder or whole new game? HMMMMHMMMHMM
             // --> the score as a counter for difficulty algorithm???
@@ -231,7 +233,7 @@ public class Frogger extends World {
             for (AssisterRow<Lily> x : this.lilies) {
                 Frog newestFrog = x.checkIfCollisionWithFrog(newFrog, this.safe);
                 if (newestFrog.getCurrentRow() != newFrog.getCurrentRow()) {
-                    System.out.println("check froggy2");
+                 //   System.out.println("check froggy2");
                     newLives = newLives.subtractLife();
                 }
                 newFrog = newestFrog;
@@ -253,25 +255,24 @@ public class Frogger extends World {
         // but i needed a way to instantiate.... Will come up with a better way later
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
         
+       
+        
         // Drawing cars
         for (ObstacleRow<Car> r : this.cars) {
             // Iterate through collideables to overlap
-            finalImage = new OverlayImages(finalImage, r.draw());
-            for (Car c : r.getCollideables()) {
-                finalImage = new OverlayImages(finalImage, c.draw());
-            }
+            finalImage = new OverlayImages(finalImage, r.draw(finalImage));
+            
         }
         // Drawing lilies
         for (AssisterRow<Lily> x : this.lilies) {
-            finalImage = new OverlayImages(finalImage, x.draw());
-            for (Lily l : x.getCollideables()) {
-                finalImage = new OverlayImages(finalImage, l.draw());
-            }
+            finalImage = new OverlayImages(finalImage, x.draw(finalImage));
         }
         
-        for(Row safe : this.safe){
-            finalImage = new OverlayImages(finalImage, safe.draw());
+         // Drawing Safe Rows...
+        for(Row safey : this.safe){
+            finalImage = new OverlayImages(finalImage, safey.draw(finalImage));
         }
+        
 
         // Drawing Score
         TextImage score2 = new TextImage(new Posn(55, 35), "Score: " + this.score.score, 18, new White());
