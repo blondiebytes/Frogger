@@ -23,11 +23,8 @@ public class Frogger extends World {
     // The user jumps around the rows via Frog.
     // ------------ ------------ ------------ ------------ ------------
     // TO DO LIST:
-    // --> Make each level harder according to score algorithm
+    // --> Clean up code a bit.. What can be abstracted?
     // ------------ ------------ ------------ ------------ ------------
-    // Two different types of rows -> one where you avoid stuff (cars) and 
-    // one where you try to jump onto the things (lilies). How different are 
-    // they really? Create an interface or just do a type check?
     // MAIN MOVING FIELDS
     public Frog frog;
 
@@ -255,7 +252,10 @@ public class Frogger extends World {
         // but i needed a way to instantiate.... Will come up with a better way later
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
         
-       
+       // Drawing Safe Rows...
+        for(Row safey : this.safe){
+            finalImage = new OverlayImages(finalImage, safey.draw(finalImage));
+        }
         
         // Drawing cars
         for (ObstacleRow<Car> r : this.cars) {
@@ -268,10 +268,7 @@ public class Frogger extends World {
             finalImage = new OverlayImages(finalImage, x.draw(finalImage));
         }
         
-         // Drawing Safe Rows...
-        for(Row safey : this.safe){
-            finalImage = new OverlayImages(finalImage, safey.draw(finalImage));
-        }
+         
         
 
         // Drawing Score
