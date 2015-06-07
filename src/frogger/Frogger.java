@@ -253,10 +253,10 @@ public class Frogger extends World {
         WorldImage finalImage = new OverlayImages(backgroundELT1, backgroundELT1);
         
        // Drawing Safe Rows...
-        for(Row safey : this.safe){
-            finalImage = new OverlayImages(finalImage, safey.draw(finalImage));
-        }
-        
+//        for(Row safey : this.safe){
+//            finalImage = new OverlayImages(finalImage, safey.draw(finalImage));
+//        }
+//        
         // Drawing cars
         for (ObstacleRow<Car> r : this.cars) {
             // Iterate through collideables to overlap

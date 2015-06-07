@@ -152,8 +152,8 @@ public class ObstacleRow<D extends Collideable<D>> extends Row {
     }
     
     public WorldImage draw(WorldImage finalImage) {
-        RectangleImage background = new RectangleImage(new Posn(0, this.getStartX()), 1000, (this.getStartY() - this.getFinishY()), this.getColor());
-        finalImage = new OverlayImages(finalImage, background);
+       // RectangleImage background = new RectangleImage(new Posn(0, this.getStartX()), 1000, (this.getStartY() - this.getFinishY()), this.getColor());
+       // finalImage = new OverlayImages(finalImage, background);
         for (D d: this.getCollideables()) {
                 finalImage = new OverlayImages(finalImage, d.draw());
             }
