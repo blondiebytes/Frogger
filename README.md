@@ -1,4 +1,4 @@
-# Frogger: Spring Break Project
+# Frogger: Spring Break Project 
 The game frogger is just a series of rows -> all constantly going -> and the user, as the Frog, moves around each row via the arrow keys. This program was created more as a template for "future Froggers" than as a self contained game. There are three types of rows - Row, ObstacleRow, and AssisterRow. 
 
 1. In Row, the row is considered a "safe" row where the Frog cannot be hit by an obstacle.
